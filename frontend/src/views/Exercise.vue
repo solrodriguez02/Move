@@ -1,6 +1,6 @@
 <template>
     <v-main>
-      <h1>Move</h1>
+      
     </v-main>
   </template>
   
