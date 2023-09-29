@@ -1,9 +1,8 @@
-<template>
-    <v-main>
-      <h1>Move</h1>
-    </v-main>
-  </template>
+<template> 
+  <div class="home">
+    <h1>Start moving now!</h1>
+  </div>
+</template>
   
-  <script setup>
-    //
-  </script>
+<script setup>
+</script>

@@ -1,13 +1,12 @@
 <template>
-  <v-app>
-    <v-main>
-      <Navbar/>
-      <Home/>
-    </v-main>
-  </v-app>
+  <Navbar/>
+  <RouterView/>
 </template>
 
 <script setup>
-  import Home from '@/views/Home.vue'
+  import { RouterView } from 'vue-router'
   import Navbar from '@/components/Navbar.vue'
 </script>
+
+<style scoped>
+</style>
