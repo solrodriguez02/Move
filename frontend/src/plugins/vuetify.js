@@ -21,7 +21,9 @@ export default createVuetify({
           blue: '#5271FF',
           violet: '#CB6CE6',
           turquoise: '#0FC2C8',
-          lightblue: '#2AAAF4'
+          lightblue: '#2AAAF4',
+          gray: '#E1E0E0',
+          dark_gray: '#616161'
         },
       },
     },
@@ -41,6 +43,12 @@ export default createVuetify({
       person: 'accessibility',
       flash: 'flash_on', // flash para la dificultad (con relleno)
       dumbbell: 'fitness_center', // pesa
+      edit: 'edit', // lapiz de editar
+      add: 'add', // +
+      search: 'search', //lupa
+      filter: 'tune', // filtros
+      arrow: 'expand_more', // flecha mirando hacia abajo
+      next: 'navigate_next', //flecha hacia la derecha
     },
     sets: {
       md,
