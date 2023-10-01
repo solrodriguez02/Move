@@ -1,128 +1,121 @@
 <template>
-  <div style="background-color: #ffffff">
-    <br />
+  <div style='background-color: #ffffff'>
     <br />
     <br />
     <br />
     <br />
   </div>
 
-  <div class="grey-section">
-    <h1 style="padding: 30px">Lunge</h1>
-    <section class="workout-section">
+  <div class='grey-section'>
+    <h1 style='padding: 30px; padding-left: 60px;'>Lunge</h1>
+    <section class='workout-section'>
       <img
-        class="rounded-image"
-        src="https://media.canva.com/1/image-resize/1/800_450_100_PNG_F/czM6Ly9tZWRpYS1wcml2YXRlLmNhbnZhLmNvbS84OWsxay9NQUZzckQ4OWsxay8xL3AucG5n?osig=AAAAAAAAAAAAAAAAAAAAANc26I1fhO-KjHn6U6u7u4qW11zvrRRP0LLJY9kjIelj&exp=1695968584&x-canva-quality=screen&csig=AAAAAAAAAAAAAAAAAAAAAB9yGifMXzOWZYem2_5JiWYcQiUz6W5XM3eS9JnGzDfG"
-        alt="Workout image"
+        style='border-radius: 24px;'
+        src='@/assets/workout.jpg'
+        alt='Workout image'
       />
-
-      <div class="workout-description">
-        <div class="workout-details">
+      <div class='workout-description'>
+        <div class='workout-details'>
           <v-container>
             <v-row>
-              <v-col variant="variant" cols="6">
-                <v-card>
+              <v-col variant='variant' cols='5' >
                   <v-card
-                    max-width="170"
-                    height="120"
-                    border-radius="10px"
-                    :color="color1"
+                    width='100%'
+                    height='100%'
+                    border-radius='10px'
+                    :color='color1'
                   >
                     <v-card-item>
-                      <div class="text-center">
-                        <v-avatar rounded="0" color="color1">
-                          <v-icon color="white" icon="mdi-flash"></v-icon>
+                      <div class='text-center' padding='20%'>
+                        <v-avatar class='icon-card' rounded='0' color='color1' >
+                          <v-icon  color='white' icon='$flash'></v-icon>
                         </v-avatar>
                       </div>
-                      <div class="text-center">
-                        <div>
-                          <h5 style="color: white">Medium difficulty</h5>
+                      <div class='text-center'>
+                        <div style='margin-top: 5px;'>
+                          <h4 style='color: white'>Medium difficulty</h4>
                         </div>
                       </div>
                     </v-card-item>
-                  </v-card>
                 </v-card>
               </v-col>
-              <v-col variant="variant" cols="6">
-                <v-card>
+              <v-col variant='variant' cols='5'>
                   <v-card
-                    class="mx-auto"
-                    max-width="170"
-                    height="120"
-                    :color="color2"
+                    class='mx-auto'
+                    max-width='100%'
+                    height='100%'
+                    :color='color2'
                   >
                     <v-card-item>
-                      <div class="text-center">
-                        <v-avatar rounded="0" color="color2">
-                          <v-icon color="white" icon="mdi-human"></v-icon>
+                      <div class='text-center'>
+                        <v-avatar rounded='0' color='color2'>
+                          <v-icon color='white' icon='$person'></v-icon>
                         </v-avatar>
-                      </div>
-                      <div class="text-center">
-                        <div>
-                          <h5 style="color: white">
+                      </div>                
+                      <div class='text-center'>
+                        <div style='margin-top: 5px;'>
+                          <h4 style='color: white'>
                             Glutes, quads, hamstrings and calves
-                          </h5>
+                          </h4>
                         </div>
                       </div>
                     </v-card-item>
                   </v-card>
-                </v-card>
               </v-col>
             </v-row>
+            <br>
             <v-row>
-              <v-col variant="variant" cols="6">
-                <v-card>
+              <v-col variant='variant' cols='5'>          
                   <v-card
-                    class="mx-auto"
-                    max-width="170"
-                    height="120"
-                    :color="color3"
+                    class='mx-auto'
+                    width='100%'
+                    height='100%'
+                    :color='color3'
                   >
                     <v-card-item>
-                      <div class="text-center">
-                        <v-avatar rounded="0" color="color3">
-                          <v-icon color="white" icon="mdi-dumbbell"></v-icon>
+                      <div class='text-center'>
+                        <v-avatar rounded='0' color='color3'>
+                          <v-icon color='white' icon='$dumbbell'></v-icon>
                         </v-avatar>
                       </div>
-                      <div class="text-center">
-                        <div>
-                          <h5 style="color: white">Optional, not required</h5>
+                      <div class='text-center'>
+                        <div style='margin-top: 5px;'>
+                          <h4 style='color: white'>Optional, not required</h4>
+                          <br>
                         </div>
                       </div>
                     </v-card-item>
-                  </v-card>
-                </v-card>
+                  </v-card>        
               </v-col>
-              <v-col variant="variant" cols="6">
-                <v-card>
+              <v-col variant='variant' cols='5'>             
                   <v-card
-                    class="mx-auto"
-                    max-width="170"
-                    height="120"
-                    :color="color4"
+                    class='mx-auto'
+                    max-width='100%'
+                    height='100%'
+                    :color='color4'
                   >
                     <v-card-item>
-                      <div class="text-center">
-                        <v-avatar rounded="0" color="color4">
-                          <v-icon color="white" icon="mdi-fullscreen"></v-icon>
+                      <div class='text-center'>
+                        <v-avatar rounded='0' color='color4'>
+                          <v-icon color='white' icon='$space'></v-icon>
                         </v-avatar>
                       </div>
-                      <div class="text-center">
-                        <div>
-                          <h5 style="color: white">Ideal for reduced spaces</h5>
+                      <div class='text-center'>
+                        <div style='margin-top: 5px;'>
+                          <h4 style='color: white'>  Ideal for reduced spaces</h4>
                         </div>
                       </div>
                     </v-card-item>
-                  </v-card>
-                </v-card>
+                  </v-card>               
               </v-col>
             </v-row>
           </v-container>
         </div>
       </div>
     </section>
-    <div class="d-flex align-center flex-column">
-      <v-card width="600" title="Description">
+    <div style='margin-top: 5px;'></div>
+    <div class='d-flex align-center flex-column'>
+      <v-card width='90%' title='Description'>
         <v-card-text>
           01. Stand tall with your feet hip-width apart and your arms by your
           sides, to start.<br />
@@ -138,8 +131,8 @@
       </v-card>
     </div>
     <br />
-    <div class="d-flex align-center flex-column">
-      <v-card width="600" title="Make it easier">
+    <div class='d-flex align-center flex-column'>
+      <v-card width='90%' title='Make it easier'>
         <v-card-text>
           Move slowly. Really slowly. Or do fewer reps and sets until you
           improve your balance and strength.
@@ -147,8 +140,8 @@
       </v-card>
     </div>
     <br />
-    <div class="d-flex align-center flex-column">
-      <v-card width="600" title="Make it Harder">
+    <div class='d-flex align-center flex-column'>
+      <v-card width='90%' title='Make it Harder'>
         <v-card-text>
           You could do walking lunges or jump out of the bottom of your forward
           lunge to switch sides, both of which will spike your heart rate. To
@@ -185,29 +178,32 @@
     justify-content: center;
   }
 
-  .rounded-image {
-    border-radius: 24px;
-  }
-
   .workout-section {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px;
+    padding: 10px;
+    width: 100%;
   }
 
   .workout-section img {
     width: 50%;
+    margin-left: 8%; 
+  }
+
+  .icon.card {
+    size: 100%;
   }
 
   .workout-description {
-    width: 800%;
+    width: 1000%;
   }
 
   .workout-details {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin-top: 10px;
   }
 </style>
+
+
