@@ -1,15 +1,26 @@
 <template>
 <div id='nav'>
     <RouterLink to='/'>
-        <img class='logo' src='@/assets/logo.png' />
+        <img class='logo' src='@/assets/logo.png' alt='logo'/>
     </RouterLink>
     <nav class='navigation'>
     <ul class='nav-links'>
       <li class='links' v-for="item in menuItems" :key="title">
-        <RouterLink :to="item.path"> {{ item.title }}</RouterLink>
+        <RouterLink :to="item.path"> <p class="link">{{ item.title }}</p> </RouterLink>
       </li>
       <li class='links'>
-        <button class='login'>Log in</button>
+
+        <RouterLink to='/signin'>
+        <v-btn 
+        class="text-none"
+        color="blue"
+        rounded
+        size="large"
+        height="35px"
+        variant="flat"
+        @click="dialog = false">Sign in</v-btn>
+        </RouterLink>
+
       </li>
     </ul>
 </nav>
@@ -17,7 +28,7 @@
 </template>
   
   <script setup>
-    import { RouterLink } from 'vue-router';
+    import { RouterLink } from 'vue-router'
     import { ref } from 'vue'
     const menuItems = ref([
           { title: 'Explore', path: '/explore'},
@@ -37,32 +48,33 @@
   }
 
   .navigation {
+    margin-top: 0.5%;
     float: right;
   }
 
   .nav-links {
     display: flex;
     margin: 20px;
+    align-items: center;
   }
 
   .links {
     padding-right: 40px;
     list-style: none;
+    color: black;
+    font-size: 16px;
   }
 
-  .links:hover{
-    text-decoration: underline;
+  .link {
+    margin-top: 3px;
+  }
+
+  .link:hover{
+    color: rgb(137, 137, 137);
   }
 
   .logo {
     height: 30px;
-    margin: 20px;
-  }
-
-  .login {
-    border-radius: 24px;
-    cursor: pointer;
-    width: 80px; 
-    border: 1px solid white;
+    margin: 2%;
   }
   </style>

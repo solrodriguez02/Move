@@ -16,7 +16,7 @@ const router = createRouter({
     },
     {
       path: '/myroutines',
-      name: 'myroutines',
+      name: 'my routines',
       component: () => import('../views/MyRoutines.vue')
     },
     {
@@ -26,13 +26,23 @@ const router = createRouter({
     },
     {
       path: '/createdbyyou',
-      name: 'createdbyyou',
+      name: 'created by you',
       component: () => import('../views/CreatedByYou.vue')
     },
     {
       path: '/createroutine',
       name: 'create routine',
       component: () => import('../views/CreateRoutine.vue')
+    },
+    {
+      path: '/signin',
+      name: 'sign in',
+      component: () => import('../views/SignIn.vue')
+    },
+    {
+      path: '/signup',
+      name: 'sign up',
+      component: () => import('../views/SignUp.vue')
     },
     {
       path: '/./:pathMatch(.*)*',
