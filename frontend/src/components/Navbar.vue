@@ -9,14 +9,18 @@
         <RouterLink :to="item.path"> <p class="link">{{ item.title }}</p> </RouterLink>
       </li>
       <li class='links'>
+
+        <RouterLink to='/signin'>
         <v-btn 
         class="text-none"
         color="blue"
         rounded
         size="large"
-        height="30px"
+        height="35px"
         variant="flat"
-        @click="dialog = false">Log in</v-btn>
+        @click="dialog = false">Sign in</v-btn>
+        </RouterLink>
+
       </li>
     </ul>
 </nav>
@@ -24,7 +28,7 @@
 </template>
   
   <script setup>
-    import { RouterLink } from 'vue-router';
+    import { RouterLink } from 'vue-router'
     import { ref } from 'vue'
     const menuItems = ref([
           { title: 'Explore', path: '/explore'},
@@ -44,6 +48,7 @@
   }
 
   .navigation {
+    margin-top: 0.5%;
     float: right;
   }
 
@@ -57,6 +62,7 @@
     padding-right: 40px;
     list-style: none;
     color: black;
+    font-size: 16px;
   }
 
   .link {
@@ -69,6 +75,6 @@
 
   .logo {
     height: 30px;
-    margin: 20px;
+    margin: 2%;
   }
   </style>

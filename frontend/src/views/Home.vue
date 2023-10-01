@@ -5,6 +5,7 @@
     <div className='header'>
       <h1>Start moving now!</h1>
       <div class='create-account'>
+        <RouterLink to='/signup'>
         <v-btn 
           class='text-none'
           color='violet'
@@ -13,6 +14,7 @@
           height='45px'
           variant='flat'
           @click='dialog = false'>Create an account</v-btn>
+        </RouterLink>
       </div>
     </div>
     <img class='main-image' src='@/assets/move.png' alt='move'/>
@@ -43,6 +45,7 @@
             </v-col>
           </v-row>
         </v-container> 
+
         <v-container class="app-features-icons">
           <v-row>
             <v-col
@@ -81,6 +84,7 @@
   
 <script setup>
   import { ref } from 'vue'
+  import { RouterLink } from 'vue-router'
 
   const appItems = ref([
     { headline: 'Play routines', description: 'Exercise your own routines'},
