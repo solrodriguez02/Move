@@ -118,9 +118,11 @@
         <v-icon icon='$filter' size='26'/>
       </button>
       
-      <button class='new-button'>
-        <p>New exercise</p>
-      </button>
+      <RouterLink to='/createexercise' class='new-button'>
+        <button >
+          <p>New exercise</p>
+        </button>
+      </RouterLink>
   </div>
 
   <div class='exercise-search'>
@@ -417,6 +419,8 @@
   border-radius: 24px;
   padding: 0 30px;
   margin: 2px;
+  text-decoration: none;
+  color: black;
 }
 
 .exercise-search {

@@ -40,6 +40,11 @@ const router = createRouter({
       component: () => import('../views/SaveRoutine.vue')
     },
     {
+      path: '/createexercise',
+      name: 'create exercise',
+      component: () => import('../views/CreateExercise.vue')
+    },
+    {
       path: '/signin',
       name: 'sign in',
       component: () => import('../views/SignIn.vue')
