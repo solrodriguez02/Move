@@ -14,7 +14,10 @@
         height='40px'
         width='100px'
         variant='flat'
-        @click='dialog = false'>Save</v-btn>
+        @click='dialog = false'>
+          Next 
+          <v-icon icon='$next'/>
+        </v-btn>
     </RouterLink>
   </div>
 

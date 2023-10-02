@@ -19,7 +19,8 @@
                 <div class='field-text'> {{ field.label }} </div>
                 <v-select
                     :items='field.items'
-                    :multiple="field.label == 'Elements required'"
+                    :multiple="field.label == 'Elements required' || field.label =='Muscle groups'"
+                    :chips="field.label == 'Elements required' || field.label =='Muscle groups'"
                     :rules="[required]"
                     variant='outlined'
                     density='compact'
@@ -72,9 +73,13 @@ const loading = ref(false);
 const difficulties = ref(['Easy', 'Medium', 'Difficult']);
 const elements = ref(['None', 'Dumbell', 'Jump rope', 'Mat', 'Resistance band', 'Step', 'Kettlebell', 'Foam roller', 'Ankle Weights' ]);
 const space = ref(['Ideal for reduced spaces', 'Requires some space', 'Much space is needed']);
+const muscleGroups = ref(['Chest', 'Back', 'Shoulders', 'Arms', 'Biceps', 'Triceps', 'Legs', 'Quadriceps', 'Hamstrings', 'Calves', 'Glutes', 'Abdominals', 'Lower Back', 'Core']);
+const approach = ref(['Cardio', 'Strength', 'HIIT', 'Flexibility', 'Bodyweight', 'Resistance', 'CrossFit', 'Yoga', 'Pilates', 'Functional', 'Calisthenics', 'Aerobic ', 'Streching']);
 
 const formFields = ref([
     { label: 'Difficulty', placeholder: 'Enter the exercise difficulty', items: difficulties },
+    { label: 'Approach', placeholder: 'How much space is it necesary', items:  approach},
+    { label: 'Muscle groups', placeholder: 'How much space is it necesary', items:  muscleGroups},
     { label: 'Elements required', placeholder: 'Does the exercise require any element?', items:  elements },
     { label: 'Space requirements', placeholder: 'How much space is it necesary', items:  space},
 ]);
