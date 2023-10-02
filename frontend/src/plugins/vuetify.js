@@ -49,6 +49,7 @@ export default createVuetify({
       filter: 'tune', // filtros
       arrow: 'expand_more', // flecha mirando hacia abajo
       next: 'navigate_next', //flecha hacia la derecha
+      options: 'more_vert', // tres puntitos verticales
     },
     sets: {
       md,
