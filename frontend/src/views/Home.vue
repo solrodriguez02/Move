@@ -102,7 +102,8 @@
     ])
   </script>
   
-  <style scoped>
+  <style scoped lang="scss">
+  @use '@/styles/colors';
   .home {
     height: 100vh;
     width: 100%;
