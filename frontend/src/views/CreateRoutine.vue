@@ -28,18 +28,18 @@
     <v-slide-group
       show-arrows>
       <v-slide-group-item>
-        <button>
-          <div class='carousel-cycle'>
+        <button @click="selectCycleIndex(0)">
+          <div :class="cycleIndex === 0 ? 'carousel-cycle-active' : 'carousel-cycle'">
             <v-icon :icon='cycles[0].icon' class='cycle-icon'/>
-            <p> {{ cycles[0].name }} </p>
+            <p class='cycle-name'> {{ cycles[0].name }} </p>
           </div>
         </button>
       </v-slide-group-item>
       <v-slide-group-item v-for="(cycle, index) in cycles" :key="cycle.name">
-        <button v-show="index > 0 && index < lastCycle">
-          <div class='carousel-cycle'>
+        <button v-show="index > 0 && index < lastCycleIndex" @click="selectCycleIndex(index)">
+          <div :class="cycleIndex === index ? 'carousel-cycle-active' : 'carousel-cycle'">
             <v-icon :icon='cycle.icon' class='cycle-icon'/>
-            <p> {{ cycle.name }} </p>
+            <p class='cycle-name'> {{ cycle.name }} </p>
           </div>
         </button>
       </v-slide-group-item>
@@ -51,10 +51,10 @@
         </button>
       </v-slide-group-item>
       <v-slide-group-item>
-        <button>
-          <div class='carousel-cycle'>
-            <v-icon :icon='cycles[lastCycle].icon' class='cycle-icon'/>
-            <p> {{ cycles[lastCycle].name }} </p>
+        <button @click="selectCycleIndex(lastCycleIndex)">
+          <div :class="cycleIndex === lastCycleIndex ? 'carousel-cycle-active' : 'carousel-cycle'">
+            <v-icon :icon='cycles[lastCycleIndex].icon' class='cycle-icon'/>
+            <p class='cycle-name'> {{ cycles[lastCycleIndex].name }} </p>
           </div>
         </button>
       </v-slide-group-item>
@@ -72,8 +72,9 @@
     <div class='carousel-reps'>
       <p class='reps-text'>Reps</p>
       <v-autocomplete
-      v-model="selectedValue"
+      v-model="cycles[cycleIndex].reps"
       :items="cycleReps"
+      prepend-inner-icon='$reps'
       variant='flat'
       density='dense'
       menu-icon=''
@@ -82,7 +83,7 @@
 
     <v-slide-group
       show-arrows>
-      <v-slide-group-item v-for="exercise in carouselExercises" :key='exercise.name'>
+      <v-slide-group-item v-for="exercise in cycles[cycleIndex].exercises" :key='exercise.name'>
         <div class='carousel-exercise'>
           <RouterLink class='carousel-link' :to='exercise.link'>
             <div class='image-container'>
@@ -94,8 +95,10 @@
               <div class='overlay'>
                 <v-icon icon='$edit' color='black' size='20' class='edit-icon'/>
                 <div class='time-container'>
-                  <v-icon icon='$time' color='blue' size='20' />
-                  <p class='overlay-text'>{{ exercise.time }}</p>
+                  <v-icon v-show="exercise.sec != '-'" icon='$time' color='blue' size='20' />
+                  <p v-show="exercise.sec != '-'" class='overlay-text'>{{ exercise.sec }}</p>
+                  <v-icon v-show="exercise.reps != '-'" icon='$reps' color='blue' size='15' />
+                  <p v-show="exercise.reps != '-'" class='overlay-text'>{{ exercise.reps }}</p>
                 </div>
               </div>
             </div>
@@ -127,60 +130,51 @@
         </button>
       </RouterLink>
   </div>
+ 
+  <div class='sec-reps'>
+    <h4>Select the exercises' time and add them</h4>
+    <div class='sec-reps-options'>
+      <v-icon icon='$time' class='exercise-icon'/>
+      <label class='secs-reps-label'>sec:</label>
+      <v-autocomplete
+        v-model="selectedSecValue"
+        :items="secOptions"
+        variant='flat'
+        density='dense'
+        class='sec-reps-input'
+        menu-icon='$arrow'>
+      </v-autocomplete>
+
+      <v-icon icon='$reps' class='exercise-icon'/>
+      <label class='secs-reps-label'>reps:</label>
+      <v-autocomplete
+        v-model="selectedRepValue"
+        :items="repOptions"
+        variant='flat'
+        density='dense'
+        class='sec-reps-input'
+        menu-icon='$arrow'/>
+    </div>
+  </div>
 
   <div class='exercise-search'>
 
-    <div class='rest'>
-      <button class='rest-item'>
-        <v-icon icon='$add'/>
-      </button>
+    <div class='rest' onclick="">
+      <v-icon icon='$add'/>
       <v-icon icon='$rest' class='rest-item'/>
       <p class='rest-item'>Rest</p>
-      <div class='rest-sec-rep-option'>
-        <v-autocomplete
-          v-model="selectedSRRestValue"
-          :items="['sec']"
-          variant='outlined'
-          density='compact'
-          menu-icon=''/>
-      </div>
-      <v-icon icon='$time' class='rest-time-icon'/>
-      <div class='rest-secs-or-reps'>
-        <v-autocomplete
-          v-model="selectedSecRestValue"
-          :items="secOptions"
-          variant='default'
-          density='compact'
-          menu-icon=''/>
-        </div>
     </div>
 
     <div class='exercises' v-for='exercise in exercises' :key='exercise.name'>
       <div class='exercise'>
-        <button class='exercise-item'>
+        <div class='add' onclick="">
           <v-icon icon='$add'/>
-        </button>
-        <div class='exercise-image-box'>
-          <img :src='exercise.image' :alt='exercise.name' class='exercise-image'/>
+          <div class='exercise-image-box'>
+            <img :src='exercise.image' :alt='exercise.name' class='exercise-image'/>
+          </div>
+          <p class='exercise-text'> {{ exercise.name }} </p>
         </div>
-        <p class='exercise-text'> {{ exercise.name }} </p>
-        <div class='sec-rep-option'>
-          <v-autocomplete
-            v-model="selectedSRValue"
-            :items="secOrReps"
-            variant='outlined'
-            density='compact'
-            menu-icon='$arrow'/>
-        </div>
-        <v-icon icon='$time' class='exercise-time-icon'/>
-        <div class='secs-or-reps'>
-          <v-autocomplete
-            v-model="selectedSecValue"
-            :items="secOptions"
-            variant='default'
-            density='compact'
-            menu-icon=''/>
-        </div>
+
         <div class='next-icon'>
           <RouterLink :to='exercise.link'>
               <v-icon icon='$next' color='dark_gray'/>
@@ -203,42 +197,46 @@
   import rightLungeImage from '@/assets/temporary/rightlunge.jpg';
   import LegsDownImage from '@/assets/temporary/legsdown.png';
 
-  const selectedValue = ref('x1');
-  const selectedSRRestValue = ref('sec');
-  const selectedSecRestValue = ref('30s');
-  const selectedSRValue = ref('sec');
-  const selectedSecValue = ref('30s');
+  const selectedSecValue = ref(30);
+  const selectedRepValue = ref('-');
+
 
   const secOptions = ref([
-    '15s', '20s', '25s', '30s', '35s', '40s','45s', '50s', 
-    '55s', '60s', '65s', '70s', '75s', '80s', '85s', '90s'
+    '-', 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
   ]);
 
   const repOptions = ref([
-    'x5', 'x10', 'x15', 'x20', 'x25', 'x30', 'x35', 'x40', 'x45', 'x50', 
-    'x55', 'x60', 'x65', 'x70', 'x75', 'x80', 'x85', 'x90', 'x95', 'x100'
+    '-', 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
   ]);
 
-  const secOrReps = ref(['sec', 'reps']);
+  const cycleReps = ref ([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
-  const cycleReps = ref (['x1', 'x2', 'x3', 'x4', 'x5', 'x6','x7', 'x8', 'x9', 'x10']);
+  const cycleExercises = ref([
+    { name:'Mill', sec:30, reps: '-', image: millImage, link:'/exercise'},
+    { name:'Legs up', sec:60, reps: 15, image: legsUpImage, link:'/exercise'},
+    { name:'Left leg lunge', sec:'-', reps: 15, image: leftLungeImage, link:'/exercise'},
+    { name:'Right leg lunge', sec:'-', reps: 15, image: rightLungeImage, link:'/exercise'},
+    { name:'Legs down', sec:30, reps: 10, image: LegsDownImage, link:'/exercise'},
+    { name:'Mill', sec:45, reps: '-', image: millImage, link:'/exercise'},
+    { name:'Legs up', sec:30, reps: '-', image: legsUpImage, link:'/exercise'},
+    { name:'Left leg lunge', sec:15, reps: '-', image: leftLungeImage, link:'/exercise'},
+  ])
+
+  const cycleExercises1 = ref([
+    { name:'Left leg lunge', sec:30, reps: '-', image: leftLungeImage, link:'/exercise'},
+    { name:'Right leg lunge', sec:30, reps: '-', image: rightLungeImage, link:'/exercise'},
+    { name:'Legs down', sec:30, reps: 15, image: LegsDownImage, link:'/exercise'},
+    { name:'Mill', sec:45, reps: '-', image: millImage, link:'/exercise'},
+    { name:'Mill', sec:30, reps: '-', image: millImage, link:'/exercise'},
+    { name:'Legs up', sec:60, reps: 15, image: legsUpImage, link:'/exercise'},
+    { name:'Left leg lunge', sec:'-', reps: 15, image: leftLungeImage, link:'/exercise'},
+  ])
 
   const cycles = ref([
-    { name:'Warm up', icon:'$warm', reps:'1'},
-    { name:'Cycle 1', icon:'$fire', reps:'2'},
-    { name:'Cycle 2', icon:'$fire', reps:'1'},
-    { name:'Cooling', icon:'$cool', reps:'1'},
-  ]);
-
-  const carouselExercises = ref([
-    { name:'Mill', time:'30s', image: millImage, link:'/exercise'},
-    { name:'Legs up', time:'30s', image: legsUpImage, link:'/exercise'},
-    { name:'Left leg lunge', time:'x15', image: leftLungeImage, link:'/exercise'},
-    { name:'Right leg lunge', time:'x15', image: rightLungeImage, link:'/exercise'},
-    { name:'Legs down', time:'x15 in 30s', image: LegsDownImage, link:'/exercise'},
-    { name:'Mill', time:'30s', image: millImage, link:'/exercise'},
-    { name:'Legs up', time:'30s', image: legsUpImage, link:'/exercise'},
-    { name:'Left leg lunge', time:'x15', image: leftLungeImage, link:'/exercise'},
+    { name:'Warm up', icon:'$warm', reps:'1', exercises: cycleExercises},
+    { name:'Cycle 1', icon:'$fire', reps:'2', exercises: cycleExercises1},
+    { name:'Cycle 2', icon:'$fire', reps:'1', exercises: cycleExercises},
+    { name:'Cooling', icon:'$cool', reps:'1', exercises: cycleExercises},
   ]);
 
   const exercises = ref([
@@ -249,7 +247,19 @@
     { name:'Legs down', image: LegsDownImage, link:'/exercise'},
   ]);
 
-  const lastCycle = cycles.value.length - 1;
+  const lastCycleIndex = cycles.value.length - 1;
+
+  const cycleIndex = ref(0);
+
+  const selectCycleIndex = (index) => {
+    cycleIndex.value = index; 
+  };
+
+  const formatRepOptions = (options) => {
+    return options.map((option) => option + " reps");
+  };
+
+
 
 </script>
 
@@ -289,10 +299,30 @@
   color: black;
 }
 
+.carousel-cycle-active {
+  display: flex;
+  justify-content: center;
+  width: 140px;
+  height: 40px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 20px;
+  margin: 7px;
+  padding: 6px 0;
+  border: 3px solid #3f62fc;
+  color: black;
+  font-weight: bold;
+}
+
+
 .cycle-text {
   text-align: center;
   margin: 18px 10px 20px 25px;
-  font-weight: bold;
+}
+
+.cycle-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis; 
 }
 
 .cycle-icon {
@@ -310,7 +340,6 @@
 }
 
 .carousel-exercises {
-  max-width: 100%;
   height: 140px;
   border-radius: 24px;
   display: flex;
@@ -319,19 +348,20 @@
 .carousel-reps {
   height: 100%;
   width: 2%;
-  margin: 2.5% 2%;
+  margin: 2.5% 5% 2.5% 2.5%;
 }
 
 .reps-text {
-  margin-left: 8px;
+  margin-left: 15px;
   font-weight: bold;
 }
 
 .reps-input {
   margin-top: 10px;
-  width: 54px;
-  height: 30px;
-  background-color: rgba(255, 255, 255, 0.762);
+  width: 70px;
+  height: 35px;
+  padding: 3px 0;
+  background-color: rgb(255, 255, 255);
   border-radius: 12px;
   color: #3f62fc;
   font-weight: bold;
@@ -339,8 +369,8 @@
 
 .carousel-exercise {
   height: 80px;
-  width: 150px;
-  margin: 15px 10px;
+  width: 140px;
+  margin: 16px 20px 16px 0;
 }
 
 .carousel-link {
@@ -352,6 +382,7 @@
   height: 70%;
   width: 100%;
 }
+
 .image-container {
   position: relative;
   background-color: white;
@@ -389,7 +420,7 @@
 .overlay-text {
   color: #3f62fc;
   font-size: 16px;
-  padding: 5px;
+  padding: 5px 8px 5px 2px;
 }
 
 .carousel-exercise-name {
@@ -397,12 +428,15 @@
   color: black;
   text-align: center;
   justify-content: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis; 
 }
 
 .searcher {
   display: flex;
   height: 43px;
-  margin-top: 2.5%;
+  margin: 2.5% 0;
 }
 
 .search {
@@ -431,6 +465,33 @@
   height: 100vh;
 }
 
+.sec-reps {
+  display: flex;
+  height: 60px;
+  align-items: center;
+  margin: 1.5% 0;
+}
+
+.sec-reps-options {
+  display: flex;
+  align-items: center;
+  margin-left: 14%;
+}
+
+.secs-reps-label {
+  color:#3f62fc;
+}
+
+.sec-reps-input {
+  width: 85px;
+  height: 40px;
+  padding: 5px 0;
+  background-color: rgb(239, 239, 239);
+  border-radius: 12px;
+  color: black;
+  margin: 0 30px 0 10px;
+}
+
 .rest {
   display: flex;
   align-items: center;
@@ -438,44 +499,41 @@
   height: 60px;
   background-color: #3d3b42;
   border-radius: 6px;
-  margin-top: 2%;
+  margin-top: 1.5%;
   margin-bottom: 1%;
+  cursor: pointer;
+  color: white;
+  padding-left: 2%;
 }
 
 .rest-item {
-  margin: 0 3% 0 2%;
+  margin-left: 6%;
   color: white;
-}
-
-.rest-time-icon {
-  color: white;
-}
-
-.rest-sec-rep-option {
-  width: 65px;
-  margin: 24px 3.3% 0 122px;
-  color:white;
-}
-
-.rest-secs-or-reps {
-  width: 65px;
-  margin-top:24px;
-  color:white;
 }
 
 .exercise {
   display: flex;
-  align-items: center;
   width: 100%;
-  height: 60px;
+  height: 55px;
   background-color: none;
   border-radius: 6px;
   margin: 1% 0;
+  align-items: center;
+}
+
+.add {
+  display: flex;
+  align-items: center;
+  margin-left: 2%;
+  cursor: pointer;
+  color: #3d3b42;
+  width: 90%;
 }
 
 .exercise-image-box {
   height: 60px;
   width: 105px;
+  margin-left: 3%;
 }
 
 .exercise-image {
@@ -483,17 +541,13 @@
   width: 100%;
 }
 
-.exercise-item {
-  margin: 0 2%;
-  color: #3d3b42;
-}
-
-.exercise-time-icon {
+.exercise-icon {
   color:#3f62fc;
+  margin-right: 10px;
 }
 
 .exercise-text {
-  margin: 0 2%;
+  margin-left: 3%;
   color: #3d3b42;
   width: 140px;
   overflow: hidden;
@@ -501,20 +555,9 @@
   text-overflow: ellipsis; 
 }
 
-.sec-rep-option {
-  width: 100px;
-  margin: 24px 2% 0 10px;
-  color:#3d3b42;
-}
-
-.secs-or-reps {
-  width: 65px;
-  margin-top:24px;
-  color:#3f62fc;
-}
-
 .next-icon {
   margin-left: auto; 
+  margin-right: 2%;
 }
 
 </style>

@@ -39,6 +39,7 @@ export default createVuetify({
       cool: 'ac_unit', // copo de nieve del enfriamiento
       rest: 'bedtime', // luna para el descanso
       time: 'alarm', // reloj para el tiempo
+      reps: 'close', // cruz
       space: 'zoom_out_map', // espacio para el ejercicio
       person: 'accessibility',
       flash: 'flash_on', // flash para la dificultad (con relleno)
