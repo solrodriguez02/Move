@@ -51,6 +51,8 @@ export default createVuetify({
       arrow: 'expand_more', // flecha mirando hacia abajo
       next: 'navigate_next', //flecha hacia la derecha
       options: 'more_vert', // tres puntitos verticales
+      favempty: 'favorite_border', // corazon vacio
+      favfull: 'favorite', //corazon lleno (cuando esta fav la rutina)
     },
     sets: {
       md,
