@@ -65,6 +65,11 @@ const router = createRouter({
       component: () => import('../views/EditExercise.vue')
     },
     {
+      path: '/userprofile',
+      name: 'user profile',
+      component: () => import('../views/UserProfile.vue')
+    },
+    {
       path: '/./:pathMatch(.*)*',
       name: 'not fount',
       component: NotFound
