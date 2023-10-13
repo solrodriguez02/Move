@@ -6,7 +6,7 @@
 
     <div class='gray-section'>  
       <div class = 'top-bar'>
-                <h4 class = 'highlight-text'>Full Body Session</h4>
+                <h2 class = 'highlight-text'>Full Body Session</h2>
                 <div class = 'icons-top-right'>
                   <v-btn icon= '$favfull' color= '#f0f0f0' class='text-none' variant='flat' rounded @click='dialog = false'></v-btn>
                   <v-btn icon= '$options' color= '#f0f0f0' class='text-none' variant='flat' rounded @click='dialog = false'></v-btn>
@@ -25,7 +25,9 @@
                   <p class = 'time-text'>30 min</p>
                 </div>
               </div>
+              <div class = 'routine-img'>
               <v-img src='@/assets/temporary/RoutineImage.png' alt='Routine image' cover aspect-ratio="16/9" class='image' height = '300px' width = '600px'/>
+              </div>
             </div>
             <div class = 'routine-info'>
               <div v-for='item in highlightsItems' :key='item.name' class = 'routine-info-cards'>
@@ -61,7 +63,7 @@
     { name:'Space', detail:'Ideal for reduced spaces', icon:'$space', color:'violet' },
   ]);
 
- 
+
   </script>
 
   <style scoped>
@@ -76,15 +78,12 @@
 
   .profile-pic {
     display: flex;
-    border: 5px;
-    border-radius: 5%;
-    height: 100%;
-    width: 100%;
+    border-radius: 45px;
   }
 
   .icons-top-right {
     display: flex;
-    padding-left: 50%;
+    padding-left: 45%;
   }
 
   .gray-section {
@@ -94,11 +93,12 @@
 
   .header-info {
     display: flex;
+    padding: 1%;
   }
 
   .highlight-text {
     padding-top: 10px;
-    padding-left: 30%;
+    padding-left: 28%;
     color: black;
   }
   
@@ -114,14 +114,11 @@
   .img-section {
     border-radius: 40px;
     background-color: white;
-    padding: 4% 10%;
+    padding: 1% 1%;
   }
 
   .routine-img {
-    width: 100%;
-    height: 100%;
-    border-radius: 25%;
-    margin: 2% 2% 2% 0;
+    border-radius: 40px;
   }
 
   .routine-info{
@@ -150,7 +147,7 @@
 
   .total-duration {
     display: flex;
-    margin-left: 40%;
+    margin-left: 60%;
   }
 
 </style>
