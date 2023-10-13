@@ -85,7 +85,7 @@
       show-arrows>
       <v-slide-group-item v-for="exercise in cycles[cycleIndex].exercises" :key='exercise.name'>
         <div class='carousel-exercise'>
-          <RouterLink class='carousel-link' :to='exercise.link'>
+          <RouterLink class='carousel-link' to='/exercise'>
             <div class='image-container'>
               <img
                 class='carousel-image'
@@ -176,7 +176,7 @@
           <p class='exercise-text'> {{ exercise.name }} </p>
         </div>
         <div class='next-icon'>
-          <RouterLink :to='exercise.link'>
+          <RouterLink to='/exercise'>
               <v-icon icon='$next' color='dark_gray'/>
           </RouterLink>
         </div>
@@ -228,24 +228,24 @@
   const cycleReps = ref ([1, 2, 3, 4, 5, 6, 7, 8, 9])
 
   const cycleExercises = ref([
-    { name:'Mill', sec:30, reps: '-', image: millImage, link:'/exercise'},
-    { name:'Legs up', sec:60, reps: 15, image: legsUpImage, link:'/exercise'},
-    { name:'Left leg lunge', sec:'-', reps: 15, image: leftLungeImage, link:'/exercise'},
-    { name:'Right leg lunge', sec:'-', reps: 15, image: rightLungeImage, link:'/exercise'},
-    { name:'Legs down', sec:30, reps: 10, image: LegsDownImage, link:'/exercise'},
-    { name:'Mill', sec:45, reps: '-', image: millImage, link:'/exercise'},
-    { name:'Legs up', sec:30, reps: '-', image: legsUpImage, link:'/exercise'},
-    { name:'Left leg lunge', sec:15, reps: '-', image: leftLungeImage, link:'/exercise'},
+    { name:'Mill', sec:30, reps: '-', image: millImage },
+    { name:'Legs up', sec:60, reps: 15, image: legsUpImage },
+    { name:'Left leg lunge', sec:'-', reps: 15, image: leftLungeImage },
+    { name:'Right leg lunge', sec:'-', reps: 15, image: rightLungeImage },
+    { name:'Legs down', sec:30, reps: 10, image: LegsDownImage },
+    { name:'Mill', sec:45, reps: '-', image: millImage },
+    { name:'Legs up', sec:30, reps: '-', image: legsUpImage },
+    { name:'Left leg lunge', sec:15, reps: '-', image: leftLungeImage },
   ])
 
   const cycleExercises1 = ref([
-    { name:'Left leg lunge', sec:30, reps: '-', image: leftLungeImage, link:'/exercise'},
-    { name:'Right leg lunge', sec:30, reps: '-', image: rightLungeImage, link:'/exercise'},
-    { name:'Legs down', sec:30, reps: 15, image: LegsDownImage, link:'/exercise'},
-    { name:'Mill', sec:45, reps: '-', image: millImage, link:'/exercise'},
-    { name:'Mill', sec:30, reps: '-', image: millImage, link:'/exercise'},
-    { name:'Legs up', sec:60, reps: 15, image: legsUpImage, link:'/exercise'},
-    { name:'Left leg lunge', sec:'-', reps: 15, image: leftLungeImage, link:'/exercise'},
+    { name:'Left leg lunge', sec:30, reps: '-', image: leftLungeImage },
+    { name:'Right leg lunge', sec:30, reps: '-', image: rightLungeImage },
+    { name:'Legs down', sec:30, reps: 15, image: LegsDownImage },
+    { name:'Mill', sec:45, reps: '-', image: millImage },
+    { name:'Mill', sec:30, reps: '-', image: millImage },
+    { name:'Legs up', sec:60, reps: 15, image: legsUpImage },
+    { name:'Left leg lunge', sec:'-', reps: 15, image: leftLungeImage },
   ])
 
   const cycles = ref([
