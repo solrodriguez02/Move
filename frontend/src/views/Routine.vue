@@ -1,8 +1,10 @@
 <template>
+<RouterLink to='/MyRoutines' class="router-link">
 <div class = 'appbar'>
   <v-icon icon='$back'></v-icon>
-  <p>My routines</p>
+  <p>My routines</p>  
 </div>
+</RouterLink>
 
 <div class='gray-section'>  
 
@@ -194,6 +196,8 @@
   .appbar {
     display: flex;
     margin-left: 2%;
+    font-weight: bold;
+    color: slategrey;
   }
 
   .routine-general {
@@ -411,6 +415,11 @@
 
 .favorite-button {
   margin-right: 15px;
+}
+
+.router-link {
+  text-decoration: none;
+  color: inherit;
 }
 
 </style>
