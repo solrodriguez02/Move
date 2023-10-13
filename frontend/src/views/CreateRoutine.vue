@@ -144,8 +144,6 @@
         class='sec-reps-input'
         menu-icon='$arrow'>
       </v-autocomplete>
-
-      <v-icon icon='$reps' class='exercise-icon'/>
       <label class='secs-reps-label'>reps:</label>
       <v-autocomplete
         v-model="selectedRepValue"
@@ -158,14 +156,17 @@
   </div>
 
   <div class='exercise-search'>
-
     <div class='rest' onclick="">
       <v-icon icon='$add'/>
       <v-icon icon='$rest' class='rest-item'/>
       <p class='rest-item'>Rest</p>
     </div>
 
-    <div class='exercises' v-for='exercise in exercises' :key='exercise.name'>
+    <div v-if="loading" class='load-gif-box'>
+      <img  :src="getImageUrl('ajax-loader.gif')" class='load-gif'/>
+    </div>
+
+    <div v-else class='exercises' v-for='exercise in exerciseStore.exerciseList' :key='exercise.name'>
       <div class='exercise'>
         <div class='add' onclick="">
           <v-icon icon='$add'/>
@@ -174,7 +175,6 @@
           </div>
           <p class='exercise-text'> {{ exercise.name }} </p>
         </div>
-
         <div class='next-icon'>
           <RouterLink :to='exercise.link'>
               <v-icon icon='$next' color='dark_gray'/>
@@ -189,27 +189,43 @@
 </template>
   
 <script setup>
-  import { ref } from 'vue'
+  import { ref, onBeforeMount } from 'vue'
   import { RouterLink } from 'vue-router'
   import millImage from '@/assets/temporary/mill.png';
   import legsUpImage from '@/assets/temporary/legsup.png';
   import leftLungeImage from '@/assets/temporary/leftlunge.png';
   import rightLungeImage from '@/assets/temporary/rightlunge.jpg';
   import LegsDownImage from '@/assets/temporary/legsdown.png';
+  import { useExerciseStore } from '@/store/ExerciseStore'
 
-  const selectedSecValue = ref(30);
-  const selectedRepValue = ref('-');
+  const exerciseStore = useExerciseStore()
+
+  const loading = ref(false)
+
+  onBeforeMount(async () => {
+    loading.value = true
+    await exerciseStore.fetchExercises()
+    loading.value = false
+  })
+
+  
+  function getImageUrl(name) {
+    return new URL(`../assets/${name}`, import.meta.url).href
+  }
+
+  const selectedSecValue = ref(30)
+  const selectedRepValue = ref('-')
 
 
   const secOptions = ref([
     '-', 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
-  ]);
+  ])
 
   const repOptions = ref([
     '-', 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
-  ]);
+  ])
 
-  const cycleReps = ref ([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+  const cycleReps = ref ([1, 2, 3, 4, 5, 6, 7, 8, 9])
 
   const cycleExercises = ref([
     { name:'Mill', sec:30, reps: '-', image: millImage, link:'/exercise'},
@@ -237,29 +253,15 @@
     { name:'Cycle 1', icon:'$fire', reps:'2', exercises: cycleExercises1},
     { name:'Cycle 2', icon:'$fire', reps:'1', exercises: cycleExercises},
     { name:'Cooling', icon:'$cool', reps:'1', exercises: cycleExercises},
-  ]);
+  ])
 
-  const exercises = ref([
-    { name:'Mill', image: millImage, link:'/exercise'},
-    { name:'Legs up', image: legsUpImage, link:'/exercise'},
-    { name:'Left leg lunge', image: leftLungeImage, link:'/exercise'},
-    { name:'Right leg lunge', image: rightLungeImage, link:'/exercise'},
-    { name:'Legs down', image: LegsDownImage, link:'/exercise'},
-  ]);
+  const lastCycleIndex = cycles.value.length - 1
 
-  const lastCycleIndex = cycles.value.length - 1;
-
-  const cycleIndex = ref(0);
+  const cycleIndex = ref(0)
 
   const selectCycleIndex = (index) => {
-    cycleIndex.value = index; 
-  };
-
-  const formatRepOptions = (options) => {
-    return options.map((option) => option + " reps");
-  };
-
-
+    cycleIndex.value = index
+  }
 
 </script>
 
@@ -480,6 +482,7 @@
 
 .secs-reps-label {
   color:#3f62fc;
+  margin-left: 10px;
 }
 
 .sec-reps-input {
@@ -489,7 +492,7 @@
   background-color: rgb(239, 239, 239);
   border-radius: 12px;
   color: black;
-  margin: 0 30px 0 10px;
+  margin: 0 10px 0 10px;
 }
 
 .rest {
@@ -558,6 +561,18 @@
 .next-icon {
   margin-left: auto; 
   margin-right: 2%;
+}
+
+.load-gif-box {
+  display: flex;
+  justify-content: center;
+  margin-top: 5%;
+  width: 100%;
+}
+
+.load-gif {
+  width: 30px;
+  height: 30px;
 }
 
 </style>
