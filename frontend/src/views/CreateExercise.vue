@@ -10,10 +10,9 @@
                   :readonly='loading'
                   :rules='[required]'
                   variant='outlined'
-                  density='compact'
                   clearable
                   rounded
-                  placeholder='Enter the exercise name'/>
+                  placeholder='Enter the exercise name'
                   />
       <div class='all-fields'>
           <div v-for='(field,index) in formFields' :key='field.name' :class="index === 0 || index === 2 ? 'field-left' : 'field-right'"> 
