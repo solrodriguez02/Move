@@ -126,14 +126,14 @@
 
     <v-dialog v-model='dialog' max-width='800'>
       <v-card>
-        <v-toolbar color='lightblue' class='filters-header'>
+        <v-toolbar color='gray' class='filters-header'>
           <v-toolbar-title>Filter results</v-toolbar-title>
           <button @click="dialog = false">
             <v-icon icon='$close'/>
           </button>
         </v-toolbar>
         <v-card-text v-for='filter in filters' :key='filter.label'>
-          <h2 class='text-h6 mb-2'>
+          <h2 class='text-h6 mb-1'>
             {{ filter.label }}
           </h2>
           <v-chip-group :v-model='filter.selected' column multiple>
@@ -624,7 +624,7 @@ const applyFilters = () => {
 }
 
 .apply-filters-button {
-  background-color: #2AAAF4;
+  background-color: #5271FF;
   color: white;
   padding: 8px 30px;
   border-radius: 24px;
@@ -633,6 +633,7 @@ const applyFilters = () => {
 
 .filters-header {
   padding: 0 25px 0 10px;
+  text-align: center;
 }
 
 </style>
