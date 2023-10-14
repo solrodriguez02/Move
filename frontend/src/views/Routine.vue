@@ -46,11 +46,68 @@
 
   <div class='cycles'>
     <div class='cycles-options'>
-      <button v-for="(cycle, index) in cyclesOptions" :key='cycle.name'  @click="selectCycleIndex(index)" :class="index == cycleIndex? 'cycle-option-active':'cycle-option'">
+      <button v-for="(cycle, index) in cyclesOptions" :key='cycle.name'  @click="selectCycleOptionIndex(index)" :class="index == cycleOptionIndex? 'cycle-option-active':'cycle-option'">
         <label>{{ cycle.name }}</label>
         <v-icon :icon='cycle.icon' class='cycle-icon'/>
       </button>
     </div>
+  </div>
+
+  <div class='cycle' v-show='cycleOptionIndex!=1'>
+    <div class='cycle-header'>
+      <h2>{{ cycles[cycleIndex].name }}</h2>
+      <div class='cycle-reps'>
+        <v-icon icon='$reps'/>
+        {{cycles[cycleIndex].reps}}
+      </div>
+    </div> 
+    <div class='exercises' v-for='exercise in cycles[cycleIndex].exercises' :key='exercise.name'>
+      <div class='exercise'>
+          <div class='exercise-image-box'>
+            <img :src='exercise.image' :alt='exercise.name' class='exercise-image'/>
+          </div>
+          <label class='exercise-text'> {{ exercise.name }} </label>
+          <v-icon v-show="exercise.sec!='-'" icon='$time' class='exercise-icon'/>
+          <label v-show="exercise.sec!='-'" class='exercise-time'> {{ exercise.sec + 's'}} </label>
+          <v-icon v-show="exercise.reps!='-'" icon='$reps' size='20' class='exercise-icon'/>
+          <label v-show="exercise.reps!='-'" class='exercise-time'> {{ exercise.reps + ' reps'}} </label>
+        <div class='next-icon'>
+          <RouterLink to='/exercise'>
+              <v-icon icon='$next' color='dark_gray'/>
+          </RouterLink>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class='cycle' v-show='cycleOptionIndex==1'>
+    <div v-for='(cycle, index) in cycles' v-show='index!=0 && index!=lastCycleIndex'>
+    <div class='cycle-header'>
+      <h2>{{ cycle.name }}</h2>
+      <div class='cycle-reps'>
+        <v-icon icon='$reps'/>
+        {{cycle.reps}}
+      </div>
+    </div> 
+    <div class='exercises' v-for='exercise in cycle.exercises' :key='exercise.name'>
+      <div class='exercise'>
+          <div class='exercise-image-box'>
+            <img :src='exercise.image' :alt='exercise.name' class='exercise-image'/>
+          </div>
+          <label class='exercise-text'> {{ exercise.name }} </label>
+          <v-icon v-show="exercise.sec!='-'" icon='$time' class='exercise-icon'/>
+          <label v-show="exercise.sec!='-'" class='exercise-time'> {{ exercise.sec + 's'}} </label>
+          <v-icon v-show="exercise.reps!='-'" icon='$reps' size='20' class='exercise-icon'/>
+          <label v-show="exercise.reps!='-'" class='exercise-time'> {{ exercise.reps + ' reps'}} </label>
+        <div class='next-icon'>
+          <RouterLink to='/exercise'>
+              <v-icon icon='$next' color='dark_gray'/>
+          </RouterLink>
+        </div>
+      </div>
+    </div>
+  </div>
+
   </div>
 
 </div>
@@ -67,13 +124,15 @@
   import rightLungeImage from '@/assets/temporary/rightlunge.jpg';
   import LegsDownImage from '@/assets/temporary/legsdown.png';
 
+  const cycleOptionIndex = ref(0)
   const cycleIndex = ref(0)
 
-  const selectCycleIndex = (index) => {
-    cycleIndex.value = index
+  const selectCycleOptionIndex = (index) => {
+    cycleOptionIndex.value = index
+    if(index == lastCycleOptionIndex) cycleIndex.value = lastCycleIndex
+    else cycleIndex.value = index
   }
-
-    
+   
   const highlightsItems = ref([
     { name:'Difficulty', detail:'Medium difficulty', icon:'$flash', color:'turquoise'},
     { name:'Muscle groups', detail:'Glutes, quads, hamstrings and calves', icon:'$person', color:'lightblue' },
@@ -87,9 +146,6 @@
     { name:'Left leg lunge', sec:'-', reps: 15, image: leftLungeImage },
     { name:'Right leg lunge', sec:'-', reps: 15, image: rightLungeImage },
     { name:'Legs down', sec:30, reps: 10, image: LegsDownImage },
-    { name:'Mill', sec:45, reps: '-', image: millImage },
-    { name:'Legs up', sec:30, reps: '-', image: legsUpImage },
-    { name:'Left leg lunge', sec:15, reps: '-', image: leftLungeImage },
   ])
 
   const cycleExercises1 = ref([
@@ -106,7 +162,7 @@
     { name:'Warm up', icon:'$warm', reps:'1', exercises: cycleExercises},
     { name:'Cycle 1', icon:'$fire', reps:'2', exercises: cycleExercises1},
     { name:'Cycle 2', icon:'$fire', reps:'1', exercises: cycleExercises},
-    { name:'Cooling', icon:'$cool', reps:'1', exercises: cycleExercises}
+    { name:'Cooling', icon:'$cool', reps:'1', exercises: cycleExercises1}
   ])
 
   const cyclesOptions = ref([
@@ -114,6 +170,9 @@
     { name:'Exercise', icon:'$fire' },
     { name:'Cooling', icon:'$cool' }
   ])
+
+  const lastCycleOptionIndex = cyclesOptions.value.length - 1
+  const lastCycleIndex = cycles.value.length - 1
 
   </script>
 
@@ -143,7 +202,7 @@
     background-color: #f0f0f0;
     border-radius: 40px 40px 0 0;
     margin-top: 2%;
-    height: 100vh;
+    height: 100%;
     padding: 2% 10%;
   }
 
@@ -262,9 +321,71 @@
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   }
 
-
   .cycle-icon {
     margin-left: 10px;
   }
+
+  .cycle-header {
+    display: flex;
+    align-items: center;
+  }
+
+  .cycle-reps {
+    display: flex;
+    background-color: white;
+    color:#3f62fc;
+    border-radius: 12px;
+    padding: 5px 18px 5px 14px;
+    margin-left: 2%;
+    font-weight: bold;
+    align-items: center;
+  }
+
+  .exercise {
+  display: flex;
+  width: 100%;
+  height: 55px;
+  background-color: rgba(255, 255, 255, 0.853);
+  border-radius: 24px;
+  margin: 2% 0;
+  align-items: center;
+  padding: 40px 0;
+}
+
+.exercise-image-box {
+  height: 60px;
+  width: 105px;
+  margin-left: 3%;
+}
+
+.exercise-image {
+  height: 100%;
+  width: 100%;
+}
+
+.exercise-icon {
+  color:#3f62fc;
+  margin: 0 1% 0 2%;
+}
+
+.exercise-text {
+  margin-left: 3%;
+  margin-right: 5%;
+  color: #3d3b42;
+  width: 140px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis; 
+}
+
+.exercise-time {
+  color:#3f62fc;
+  font-weight: bold;
+}
+
+.next-icon {
+  margin-left: auto; 
+  margin-right: 4%;
+}
 
 </style>
