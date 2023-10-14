@@ -9,8 +9,26 @@
   <div class = 'top-bar'>
     <h2 class = 'highlight-text'>Full Body Session</h2>
     <div class = 'icons-top-right'>
-      <v-btn icon= '$favfull' color= '#f0f0f0' class='text-none' variant='flat' rounded @click='dialog = false'></v-btn>
-      <v-btn icon= '$options' color= '#f0f0f0' class='text-none' variant='flat' rounded @click='dialog = false'></v-btn>
+
+      <button @click="toggleFavorite" class='favorite-button'>
+        <v-icon :icon="isFavorite ? '$favfull' : '$favempty'" size='30'/>
+      </button>
+        
+      <v-menu>
+        <template v-slot:activator='{ props }'>
+          <button v-bind='props'>
+            <v-icon icon='$options' size='30'/>
+          </button>
+        </template>
+        <v-list width='180'>
+          <v-list-item v-for='(option, index) in menuOptions' :key='index'>
+            <button class='menu-option'>
+              <v-icon :icon='option.icon' class='menu-option-icon'/>
+              <v-list-item-title>{{ option.title }}</v-list-item-title>
+            </button>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </div>
   </div>
 
@@ -127,11 +145,24 @@
   const cycleOptionIndex = ref(0)
   const cycleIndex = ref(0)
 
+  const isFavorite = ref(false)
+
   const selectCycleOptionIndex = (index) => {
     cycleOptionIndex.value = index
     if(index == lastCycleOptionIndex) cycleIndex.value = lastCycleIndex
     else cycleIndex.value = index
   }
+
+  const menuOptions = ref([
+    { title:'Share', icon:'$share' },
+    { title:'Edit', icon:'$edit' },
+    { title:'Delete', icon:'$delete' },
+  ])
+
+  const toggleFavorite = () => {
+    isFavorite.value = !isFavorite.value;
+  };
+
    
   const highlightsItems = ref([
     { name:'Difficulty', detail:'Medium difficulty', icon:'$flash', color:'turquoise'},
@@ -218,7 +249,7 @@
 
   .highlight-text {
     padding-top: 10px;
-    padding-left: 20%;
+    padding-left: 23%;
     color: black;
   }
   
@@ -386,6 +417,18 @@
 .next-icon {
   margin-left: auto; 
   margin-right: 4%;
+}
+
+.menu-option {
+  display: flex;
+}
+
+.menu-option-icon {
+  margin-right: 15px;
+}
+
+.favorite-button {
+  margin-right: 15px;
 }
 
 </style>

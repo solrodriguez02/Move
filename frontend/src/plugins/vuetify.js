@@ -54,6 +54,8 @@ export default createVuetify({
       options: 'more_vert', // tres puntitos verticales
       favempty: 'favorite_border', // corazon vacio
       favfull: 'favorite', //corazon lleno (cuando esta fav la rutina)
+      delete: 'delete',
+      share: 'share', 
     },
     sets: {
       md,
