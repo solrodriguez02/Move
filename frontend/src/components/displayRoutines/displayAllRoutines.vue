@@ -1,8 +1,8 @@
 <template>
-    <v-container elevation="0" class="box mx-auto"  
+    <v-container elevation="0" class="box mx-auto" 
       selected-class="bg-success">
-      <v-container class=" d-flex align-content-stretch flex-wrap">
-        <v-sheet v-for="i in 15" :key="i" class="ma-2 pa-2">
+      <v-container class=" d-flex align-content-stretch flex-wrap" >
+        <v-sheet v-for="i in 15" :key="i" class="ma-2 pa-2" >
           <v-card 
             :class="[ selectedClass, 'cardRoutine']"
             @click="toggle" 
@@ -11,7 +11,8 @@
                   :src="`${i.src}`" 
                   class="text-right pa-2 imgRoutine"
                   @click="toggle">
-                  <v-btn icon="$edit" @click="changeFav()"/>            </v-img>
+                  <v-btn :icon="isSelected ? '$favfull' : '$favempty'" @click="changeFav()" />
+            </v-img>
             <p class='descripRoutine' style="text-overflow: ellipsis;">Holass sksksksksk sksksksk sksksksk sksk</p>
           </v-card>
           

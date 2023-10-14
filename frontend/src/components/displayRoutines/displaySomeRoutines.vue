@@ -1,14 +1,14 @@
 <template>
   
-  <v-sheet class="box mx-auto" >
+  <v-sheet class="box mx-auto" elevation="3" max-width="1140">
     <v-slide-group
       v-model="model"
-      class="pa-4"
+      class="pa-1"
       selected-class="bg-success"
       show-arrow
     >
       <v-slide-group-item
-        v-for="n in 10"
+        v-for="i in 10"
         :key="n"
         v-slot="{ isSelected, toggle, selectedClass }"
       >
@@ -18,10 +18,10 @@
           color="grey-lighten-1"
         >
           <v-img 
-                :src="`${n.src}`" 
+                :src="`${i.src}`" 
                 class="text-right pa-2 imgRoutine"
                 @click="toggle">
-                <v-btn :icon="isSelected ? '$edit' : '$time'" @click="changeFav()" />
+                <v-btn :icon="isSelected ? '$favfull' : '$favempty'" @click="changeFav()" />
           </v-img>
           <p class='descripRoutine' style="text-overflow: ellipsis;">Holass sksksksksk sksksksk sksksksk sksk</p>
         </v-card>
