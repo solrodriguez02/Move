@@ -71,35 +71,9 @@
     </div>
   </div>
 
-  <div class='cycle' v-show='cycleOptionIndex!=1'>
-    <div class='cycle-header'>
-      <h2>{{ cycles[cycleIndex].name }}</h2>
-      <div class='cycle-reps'>
-        <v-icon icon='$reps'/>
-        {{cycles[cycleIndex].reps}}
-      </div>
-    </div> 
-    <div class='exercises' v-for='exercise in cycles[cycleIndex].exercises' :key='exercise.name'>
-      <div class='exercise'>
-          <div class='exercise-image-box'>
-            <img :src='exercise.image' :alt='exercise.name' class='exercise-image'/>
-          </div>
-          <label class='exercise-text'> {{ exercise.name }} </label>
-          <v-icon v-show="exercise.sec!='-'" icon='$time' class='exercise-icon'/>
-          <label v-show="exercise.sec!='-'" class='exercise-time'> {{ exercise.sec + 's'}} </label>
-          <v-icon v-show="exercise.reps!='-'" icon='$reps' size='20' class='exercise-icon'/>
-          <label v-show="exercise.reps!='-'" class='exercise-time'> {{ exercise.reps + ' reps'}} </label>
-        <div class='next-icon'>
-          <RouterLink to='/exercise'>
-              <v-icon icon='$next' color='dark_gray'/>
-          </RouterLink>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div class='cycle' v-show='cycleOptionIndex==1'>
-    <div v-for='(cycle, index) in cycles' v-show='index!=0 && index!=lastCycleIndex'>
+  <div class='cycle'>
+    <div v-for='(cycle, index) in cycles' v-show='showCycle(index)'>
     <div class='cycle-header'>
       <h2>{{ cycle.name }}</h2>
       <div class='cycle-reps'>
@@ -143,14 +117,22 @@
   import LegsDownImage from '@/assets/temporary/legsdown.png';
 
   const cycleOptionIndex = ref(0)
-  const cycleIndex = ref(0)
 
   const isFavorite = ref(false)
 
   const selectCycleOptionIndex = (index) => {
     cycleOptionIndex.value = index
-    if(index == lastCycleOptionIndex) cycleIndex.value = lastCycleIndex
-    else cycleIndex.value = index
+  }
+
+  const showCycle = (index) => {
+    switch(index) {
+      case 0: 
+        return cycleOptionIndex.value == 0
+      case lastCycleIndex: 
+        return cycleOptionIndex.value == lastCycleOptionIndex
+      default: 
+        return cycleOptionIndex.value == 1
+    }
   }
 
   const menuOptions = ref([
@@ -172,7 +154,7 @@
   ]);
 
   const cycleExercises = ref([
-    { name:'Mill', sec:30, reps: '-', image: millImage },
+    { name:'Legs down', sec:30, reps: 10, image: LegsDownImage },
     { name:'Legs up', sec:60, reps: 15, image: legsUpImage },
     { name:'Left leg lunge', sec:'-', reps: 15, image: leftLungeImage },
     { name:'Right leg lunge', sec:'-', reps: 15, image: rightLungeImage },
