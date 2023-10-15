@@ -27,16 +27,8 @@
     <p class='cycle-text'>Cycles</p>
     <v-slide-group
       show-arrows>
-      <v-slide-group-item>
-        <button @click="selectCycleIndex(0)">
-          <div :class="cycleIndex === 0 ? 'carousel-cycle-active' : 'carousel-cycle'">
-            <v-icon :icon='cycles[0].icon' class='cycle-icon'/>
-            <p class='cycle-name'> {{ cycles[0].name }} </p>
-          </div>
-        </button>
-      </v-slide-group-item>
-      <v-slide-group-item v-for="(cycle, index) in cycles" :key="cycle.name">
-        <button v-show="index > 0 && index < lastCycleIndex" @click="selectCycleIndex(index)">
+      <v-slide-group-item v-for="(cycle, index) in createRoutineStore.cycleList" :key="cycle.name">
+        <button v-show="index < lastCycleIndex" @click="selectCycleIndex(index)">
           <div :class="cycleIndex === index ? 'carousel-cycle-active' : 'carousel-cycle'">
             <v-icon :icon='cycle.icon' class='cycle-icon'/>
             <p class='cycle-name'> {{ cycle.name }} </p>
@@ -53,8 +45,8 @@
       <v-slide-group-item>
         <button @click="selectCycleIndex(lastCycleIndex)">
           <div :class="cycleIndex === lastCycleIndex ? 'carousel-cycle-active' : 'carousel-cycle'">
-            <v-icon :icon='cycles[lastCycleIndex].icon' class='cycle-icon'/>
-            <p class='cycle-name'> {{ cycles[lastCycleIndex].name }} </p>
+            <v-icon :icon='createRoutineStore.cycleList[lastCycleIndex].icon' class='cycle-icon'/>
+            <p class='cycle-name'> {{ createRoutineStore.cycleList[lastCycleIndex].name }} </p>
           </div>
         </button>
       </v-slide-group-item>
@@ -65,15 +57,12 @@
   <h4>Add your exercises</h4>
 
   <div class='carousel'>
-  <v-sheet
-    color='gray'
-    class='carousel-exercises'>
-
+  <v-sheet color='gray' class='carousel-exercises'>
     <div class='carousel-reps'>
       <p class='reps-text'>Reps</p>
       <v-autocomplete
-      v-model="cycles[cycleIndex].reps"
-      :items="cycleReps"
+      v-model="createRoutineStore.cycleList[cycleIndex].reps"
+      :items="routineStore.cycleRepOptions"
       prepend-inner-icon='$reps'
       variant='flat'
       density='dense'
@@ -81,17 +70,18 @@
       class='reps-input'/>
     </div>
 
-    <v-slide-group
-      show-arrows>
-      <v-slide-group-item v-for="exercise in cycles[cycleIndex].exercises" :key='exercise.name'>
+    <v-progress-circular v-if="loading"
+      indeterminate
+      color="blue"
+      class='load-cycle-box'>
+    </v-progress-circular>
+
+    <v-slide-group v-else show-arrows>
+      <v-slide-group-item v-for="exercise in createRoutineStore.cycleList[cycleIndex].exercises" :key='exercise.name'>
         <div class='carousel-exercise'>
           <RouterLink class='carousel-link' to='/exercise'>
             <div class='image-container'>
-              <img
-                class='carousel-image'
-                :src="exercise.image"
-                :alt="exercise.name"
-              />
+              <img class='carousel-image' :src="exercise.image" :alt="exercise.name"/>
               <div class='overlay'>
                 <v-icon icon='$edit' color='black' size='20' class='edit-icon'/>
                 <div class='time-container'>
@@ -105,6 +95,9 @@
             <p class='carousel-exercise-name'> {{ exercise.name }} </p>
           </RouterLink>
         </div>
+      </v-slide-group-item>
+      <v-slide-group-item>
+        <div class='carousel-empty-exercise'></div>
       </v-slide-group-item>
     </v-slide-group>
   </v-sheet>
@@ -132,7 +125,7 @@
             <v-icon icon='$close'/>
           </button>
         </v-toolbar>
-        <v-card-text v-for='filter in filters' :key='filter.label'>
+        <v-card-text v-for='filter in routineStore.filters' :key='filter.label'>
           <h2 class='text-h6 mb-1'>
             {{ filter.label }}
           </h2>
@@ -167,7 +160,7 @@
       <label class='secs-reps-label'>sec:</label>
       <v-autocomplete
         v-model="selectedSecValue"
-        :items="secOptions"
+        :items="routineStore.secOptions"
         variant='flat'
         density='dense'
         class='sec-reps-input'
@@ -176,7 +169,7 @@
       <label class='secs-reps-label'>reps:</label>
       <v-autocomplete
         v-model="selectedRepValue"
-        :items="repOptions"
+        :items="routineStore.repOptions"
         variant='flat'
         density='dense'
         class='sec-reps-input'
@@ -195,8 +188,8 @@
     <v-progress-circular v-if="loading"
       indeterminate
       color="blue"
-      class='load-gif-box'
-    ></v-progress-circular>
+      class='load-exercises-box'>
+    </v-progress-circular>
 
     <div v-else class='exercises' v-for='exercise in exerciseStore.exerciseList' :key='exercise.name'>
       <div class='exercise'>
@@ -223,14 +216,13 @@
 <script setup>
   import { ref, onBeforeMount } from 'vue'
   import { RouterLink } from 'vue-router'
-  import millImage from '@/assets/temporary/mill.png';
-  import legsUpImage from '@/assets/temporary/legsup.png';
-  import leftLungeImage from '@/assets/temporary/leftlunge.png';
-  import rightLungeImage from '@/assets/temporary/rightlunge.jpg';
-  import LegsDownImage from '@/assets/temporary/legsdown.png';
   import { useExerciseStore } from '@/store/ExerciseStore'
+  import { useCreateRoutineStore } from '@/store/CreateRoutineStore'
+  import { useRoutineStore } from '@/store/RoutineStore'
 
   const exerciseStore = useExerciseStore()
+  const createRoutineStore = useCreateRoutineStore()
+  const routineStore = useRoutineStore()
 
   const loading = ref(false)
 
@@ -240,54 +232,10 @@
     loading.value = false
   })
 
-  
-  function getImageUrl(name) {
-    return new URL(`../assets/${name}`, import.meta.url).href
-  }
-
   const selectedSecValue = ref(30)
   const selectedRepValue = ref('-')
 
-
-  const secOptions = ref([
-    '-', 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
-  ])
-
-  const repOptions = ref([
-    '-', 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
-  ])
-
-  const cycleReps = ref ([1, 2, 3, 4, 5, 6, 7, 8, 9])
-
-  const cycleExercises = ref([
-    { name:'Mill', sec:30, reps: '-', image: millImage },
-    { name:'Legs up', sec:60, reps: 15, image: legsUpImage },
-    { name:'Left leg lunge', sec:'-', reps: 15, image: leftLungeImage },
-    { name:'Right leg lunge', sec:'-', reps: 15, image: rightLungeImage },
-    { name:'Legs down', sec:30, reps: 10, image: LegsDownImage },
-    { name:'Mill', sec:45, reps: '-', image: millImage },
-    { name:'Legs up', sec:30, reps: '-', image: legsUpImage },
-    { name:'Left leg lunge', sec:15, reps: '-', image: leftLungeImage },
-  ])
-
-  const cycleExercises1 = ref([
-    { name:'Left leg lunge', sec:30, reps: '-', image: leftLungeImage },
-    { name:'Right leg lunge', sec:30, reps: '-', image: rightLungeImage },
-    { name:'Legs down', sec:30, reps: 15, image: LegsDownImage },
-    { name:'Mill', sec:45, reps: '-', image: millImage },
-    { name:'Mill', sec:30, reps: '-', image: millImage },
-    { name:'Legs up', sec:60, reps: 15, image: legsUpImage },
-    { name:'Left leg lunge', sec:'-', reps: 15, image: leftLungeImage },
-  ])
-
-  const cycles = ref([
-    { name:'Warm up', icon:'$warm', reps:'1', exercises: cycleExercises},
-    { name:'Cycle 1', icon:'$fire', reps:'2', exercises: cycleExercises1},
-    { name:'Cycle 2', icon:'$fire', reps:'1', exercises: cycleExercises},
-    { name:'Cooling', icon:'$cool', reps:'1', exercises: cycleExercises},
-  ])
-
-  const lastCycleIndex = cycles.value.length - 1
+  const lastCycleIndex = createRoutineStore.getLastCycleIndex()
 
   const cycleIndex = ref(0)
 
@@ -296,18 +244,6 @@
   }
   
   const dialog = ref(false);
-
-  const difficultiesOptions = ref(['Easy', 'Medium', 'Difficult']);
-  const elementsOptions = ref(['None', 'Dumbell', 'Jump rope', 'Mat', 'Resistance band', 'Step', 'Kettlebell', 'Foam roller', 'Ankle Weights' ]);
-  const spaceOptions = ref(['Ideal for reduced spaces', 'Requires some space', 'Much space is needed']);
-  const muscleGroupsOptions = ref(['Chest', 'Back', 'Shoulders', 'Arms', 'Biceps', 'Triceps', 'Legs', 'Quadriceps', 'Hamstrings', 'Calves', 'Glutes', 'Abdominals', 'Lower Back', 'Core']);
-
-  const filters = ref([
-    { label: 'Difficulty', options: difficultiesOptions, selected: ref([]) },
-    { label: 'Elements required', options: elementsOptions, selected: ref([]) },
-    { label: 'Space required', options: spaceOptions, selected: ref([]) },
-    { label: 'Muscle groups', options: muscleGroupsOptions, selected: ref([]) }
-  ])
 
 const showFiltersDialog = () => {
   dialog.value = true;
@@ -427,6 +363,14 @@ const applyFilters = () => {
   height: 80px;
   width: 140px;
   margin: 16px 20px 16px 0;
+}
+
+.carousel-empty-exercise {
+  height: 90px;
+  width: 140px;
+  margin: 16px 20px 16px 0;
+  border-radius: 12px;
+  border: 2px dotted gray;
 }
 
 .carousel-link {
@@ -617,10 +561,12 @@ const applyFilters = () => {
   margin-right: 2%;
 }
 
-.load-gif-box {
-  display: flex;
-  justify-content: center;
-  margin: 8% 50%;
+.load-exercises-box {
+  margin: 6% 50%;
+}
+
+.load-cycle-box {
+  margin: 4% 40%;
 }
 
 .apply-filters-button {
