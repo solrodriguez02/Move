@@ -61,11 +61,11 @@
   <v-sheet v-if="!searchWasMade" >
       <v-row v-for='category in categories'>
         <v-container class='title' >   
-          <v-row no-gutters class="pa-0 ma-0 mb-2 align-center">
-            <v-col    >
+          <v-row no-gutters class="pa-0 ma-0 mb-3 align-center">
+            <v-col >
               <h3>{{ category.headline }}</h3>
             </v-col>
-            <v-col  cols="2">
+            <v-col  cols="1">
               <v-btn flat class='viewAll' @click='changeView(category)' >{{ `View ${category.viewAll? 'less':'all'}` }}</v-btn>
             </v-col>
           </v-row>
@@ -74,7 +74,7 @@
         <displayAllRoutines :items="getDataCategory(category.headline,data)" class='display' v-else />
       </v-row>
   </v-sheet>
-  <displayAllRoutines :items="getData(category.headline,selected,data)" class='display' v-else/>
+  <displayAllRoutines :items="getData(searchInApi,selected,data)" class='display' v-else/>
   
 
 </template>

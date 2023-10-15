@@ -7,16 +7,13 @@
     </div>
 
     <div>
-      <v-row v-for='category in categories' 
-             :key='n' >
+      <v-row v-for='category in categories'>
         <v-container class='title'>   
-          <v-row no-gutters>
-            <v-col class="pa-2 ma-2"   >
+          <v-row no-gutters class="pa-0 ma-0 mb-3 align-center">
+            <v-col>
               <h3>{{ category.headline }}</h3>
             </v-col>
-            <v-col class=' pa-2 ma-2' cols="2">
-              <v-btn  icon="$edit" size="small" color='white' flat v-if="category.canEdit"/>
-            
+            <v-col cols="1" >
               <v-btn flat class='viewAll' @click='changeView(category)' >{{ `View ${category.viewAll? 'less':'all'}` }}</v-btn>
             </v-col>
         </v-row>
@@ -85,7 +82,10 @@
         {
           src: 'backgrounds/md2.jpg',
           fav: false,
-          name: 'desierto'
+          name: 'desierto',
+          favs: 0,
+          dif: 1, 
+          elem: false,
         },
       ]);
 

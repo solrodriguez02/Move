@@ -43,6 +43,7 @@ export default createVuetify({
       space: 'zoom_out_map', // espacio para el ejercicio
       person: 'accessibility',
       flash: 'flash_on', // flash para la dificultad (con relleno)
+      flashempty: 'flash_on_border',
       dumbbell: 'fitness_center', // pesa
       edit: 'edit', // lapiz de editar
       add: 'add', // +
