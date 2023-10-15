@@ -3,27 +3,25 @@
   <v-sheet class="box mx-auto" elevation="3" max-width="1140">
     <v-slide-group
       v-model="model"
-      class="pa-1"
-      selected-class="bg-success"
+      class="pa-2"
       show-arrow
     >
       <v-slide-group-item
-        v-for="i in 10"
-        :key="n"
-        v-slot="{ isSelected, toggle, selectedClass }"
+        v-for="r in items"
       >
         <v-card 
-          :class="['ma-4', selectedClass, 'cardRoutine']"
-          @click="toggle" 
+          :class="['ma-4', 'cardRoutine']"
+          @click="toggle, showRoutine(r)" 
           color="grey-lighten-1"
+          
         >
           <v-img 
-                :src="`${i.src}`" 
+          :src="`https://cdn.vuetifyjs.com/images/${r.src}`" 
                 class="text-right pa-2 imgRoutine"
-                @click="toggle">
-                <v-btn :icon="isSelected ? '$favfull' : '$favempty'" @click="changeFav()" />
+                @click="toggle" cover>
+                <v-btn :icon="r.fav ? '$favfull' : '$favempty'" @click="changeFav(r)" />
           </v-img>
-          <p class='descripRoutine' style="text-overflow: ellipsis;">Holass sksksksksk sksksksk sksksksk sksk</p>
+          <p class='descripRoutine' style="text-overflow: ellipsis;">{{ r.name }}</p>
         </v-card>
       </v-slide-group-item>
     </v-slide-group>
@@ -33,30 +31,66 @@
   
 </template>
 
-<script scoped>
+<script>
 export default {
   data: () => ({
       model: null,
       items: [
         {
           src: 'backgrounds/bg.jpg',
+          fav: false,
+          name: 'mar'
         },
         {
           src: 'backgrounds/md.jpg',
+          fav: false,
+          name: 'Senta senta'
         },
         {
           src: 'backgrounds/bg-2.jpg',
+          fav: false,
+          name: 'cielo'
         },
         {
           src: 'backgrounds/md2.jpg',
+          fav: false,
+          name: 'desierto'
+        },
+        {
+          src: 'backgrounds/md.jpg',
+          fav: false,
+          name: 'Senta senta'
+        },
+        {
+          src: 'backgrounds/bg-2.jpg',
+          fav: false,
+          name: 'cielo'
+        },
+        {
+          src: 'backgrounds/md2.jpg',
+          fav: false,
+          name: 'desierto'
         },
       ],
       selection: [],
-    }) }
-function changeFav(){
-  return
-}
+    }) 
+  }
 
+</script>
+  
+<script setup>
+import { getCurrentInstance } from 'vue';
+
+  function changeFav(rutine){
+    rutine.fav = !rutine.fav; 
+// reinicio pag para q apa cora en todos, vale la pena?
+    const instance = getCurrentInstance();
+    instance.proxy.$forceUpdate();
+
+  }
+  function showRoutine(rutine) {
+    // ir a pag
+  }
 </script>
 
 <style scoped src='@/styles/previewRoutine/display.css'/>

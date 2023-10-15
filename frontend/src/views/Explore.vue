@@ -134,7 +134,8 @@
     data: () => ({
       searchInApi: '',
       selected: [],
-    })};
+    })
+  };
 
 </script>
 
