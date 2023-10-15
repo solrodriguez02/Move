@@ -1,19 +1,18 @@
 <template>
-    <v-container elevation="0" class="box mx-auto" 
-      selected-class="bg-success">
+    <v-container elevation="0" class="box mx-auto">
       <v-container class=" d-flex align-content-stretch flex-wrap" >
-        <v-sheet v-for="i in 15" :key="i" class="ma-2 pa-2" >
+        <v-sheet v-for="r in props.items" class="ma-2 pa-2" >
           <v-card 
-            :class="[ selectedClass, 'cardRoutine']"
-            @click="toggle" 
+            :class="['cardRoutine']"
+            @click="toggle, showRoutine(r)" 
             color="grey-lighten-1"> 
             <v-img 
-                  :src="`${i.src}`" 
+                  :src="`https://cdn.vuetifyjs.com/images/${r.src}`" 
                   class="text-right pa-2 imgRoutine"
-                  @click="toggle">
-                  <v-btn :icon="isSelected ? '$favfull' : '$favempty'" @click="changeFav()" />
+                  @click="toggle" cover>
+                  <v-btn :icon="r.fav ? '$favfull' : '$favempty'" @click="changeFav(r)" />
             </v-img>
-            <p class='descripRoutine' style="text-overflow: ellipsis;">Holass sksksksksk sksksksk sksksksk sksk</p>
+            <p class='descripRoutine' style="text-overflow: ellipsis;">{{ r.name }}</p>
           </v-card>
           
         </v-sheet>
@@ -24,32 +23,10 @@
   
 </template>
 
-<script scoped>
-export default {
-    data: () => ({
-      model: null,
-      items: [
-        {
-          src: 'backgrounds/bg.jpg',
-        },
-        {
-          src: 'backgrounds/md.jpg',
-        },
-        {
-          src: 'backgrounds/bg-2.jpg',
-        },
-        {
-          src: 'backgrounds/md2.jpg',
-        },
-      ],
-      selection: [],
-    })
-  }
+<script setup >
+import { changeFav, showRoutine } from "@/components/displayRoutines/displayRoutineScript.vue"
 
-function changeFav(){
-  return
-}
-
+const props = defineProps( ["items"]);
 </script>
 
 <style scoped src='@/styles/previewRoutine/display.css'/>

@@ -2,19 +2,16 @@
   
   <v-sheet class="box mx-auto" elevation="3" max-width="1140">
     <v-slide-group
-      v-model="model"
       class="pa-2"
       show-arrow
     >
       <v-slide-group-item
-        v-for="r in items"
+        v-for="r in props.items"
       >
         <v-card 
           :class="['ma-4', 'cardRoutine']"
           @click="toggle, showRoutine(r)" 
-          color="grey-lighten-1"
-          
-        >
+          color="grey-lighten-1">
           <v-img 
           :src="`https://cdn.vuetifyjs.com/images/${r.src}`" 
                 class="text-right pa-2 imgRoutine"
@@ -31,66 +28,11 @@
   
 </template>
 
-<script>
-export default {
-  data: () => ({
-      model: null,
-      items: [
-        {
-          src: 'backgrounds/bg.jpg',
-          fav: false,
-          name: 'mar'
-        },
-        {
-          src: 'backgrounds/md.jpg',
-          fav: false,
-          name: 'Senta senta'
-        },
-        {
-          src: 'backgrounds/bg-2.jpg',
-          fav: false,
-          name: 'cielo'
-        },
-        {
-          src: 'backgrounds/md2.jpg',
-          fav: false,
-          name: 'desierto'
-        },
-        {
-          src: 'backgrounds/md.jpg',
-          fav: false,
-          name: 'Senta senta'
-        },
-        {
-          src: 'backgrounds/bg-2.jpg',
-          fav: false,
-          name: 'cielo'
-        },
-        {
-          src: 'backgrounds/md2.jpg',
-          fav: false,
-          name: 'desierto'
-        },
-      ],
-      selection: [],
-    }) 
-  }
 
-</script>
-  
-<script setup>
-import { getCurrentInstance } from 'vue';
+<script setup >
+import { changeFav, showRoutine } from "@/components/displayRoutines/displayRoutineScript.vue"
 
-  function changeFav(rutine){
-    rutine.fav = !rutine.fav; 
-// reinicio pag para q apa cora en todos, vale la pena?
-    const instance = getCurrentInstance();
-    instance.proxy.$forceUpdate();
-
-  }
-  function showRoutine(rutine) {
-    // ir a pag
-  }
+const props = defineProps( ["items"]);
 </script>
 
 <style scoped src='@/styles/previewRoutine/display.css'/>

@@ -21,8 +21,8 @@
             </v-col>
         </v-row>
         </v-container>
-        <displaySomeRoutines class='display' v-if="!category.viewAll"/>
-        <displayAllRoutines class='display' v-else/>
+        <displaySomeRoutines :items="getDataCategory(category.headline,data)" class='display' v-if="!category.viewAll"/>
+        <displayAllRoutines :items="getDataCategory(category.headline,data)" class='display' v-else />
       </v-row>
     </div>
     
@@ -42,6 +42,52 @@
   function changeView( category) {
       category.viewAll = !category.viewAll;
   }
+
+  function getDataCategory(headline,data){
+    // pido a api
+    return data;
+  }
+  function getData( headline, selected,data){
+    // pido a api
+    return data;
+  }
+
+  const data = ref([         {
+          src: 'backgrounds/bg.jpg',
+          fav: false,
+          name: 'mar'
+        },
+        {
+          src: 'backgrounds/md.jpg',
+          fav: false,
+          name: 'Senta senta'
+        },
+        {
+          src: 'backgrounds/bg-2.jpg',
+          fav: false,
+          name: 'cielo'
+        },
+        {
+          src: 'backgrounds/md2.jpg',
+          fav: false,
+          name: 'desierto'
+        },
+        {
+          src: 'backgrounds/md.jpg',
+          fav: false,
+          name: 'Senta senta'
+        },
+        {
+          src: 'backgrounds/bg-2.jpg',
+          fav: false,
+          name: 'cielo'
+        },
+        {
+          src: 'backgrounds/md2.jpg',
+          fav: false,
+          name: 'desierto'
+        },
+      ]);
 
 </script>
 

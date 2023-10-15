@@ -70,11 +70,11 @@
             </v-col>
           </v-row>
         </v-container>
-        <displaySomeRoutines class='display' v-if="!category.viewAll"/>
-        <displayAllRoutines class='display' v-else />
+        <displaySomeRoutines :items="getDataCategory(category.headline,data)" class='display' v-if="!category.viewAll"/>
+        <displayAllRoutines :items="getDataCategory(category.headline,data)" class='display' v-else />
       </v-row>
   </v-sheet>
-  <displayAllRoutines class='display' v-else/>
+  <displayAllRoutines :items="getData(category.headline,selected,data)" class='display' v-else/>
   
 
 </template>
@@ -88,7 +88,11 @@
       { headline:'Featured', viewAll: false},
       { headline:'Newly added', viewAll: false}    
   ])
-
+  
+  function changeView( category) {
+      category.viewAll = !category.viewAll;
+  }
+  
   const filters=ref([
       { headline:'Difficulty', items: ['Difficult', 'Medium', 'Easy'], choice:null},
       { headline:'Muscle group', items: ['Front', 'Back'], choice:null},
@@ -96,12 +100,45 @@
       { headline:'Time', items: ['15 minutes', '30 minutes', '45 minutes', '1 hour'], choice:null},
   ]);
 
+  const data = ref([         {
+          src: 'backgrounds/bg.jpg',
+          fav: false,
+          name: 'mar'
+        },
+        {
+          src: 'backgrounds/md.jpg',
+          fav: false,
+          name: 'Senta senta'
+        },
+        {
+          src: 'backgrounds/bg-2.jpg',
+          fav: false,
+          name: 'cielo'
+        },
+        {
+          src: 'backgrounds/md2.jpg',
+          fav: false,
+          name: 'desierto'
+        },
+        {
+          src: 'backgrounds/md.jpg',
+          fav: false,
+          name: 'Senta senta'
+        },
+        {
+          src: 'backgrounds/bg-2.jpg',
+          fav: false,
+          name: 'cielo'
+        },
+        {
+          src: 'backgrounds/md2.jpg',
+          fav: false,
+          name: 'desierto'
+        },
+      ]);
 
-  function changeView( category) {
-      category.viewAll = !category.viewAll;
-  }
-  
   const searchWasMade = ref(false);
+  const searchInApi = ref('');
   var selectedCount = 0; 
   function searchRutine(searchInApi, selected){  
       // mando a api el input 
@@ -112,31 +149,29 @@
           // mando a api
         }
       }      
-
   }
-
+  const selected = ref([]);
   function addFilter( selected,choice) {
     if ( !selected.includes(choice)){
       selected.push(choice);
       selectedCount++;
     }
-      
   }
 
   function removeChoice( selected,i ){
     delete(selected[i]);
     selectedCount--;
   }
-</script>
 
-<script>
-  export default {
-    data: () => ({
-      searchInApi: '',
-      selected: [],
-    })
-  };
+  function getDataCategory(headline,data){
+    // pido a api
+    return data;
+  }
 
+  function getData( headline, selected,data){
+    // pido a api
+    return data;
+  }
 </script>
 
 <style scoped src='@/styles/MyRoutines.scss'/>
