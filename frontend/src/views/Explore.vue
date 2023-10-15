@@ -7,7 +7,7 @@
       <v-sheet width="900">
         <v-text-field 
         v-model="searchInApi"
-        @keydown.enter="searchWasMade=true; searchRutine(searchWasMade)"
+        @keydown.enter="if(searchInApi!=='' || selectedCount>0){ searchWasMade=true; searchRutine(searchInApi,selected)}"
             density='compact'
             placeholder='Search rutine'
             prepend-inner-icon='$search'
@@ -102,7 +102,7 @@
   }
   
   const searchWasMade = ref(false);
-
+  var selectedCount = 0; 
   function searchRutine(searchInApi, selected){  
       // mando a api el input 
       // searchInApi tiene input/busqueda
@@ -111,18 +111,21 @@
         if ( selected[i] !== undefined ){
           // mando a api
         }
-      }
-      
+      }      
 
   }
 
   function addFilter( selected,choice) {
-    if ( !selected.includes(choice))
+    if ( !selected.includes(choice)){
       selected.push(choice);
+      selectedCount++;
+    }
+      
   }
 
   function removeChoice( selected,i ){
     delete(selected[i]);
+    selectedCount--;
   }
 </script>
 
