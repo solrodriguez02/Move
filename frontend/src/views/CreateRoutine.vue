@@ -13,8 +13,7 @@
         size='large'
         height='40px'
         width='100px'
-        variant='flat'
-        @click='dialog = false'>
+        variant='flat'>
           Next 
           <v-icon icon='$next'/>
         </v-btn>
@@ -76,7 +75,7 @@
       class='load-cycle-box'>
     </v-progress-circular>
 
-    <v-slide-group v-else show-arrows>
+    <v-slide-group v-else show-arrows class='carousel-exercises-box'>
       <v-slide-group-item v-for="exercise in createRoutineStore.cycleList[cycleIndex].exercises" :key='exercise.name'>
         <div class='carousel-exercise'>
           <RouterLink class='carousel-link' to='/exercise'>
@@ -100,6 +99,20 @@
         <div class='carousel-empty-exercise'></div>
       </v-slide-group-item>
     </v-slide-group>
+
+    <button @click='deleteDialog = true' class='delete-exercise-button'>
+      <v-icon icon='$delete'/>
+    </button>
+
+    <warning-dialog
+      v-model="deleteDialog"
+      title="Are you sure you want to delete this cycle?"
+      message="If you delete this cycle, all the exercises will be deleted too."
+      custom-button-text="Delete"
+      :on-custom-action="applyDelete"
+      :on-close="closeDeleteDialog"
+    />
+    
   </v-sheet>
   </div>
 
@@ -113,15 +126,15 @@
           variant='outlined'/>
       </div>
 
-      <button class='filter-button' @click='showFiltersDialog'>
+      <button class='filter-button' @click='filterDialog = true'>
         <v-icon icon='$filter' size='26'/>
       </button>
 
-    <v-dialog v-model='dialog' max-width='800'>
+    <v-dialog v-model='filterDialog' max-width='800'>
       <v-card>
         <v-toolbar color='gray' class='filters-header'>
           <v-toolbar-title>Filter results</v-toolbar-title>
-          <button @click="dialog = false">
+          <button @click="filterDialog = false">
             <v-icon icon='$close'/>
           </button>
         </v-toolbar>
@@ -219,39 +232,43 @@
   import { useExerciseStore } from '@/store/ExerciseStore'
   import { useCreateRoutineStore } from '@/store/CreateRoutineStore'
   import { useRoutineStore } from '@/store/RoutineStore'
+  import WarningDialog from "@/views/WarningDialog.vue"
 
   const exerciseStore = useExerciseStore()
   const createRoutineStore = useCreateRoutineStore()
   const routineStore = useRoutineStore()
 
   const loading = ref(false)
+  const filterDialog = ref(false);
+  const deleteDialog = ref(false);
+  const selectedSecValue = ref(30)
+  const selectedRepValue = ref('-')
+  const cycleIndex = ref(0)
+  const lastCycleIndex = createRoutineStore.getLastCycleIndex()
 
-  onBeforeMount(async () => {
+  onBeforeMount (async () => {
     loading.value = true
     await exerciseStore.fetchExercises()
     loading.value = false
   })
 
-  const selectedSecValue = ref(30)
-  const selectedRepValue = ref('-')
-
-  const lastCycleIndex = createRoutineStore.getLastCycleIndex()
-
-  const cycleIndex = ref(0)
-
   const selectCycleIndex = (index) => {
     cycleIndex.value = index
   }
-  
-  const dialog = ref(false);
 
-const showFiltersDialog = () => {
-  dialog.value = true;
-};
+  const applyDelete = () => {
+    deleteDialog.value = false;
+    // codigo para eliminar un ejercicio del cyclo
+  };
 
-const applyFilters = () => {
-  dialog.value = false;
-};
+  const closeDeleteDialog = () => {
+    deleteDialog.value = false;
+  };
+
+  const applyFilters = () => {
+    filterDialog.value = false;
+    // codigo para aplicar los filtros
+  };
 
 </script>
 
@@ -337,6 +354,9 @@ const applyFilters = () => {
   display: flex;
 }
 
+.carousel-exercises-box {
+  margin-right: 2%;
+}
 .carousel-reps {
   height: 100%;
   width: 2%;
@@ -580,6 +600,13 @@ const applyFilters = () => {
 .filters-header {
   padding: 0 25px 0 10px;
   text-align: center;
+}
+
+.delete-exercise-button {
+  color: rgb(59, 59, 59);
+  margin-left: auto;
+  margin-right: 3%;
+  margin-bottom: 5px;
 }
 
 </style>
