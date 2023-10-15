@@ -7,7 +7,7 @@
       <v-sheet width="900">
         <v-text-field 
         v-model="searchInApi"
-        @keydown.enter="searchRutine()"
+        @keydown.enter="searchWasMade=true; searchRutine(searchWasMade)"
             density='compact'
             placeholder='Search rutine'
             prepend-inner-icon='$search'
@@ -42,13 +42,13 @@
       <v-row class="text-disabled" >Selected filters</v-row>
       <v-row>
         <v-chip-group>
-        <v-chip v-for="(s,item) in selected"
+        <v-chip v-for="(s,index) in selected"
       class="ma-2"
       closable
       color="light-grey"
       text-color="white"
       :model-value="true"
-      @click:close="removeChoice(selected,item)"
+      @click:close="removeChoice(selected,index)"
     >
       {{ s }}
     </v-chip>
@@ -58,9 +58,8 @@
     </v-sheet>
   </v-container>
 
-  <v-sheet v-if="!searchWasMade.val" >
-      <v-row v-for='category in categories' 
-             :key='n' >
+  <v-sheet v-if="!searchWasMade" >
+      <v-row v-for='category in categories'>
         <v-container class='title' >   
           <v-row no-gutters class="pa-0 ma-0 mb-2 align-center">
             <v-col    >
@@ -101,12 +100,20 @@
   function changeView( category) {
       category.viewAll = !category.viewAll;
   }
-  const searchWasMade = ref({val:false});
   
-  function searchRutine(){  
-    searchWasMade.val = true;
-      console.log(search.val);
+  const searchWasMade = ref(false);
+
+  function searchRutine(searchInApi, selected){  
       // mando a api el input 
+      // searchInApi tiene input/busqueda
+      // selected contiene array con filtros, (hay espacios undefined => no tenerlos en cuenta)
+      for ( var i=0; i<selected.length; i++){
+        if ( selected[i] !== undefined ){
+          // mando a api
+        }
+      }
+      
+
   }
 
   function addFilter( selected,choice) {
