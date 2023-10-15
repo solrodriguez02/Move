@@ -42,14 +42,13 @@
       <v-row class="text-disabled" >Selected filters</v-row>
       <v-row>
         <v-chip-group>
-        <v-chip v-for="s in selected"
+        <v-chip v-for="(s,item) in selected"
       class="ma-2"
       closable
       color="light-grey"
       text-color="white"
       :model-value="true"
-      v-if="selected!=null"
-      @click:close="removeChoice(selected,s)"
+      @click:close="removeChoice(selected,item)"
     >
       {{ s }}
     </v-chip>
@@ -98,10 +97,6 @@
       { headline:'Time', items: ['15 minutes', '30 minutes', '45 minutes', '1 hour'], choice:null},
   ]);
 
-  function removeChoice( selected,filter ){
-    selected.filter( s => s!=filter);
-    console.log(filter);
-  }
 
   function changeView( category) {
       category.viewAll = !category.viewAll;
@@ -115,14 +110,12 @@
   }
 
   function addFilter( selected,choice) {
-    
-    if ( selected.lenght>0)
-    for (s in selected){
-      if (s==choice)
-        return;
-    } 
-    selected.push(choice);
-    //selected.push(filter.choice)
+    if ( !selected.includes(choice))
+      selected.push(choice);
+  }
+
+  function removeChoice( selected,i ){
+    delete(selected[i]);
   }
 </script>
 
@@ -132,6 +125,7 @@
       searchInApi: '',
       selected: [],
     })};
+
 </script>
 
 <style scoped src='@/styles/MyRoutines.scss'/>
