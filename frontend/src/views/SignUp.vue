@@ -28,6 +28,20 @@
             size="large"
             type="submit"
             variant="elevated"
+            @click = 'authenticateStore.registerUser(
+{
+  "username": formFields[2].value,
+  "password": formFields[4].value,
+  "firstName": formFields[0].value,
+  "lastName": formFields[1].value,
+  "gender": "male",
+  "birthdate": 284007600000,
+  "email": formFields[3].value,
+  "phone": "98295822",
+  "avatarUrl": "https://flic.kr/p/3ntH2u",
+  "metadata": null
+}
+            )'
             class='sign-button'>
             Sign up
             </v-btn>
@@ -48,12 +62,16 @@
 <script setup>
 import { RouterLink } from 'vue-router';
 import { ref } from 'vue';
+import { useAuthenticateStore } from '@/store/AuthenticationStore'
 
+const authenticateStore = useAuthenticateStore();
 const form = ref(false);
 const loading = ref(false);
 const formFields= ref([
-    { label: 'Name', placeholder: 'Enter your full name', value: null },
+    { label: 'First Name', placeholder: 'Enter your First name', value: null },
+    { label: 'Last Name', placeholder: 'Enter your Last name', value: null },
     { label: 'Username', placeholder: 'Create your username', value: null },
+    { label: 'Email', placeholder: 'Enter your email', value: null },
     { label: 'Password', placeholder: 'Create your password', value: null },
     { label: 'Repeat password', placeholder: 'Repeat your password', value: null },
 ])
@@ -73,7 +91,7 @@ const required = (v) => {
 .sign {
     display: flex;
     width: 100%;
-    height: 80vh;
+    height: 150vh;
     margin-top: 2%;
 }
 

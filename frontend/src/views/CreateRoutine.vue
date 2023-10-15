@@ -85,7 +85,7 @@
       show-arrows>
       <v-slide-group-item v-for="exercise in cycles[cycleIndex].exercises" :key='exercise.name'>
         <div class='carousel-exercise'>
-          <RouterLink class='carousel-link' :to='exercise.link'>
+          <RouterLink class='carousel-link' to='/exercise'>
             <div class='image-container'>
               <img
                 class='carousel-image'
@@ -96,9 +96,9 @@
                 <v-icon icon='$edit' color='black' size='20' class='edit-icon'/>
                 <div class='time-container'>
                   <v-icon v-show="exercise.sec != '-'" icon='$time' color='blue' size='20' />
-                  <p v-show="exercise.sec != '-'" class='overlay-text'>{{ exercise.sec }}</p>
+                  <p v-show="exercise.sec != '-'" class='overlay-text'>{{ exercise.sec + 's' }}</p>
                   <v-icon v-show="exercise.reps != '-'" icon='$reps' color='blue' size='15' />
-                  <p v-show="exercise.reps != '-'" class='overlay-text'>{{ exercise.reps }}</p>
+                  <p v-show="exercise.reps != '-'" class='overlay-text'>{{ exercise.reps + ' reps' }}</p>
                 </div>
               </div>
             </div>
@@ -120,9 +120,38 @@
           variant='outlined'/>
       </div>
 
-      <button class='filter-button'>
+      <button class='filter-button' @click='showFiltersDialog'>
         <v-icon icon='$filter' size='26'/>
       </button>
+
+    <v-dialog v-model='dialog' max-width='800'>
+      <v-card>
+        <v-toolbar color='gray' class='filters-header'>
+          <v-toolbar-title>Filter results</v-toolbar-title>
+          <button @click="dialog = false">
+            <v-icon icon='$close'/>
+          </button>
+        </v-toolbar>
+        <v-card-text v-for='filter in filters' :key='filter.label'>
+          <h2 class='text-h6 mb-1'>
+            {{ filter.label }}
+          </h2>
+          <v-chip-group :v-model='filter.selected' column multiple>
+            <v-chip
+              v-for='(option, index) in filter.options'
+              :key='index'
+              :value='index'
+              filter
+              variant='outlined'>
+              {{ option }}
+            </v-chip>
+          </v-chip-group>
+        </v-card-text>
+        <v-card-actions>
+          <button @click="applyFilters" class='apply-filters-button'>Apply filters</button>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
       
       <RouterLink to='/createexercise' class='new-button'>
         <button >
@@ -162,9 +191,12 @@
       <p class='rest-item'>Rest</p>
     </div>
 
-    <div v-if="loading" class='load-gif-box'>
-      <img  :src="getImageUrl('ajax-loader.gif')" class='load-gif'/>
-    </div>
+    
+    <v-progress-circular v-if="loading"
+      indeterminate
+      color="blue"
+      class='load-gif-box'
+    ></v-progress-circular>
 
     <div v-else class='exercises' v-for='exercise in exerciseStore.exerciseList' :key='exercise.name'>
       <div class='exercise'>
@@ -176,7 +208,7 @@
           <p class='exercise-text'> {{ exercise.name }} </p>
         </div>
         <div class='next-icon'>
-          <RouterLink :to='exercise.link'>
+          <RouterLink to='/exercise'>
               <v-icon icon='$next' color='dark_gray'/>
           </RouterLink>
         </div>
@@ -228,24 +260,24 @@
   const cycleReps = ref ([1, 2, 3, 4, 5, 6, 7, 8, 9])
 
   const cycleExercises = ref([
-    { name:'Mill', sec:30, reps: '-', image: millImage, link:'/exercise'},
-    { name:'Legs up', sec:60, reps: 15, image: legsUpImage, link:'/exercise'},
-    { name:'Left leg lunge', sec:'-', reps: 15, image: leftLungeImage, link:'/exercise'},
-    { name:'Right leg lunge', sec:'-', reps: 15, image: rightLungeImage, link:'/exercise'},
-    { name:'Legs down', sec:30, reps: 10, image: LegsDownImage, link:'/exercise'},
-    { name:'Mill', sec:45, reps: '-', image: millImage, link:'/exercise'},
-    { name:'Legs up', sec:30, reps: '-', image: legsUpImage, link:'/exercise'},
-    { name:'Left leg lunge', sec:15, reps: '-', image: leftLungeImage, link:'/exercise'},
+    { name:'Mill', sec:30, reps: '-', image: millImage },
+    { name:'Legs up', sec:60, reps: 15, image: legsUpImage },
+    { name:'Left leg lunge', sec:'-', reps: 15, image: leftLungeImage },
+    { name:'Right leg lunge', sec:'-', reps: 15, image: rightLungeImage },
+    { name:'Legs down', sec:30, reps: 10, image: LegsDownImage },
+    { name:'Mill', sec:45, reps: '-', image: millImage },
+    { name:'Legs up', sec:30, reps: '-', image: legsUpImage },
+    { name:'Left leg lunge', sec:15, reps: '-', image: leftLungeImage },
   ])
 
   const cycleExercises1 = ref([
-    { name:'Left leg lunge', sec:30, reps: '-', image: leftLungeImage, link:'/exercise'},
-    { name:'Right leg lunge', sec:30, reps: '-', image: rightLungeImage, link:'/exercise'},
-    { name:'Legs down', sec:30, reps: 15, image: LegsDownImage, link:'/exercise'},
-    { name:'Mill', sec:45, reps: '-', image: millImage, link:'/exercise'},
-    { name:'Mill', sec:30, reps: '-', image: millImage, link:'/exercise'},
-    { name:'Legs up', sec:60, reps: 15, image: legsUpImage, link:'/exercise'},
-    { name:'Left leg lunge', sec:'-', reps: 15, image: leftLungeImage, link:'/exercise'},
+    { name:'Left leg lunge', sec:30, reps: '-', image: leftLungeImage },
+    { name:'Right leg lunge', sec:30, reps: '-', image: rightLungeImage },
+    { name:'Legs down', sec:30, reps: 15, image: LegsDownImage },
+    { name:'Mill', sec:45, reps: '-', image: millImage },
+    { name:'Mill', sec:30, reps: '-', image: millImage },
+    { name:'Legs up', sec:60, reps: 15, image: legsUpImage },
+    { name:'Left leg lunge', sec:'-', reps: 15, image: leftLungeImage },
   ])
 
   const cycles = ref([
@@ -262,6 +294,28 @@
   const selectCycleIndex = (index) => {
     cycleIndex.value = index
   }
+  
+  const dialog = ref(false);
+
+  const difficultiesOptions = ref(['Easy', 'Medium', 'Difficult']);
+  const elementsOptions = ref(['None', 'Dumbell', 'Jump rope', 'Mat', 'Resistance band', 'Step', 'Kettlebell', 'Foam roller', 'Ankle Weights' ]);
+  const spaceOptions = ref(['Ideal for reduced spaces', 'Requires some space', 'Much space is needed']);
+  const muscleGroupsOptions = ref(['Chest', 'Back', 'Shoulders', 'Arms', 'Biceps', 'Triceps', 'Legs', 'Quadriceps', 'Hamstrings', 'Calves', 'Glutes', 'Abdominals', 'Lower Back', 'Core']);
+
+  const filters = ref([
+    { label: 'Difficulty', options: difficultiesOptions, selected: ref([]) },
+    { label: 'Elements required', options: elementsOptions, selected: ref([]) },
+    { label: 'Space required', options: spaceOptions, selected: ref([]) },
+    { label: 'Muscle groups', options: muscleGroupsOptions, selected: ref([]) }
+  ])
+
+const showFiltersDialog = () => {
+  dialog.value = true;
+};
+
+const applyFilters = () => {
+  dialog.value = false;
+};
 
 </script>
 
@@ -422,7 +476,7 @@
 .overlay-text {
   color: #3f62fc;
   font-size: 16px;
-  padding: 5px 8px 5px 2px;
+  padding: 5px 0 5px 0;
 }
 
 .carousel-exercise-name {
@@ -566,13 +620,20 @@
 .load-gif-box {
   display: flex;
   justify-content: center;
-  margin-top: 5%;
-  width: 100%;
+  margin: 8% 50%;
 }
 
-.load-gif {
-  width: 30px;
-  height: 30px;
+.apply-filters-button {
+  background-color: #5271FF;
+  color: white;
+  padding: 8px 30px;
+  border-radius: 24px;
+  margin: 10px 25px 10px 38%;
+}
+
+.filters-header {
+  padding: 0 25px 0 10px;
+  text-align: center;
 }
 
 </style>

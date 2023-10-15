@@ -28,6 +28,11 @@
             size="large"
             type="submit"
             variant="elevated"
+            @click = 'authenticateStore.logInUser(
+{
+  "username": formFields[0].value,
+  "password": formFields[1].value,
+})'
             class='sign-button'>
             Sign In
             </v-btn>
@@ -48,11 +53,13 @@
 <script setup>
 import { RouterLink } from 'vue-router';
 import { ref } from 'vue';
+import { useAuthenticateStore } from '@/store/AuthenticationStore'
 
+const authenticateStore = useAuthenticateStore();
 const form = ref(false);
 const loading = ref(false);
 const formFields= ref([
-    { label: 'Email', placeholder: 'Enter your email', value: null },
+    { label: 'Username', placeholder: 'Enter your email', value: null },
     { label: 'Password', placeholder: 'Enter your password', value: null },
 ])
 
