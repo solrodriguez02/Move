@@ -1,4 +1,11 @@
 <template>
+  <RouterLink to='/Routine' class="router-link">
+<div class = 'appbar'>
+  <v-icon icon='$back'></v-icon>
+  <p>Full Body Session</p>  
+</div>
+</RouterLink>
+
 <div class='exercise'>
   <div class='grey-section'>
     <h1>Lunge</h1>
@@ -55,6 +62,12 @@
 </script>
 
 <style scoped>
+.appbar {
+    display: flex;
+    margin-left: 2%;
+    font-weight: bold;
+    color: slategrey;
+  }
   .exercise {
     margin-top: 2%;
   }
@@ -118,4 +131,9 @@
     border-radius: 12px;
     padding: 1%;
   }
+
+  .router-link {
+  text-decoration: none;
+  color: inherit;
+}
 </style>
