@@ -1,11 +1,11 @@
 <template>
    <v-sheet class="box mx-auto"  max-width="1140">
       <v-container class=" d-flex align-content-stretch flex-wrap" >
-        <v-sheet v-for="r in props.items" class="ma-3 pa-2" v-if="props.items!==null">
-          <routine-preview :r="r" />          
-        </v-sheet>
-        <v-sheet v-else>
+        <h4 v-if="props.items===null" class="mx-auto notFound">
           No results found
+        </h4>
+        <v-sheet v-for="r in props.items" class="ma-2 pa-2" v-else>
+          <routine-preview :r="r" />          
         </v-sheet>
       </v-container>
    </v-sheet>

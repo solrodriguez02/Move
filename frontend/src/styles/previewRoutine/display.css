@@ -7,7 +7,7 @@
 .cardRoutine {
     border-radius: 24px;
     height: 160px;
-    width: 190px;   
+    width: 187px;   
 }
 
 .descripRoutine {
@@ -45,4 +45,8 @@
 .imgRoutine {
     height: 110px;
     border-radius: 24px 24px 0px 0px;
+}
+
+.notFound {
+  color: grey;
 }

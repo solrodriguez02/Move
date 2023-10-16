@@ -56,3 +56,10 @@
   padding: 20px;
   background-color: gray;
 }
+
+.search {
+  box-shadow: 0px 0px 5px 0px rgba(121, 121, 121, 0.25);
+  border-radius: 20px 8px 8px 20px;
+  width: 5em;
+  color: colors.$lightblue;
+}
