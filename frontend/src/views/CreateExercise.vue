@@ -20,8 +20,8 @@
           <v-avatar size='36px' class="avatar-card" :color='field.color'>
             <v-icon color='white' :icon='field.icon'></v-icon>
           </v-avatar>
-        <div class='field-text aligned-text' > {{ field.label }} </div>
-      </div>
+          <div class='field-text aligned-text' > {{ field.label }} </div>
+        </div>
       <v-select
         :v-model='form[field.formID]'
         :items='field.items'
@@ -30,7 +30,7 @@
         :rules="[required]"
         variant='outlined'
         rounded
-        :placeholder='field.placeholder'/>
+        :placeholder='placeholders[index]'/>
     </div>
   </div>
   <div class='field-text-box'> Description </div>
@@ -84,6 +84,13 @@
     description: '',
     image: '',
   })
+
+  const placeholders = ref([
+    'Enter the exercise difficulty',
+    'Which muscle group will be exercised?',
+    'Does the exercise require any element?',
+    'How much space is it necesary',
+  ])
 
   const onSubmit = () => {
     const exerciseStore = useExerciseStore()
