@@ -7,7 +7,7 @@
       <v-sheet width="900">
         <v-text-field 
         v-model="searchInApi"
-        @keydown.enter="if(searchInApi!=='' || selectedCount>0){ data = routineStore.searchRutine(searchInApi,selected); searchWasMade=true;  }"
+        @keydown.enter="searchRoutines(searchInApi, selected); searchWasMade=true; key++;"
             density='compact'
             placeholder='Search rutine'
             prepend-inner-icon='$search'
@@ -83,7 +83,7 @@
         <displayAllRoutines :items="routineStore.getDataCategory(category.headline,routineStore.routineList.value)" class='display' v-else />
       </v-row>
   </v-sheet> 
-    <displayAllRoutines v-else :items="data" class='display' :key="data" />
+    <displayAllRoutines v-else :items="data" class='display' :key="key" />
   
 </div>
 
@@ -101,8 +101,9 @@
   const searchWasMade = ref(false);
   const searchInApi = ref('');
   const selected = ref([]);
-  const data  = ref([]);
+  var data  = ref([]);
   var selectedCount = 0; 
+  const key= ref(0);
 
   const categories = ref([
       { headline:'Recent workouts', viewAll: false},
@@ -132,6 +133,12 @@
   function removeChoice( selected,i ) {
     delete(selected[i]);
     selectedCount--;
+  }
+  function searchRoutines(searchInApi, selected){
+    if(searchInApi!=='' || selectedCount>0){ 
+      data = routineStore.searchRutine(searchInApi,selected); 
+    }
+    console.log(data)
   }
 </script>
 
