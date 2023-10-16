@@ -17,13 +17,13 @@
       </v-sheet>
     </v-sheet>
     <v-sheet class="d-flex me-4">
-      <v-sheet width="700" >
+      <v-sheet width="700">
       <v-row class="ms-4 text-disabled">Filter by</v-row>
-        <v-container class="ms-0 ps-0" fluid>
+        <v-container class="ms-0 ps-0">
           <v-row>
               <v-col class="d-flex align-center"     
                 cols="12" min-width="80">
-                <v-col v-for='filter in routineStore.filters'>
+                <v-col v-for='filter in routineStore.filters' >
                   <v-autocomplete
                     :label='filter.label'
                     :items='filter.options'
@@ -39,7 +39,7 @@
           </v-row>
         </v-container>
       </v-sheet>
-    <v-sheet class="ms-3">
+    <v-sheet class="ms-3" width="450">
       <v-row class="text-disabled" >Selected filters</v-row>
       <v-row>
         <v-chip-group>
@@ -47,7 +47,7 @@
       class="ma-2"
       closable
       color="light-grey"
-      text-color="white"
+      close-icon="$close"
       :model-value="true"
       @click:close="removeChoice(selected,index)"
     >

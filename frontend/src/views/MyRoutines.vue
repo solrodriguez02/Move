@@ -2,8 +2,9 @@
   <div class='page'>
     <div class='header'>
        <h1>My routines</h1>
-        <v-btn rounded variant='flat' id='butCreate' class="text-none">
-          Create new +</v-btn>
+       <RouterLink to='/' class="link">
+       <v-btn rounded flat id='butCreate' class="text-none">
+          Create new +</v-btn></RouterLink> 
     </div>
 
     <v-progress-circular v-if="loading"

@@ -1,7 +1,8 @@
 <template>
+    <RouterLink to='/' class="text-decoration-none">
     <v-card 
             :class="['cardRoutine', image]"
-            @click="toggle, showRoutine(r)" 
+            @click="toggle" 
             color="grey-lighten-1"> 
             <div class="text-right image-container">
               <v-img 
@@ -27,6 +28,7 @@
             </div>  
             <p class='descripRoutine' style="text-overflow: ellipsis;">{{ r.name }}</p>
           </v-card>
+    </RouterLink>
 </template>
 
 <script setup>
@@ -34,13 +36,6 @@ const difficulty = [ 'Easy','Medium','Hard'];
 
 const props = defineProps(['r']);
 
-function changeFav(rutine){
-    rutine.fav = !rutine.fav; 
-
-}
-function showRoutine(rutine) {
-// ir a pag
-}
 </script>
 
 <style scoped src='@/styles/previewRoutine/display.css'/>
