@@ -7,7 +7,7 @@
       <v-sheet width="900">
         <v-text-field 
         v-model="searchInApi"
-        @keydown.enter="if(searchInApi!=='' || selectedCount>0){ searchWasMade=true; searchRutine(searchInApi,selected)}"
+        @keydown.enter="if(searchInApi!=='' || selectedCount>0){ searchWasMade=true; routineStore.searchRutine(searchInApi,selected)}"
             density='compact'
             placeholder='Search rutine'
             prepend-inner-icon='$search'
@@ -23,15 +23,17 @@
           <v-row>
               <v-col class="d-flex align-center"     
                 cols="12" min-width="80">
-                <v-col v-for='filter in filters' 
-                     >
-                  <v-select :class='filter.headline'
-                    :label='filter.headline'
-                    :items='filter.items'
+                <v-col v-for='filter in routineStore.filters'>
+                  <v-autocomplete
+                    :class='filter.label'
+                    :label='filter.label'
+                    :items='filter.options'
                     variant="solo"
-                    bg-color="light-blue"          
-                    v-model='filter.choice'
-                    @update:model-value="addFilter(selected,filter.choice)"
+                    bg-color="lightblue"      
+                    v-model='filter.selected'
+                    menu-icon='$arrow'
+                    rounded
+                    @update:model-value="addFilter(selected,filter.selected)"
                 />
                 </v-col>  
             </v-col>
@@ -58,6 +60,13 @@
     </v-sheet>
   </v-container>
 
+  <v-progress-circular v-if="loading"
+    indeterminate
+    color="blue"
+    class='load-cycle-box'>
+  </v-progress-circular>
+
+  <div v-else>
   <v-sheet v-if="!searchWasMade" >
       <v-row v-for='category in categories'>
         <v-container class='title' >   
@@ -70,87 +79,45 @@
             </v-col>
           </v-row>
         </v-container>
-        <displaySomeRoutines :items="getDataCategory(category.headline,data)" class='display' v-if="!category.viewAll"/>
-        <displayAllRoutines :items="getDataCategory(category.headline,data)" class='display' v-else />
+        <displaySomeRoutines :items="routineStore.getDataCategory(category.headline,routineStore.routineList.value)" class='display' v-if="!category.viewAll"/>
+        <displayAllRoutines :items="routineStore.getDataCategory(category.headline,routineStore.routineList.value)" class='display' v-else />
       </v-row>
   </v-sheet>
-  <displayAllRoutines :items="getData(searchInApi,selected,data)" class='display' v-else/>
-  
+  <displayAllRoutines :items="routineStore.getData(searchInApi,selected,routineStore.routineList.value)" class='display' v-else/>
+</div>
 
 </template>
   
 <script setup>
   import displaySomeRoutines from '@/components/displayRoutines/displaySomeRoutines.vue';
   import displayAllRoutines from '@/components/displayRoutines/displayAllRoutines.vue';
-  import { ref } from 'vue'
-  const categories= ref([
+  import { ref, onBeforeMount } from 'vue'
+  import { useRoutineStore } from '@/store/RoutineStore'
+
+  const routineStore = useRoutineStore()
+  const loading = ref(false)
+
+  const searchWasMade = ref(false);
+  const searchInApi = ref('');
+  const selected = ref([]);
+  var selectedCount = 0; 
+
+  const categories = ref([
       { headline:'Recent workouts', viewAll: false},
       { headline:'Featured', viewAll: false},
       { headline:'Newly added', viewAll: false}    
   ])
+
+  onBeforeMount (async () => {
+    loading.value = true
+    await routineStore.fetchRoutines()
+    loading.value = false
+  })
   
   function changeView( category) {
       category.viewAll = !category.viewAll;
   }
-  
-  const filters=ref([
-      { headline:'Difficulty', items: ['Difficult', 'Medium', 'Easy'], choice:null},
-      { headline:'Muscle group', items: ['Front', 'Back'], choice:null},
-      { headline:'Approach', items: ['Cardio', 'Strength', 'Flexibility', 'Resistance'], choice:null},    
-      { headline:'Time', items: ['15 minutes', '30 minutes', '45 minutes', '1 hour'], choice:null},
-  ]);
 
-  const data = ref([         {
-          src: 'backgrounds/bg.jpg',
-          fav: false,
-          name: 'mar'
-        },
-        {
-          src: 'backgrounds/md.jpg',
-          fav: false,
-          name: 'Senta senta'
-        },
-        {
-          src: 'backgrounds/bg-2.jpg',
-          fav: false,
-          name: 'cielo'
-        },
-        {
-          src: 'backgrounds/md2.jpg',
-          fav: false,
-          name: 'desierto'
-        },
-        {
-          src: 'backgrounds/md.jpg',
-          fav: false,
-          name: 'Senta senta'
-        },
-        {
-          src: 'backgrounds/bg-2.jpg',
-          fav: false,
-          name: 'cielo'
-        },
-        {
-          src: 'backgrounds/md2.jpg',
-          fav: false,
-          name: 'desierto'
-        },
-      ]);
-
-  const searchWasMade = ref(false);
-  const searchInApi = ref('');
-  var selectedCount = 0; 
-  function searchRutine(searchInApi, selected){  
-      // mando a api el input 
-      // searchInApi tiene input/busqueda
-      // selected contiene array con filtros, (hay espacios undefined => no tenerlos en cuenta)
-      for ( var i=0; i<selected.length; i++){
-        if ( selected[i] !== undefined ){
-          // mando a api
-        }
-      }      
-  }
-  const selected = ref([]);
   function addFilter( selected,choice) {
     if ( !selected.includes(choice)){
       selected.push(choice);
@@ -158,19 +125,9 @@
     }
   }
 
-  function removeChoice( selected,i ){
+  function removeChoice( selected,i ) {
     delete(selected[i]);
     selectedCount--;
-  }
-
-  function getDataCategory(headline,data){
-    // pido a api
-    return data;
-  }
-
-  function getData( headline, selected,data){
-    // pido a api
-    return data;
   }
 </script>
 

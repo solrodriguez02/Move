@@ -6,10 +6,10 @@ export const useRoutineStore = defineStore('routine', () => {
     const routineList = ref([])
 
     const filters = ref([
-      { label: 'Difficulty', options: ['Easy', 'Medium', 'Difficult'], selected: ref([]) },
-      { label: 'Elements required', options:  ['None', 'Dumbell', 'Jump rope', 'Mat', 'Resistance band', 'Step', 'Kettlebell', 'Foam roller', 'Ankle Weights' ], selected: ref([]) },
-      { label: 'Space required', options: ['Ideal for reduced spaces', 'Requires some space', 'Much space is needed'], selected: ref([]) },
-      { label: 'Muscle groups', options: ['Chest', 'Back', 'Shoulders', 'Arms', 'Biceps', 'Triceps', 'Legs', 'Quadriceps', 'Hamstrings', 'Calves', 'Glutes', 'Abdominals', 'Lower Back', 'Core'], selected: ref([]) }
+      { label: 'Difficulty', options: ['Easy', 'Medium', 'Difficult'], selected: ref([]), color: 'turquoise' },
+      { label: 'Elements required', options:  ['None', 'Dumbell', 'Jump rope', 'Mat', 'Resistance band', 'Step', 'Kettlebell', 'Foam roller', 'Ankle Weights' ], selected: ref([]), color:'lightblue' },
+      { label: 'Space required', options: ['Ideal for reduced spaces', 'Requires some space', 'Much space is needed'], selected: ref([]), color:'blue' },
+      { label: 'Muscle groups', options: ['Chest', 'Back', 'Shoulders', 'Arms', 'Biceps', 'Triceps', 'Legs', 'Quadriceps', 'Hamstrings', 'Calves', 'Glutes', 'Abdominals', 'Lower Back', 'Core'], selected: ref([]), color:'violet' }
     ])
 
     const secOptions = ['-', 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
@@ -33,10 +33,22 @@ export const useRoutineStore = defineStore('routine', () => {
         // pido a api
         return data;
       }
-      function getData( headline, selected,data){
+
+    function getData( headline, selected,data){
         // pido a api
         return data;
-      }
+    }
 
-    return { routineList, fetchRoutines, getDataCategory, filters, secOptions, repOptions, cycleRepOptions }
+    function searchRutine(searchInApi, selected){  
+        // mando a api el input 
+        // searchInApi tiene input/busqueda
+        // selected contiene array con filtros, (hay espacios undefined => no tenerlos en cuenta)
+        for ( var i=0; i<selected.length; i++){
+          if ( selected[i] !== undefined ){
+            // mando a api
+          }
+        }      
+    }
+
+    return { routineList, fetchRoutines, getDataCategory, getData, searchRutine, filters, secOptions, repOptions, cycleRepOptions }
 })
