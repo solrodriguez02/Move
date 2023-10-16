@@ -6,7 +6,13 @@
           Create new +</v-btn>
     </div>
 
-    <div>
+    <v-progress-circular v-if="loading"
+    indeterminate
+    color="blue"
+    class='load-cycle-box'>
+    </v-progress-circular>
+
+    <div v-else>
       <v-row v-for='category in categories'>
         <v-container class='title'>   
           <v-row no-gutters class="pa-0 ma-0 mb-3 align-center">
@@ -18,8 +24,8 @@
             </v-col>
         </v-row>
         </v-container>
-        <displaySomeRoutines :items="getDataCategory(category.headline,data)" class='display' v-if="!category.viewAll"/>
-        <displayAllRoutines :items="getDataCategory(category.headline,data)" class='display' v-else />
+        <displaySomeRoutines :items="getDataCategory(category.headline, routineStore.routineList.value)" class='display' v-if="!category.viewAll"/>
+        <displayAllRoutines :items="getDataCategory(category.headline, routineStore.routineList.value)" class='display' v-else />
       </v-row>
     </div>
     
@@ -29,7 +35,18 @@
 <script setup>
   import displaySomeRoutines from '@/components/displayRoutines/displaySomeRoutines.vue';
   import displayAllRoutines from '@/components/displayRoutines/displayAllRoutines.vue';
-  import { ref } from 'vue'
+  import { ref, onBeforeMount } from 'vue'
+  import { useRoutineStore } from '@/store/RoutineStore'
+
+  const routineStore = useRoutineStore()
+  const loading = ref(false)
+
+  onBeforeMount (async () => {
+    loading.value = true
+    await routineStore.fetchRoutines()
+    loading.value = false
+  })
+
   const categories= ref([
       { headline:'Created by you', viewAll: false, canEdit: true },
       { headline:'Favourites', viewAll: false, canEdit: true  },
@@ -48,46 +65,6 @@
     // pido a api
     return data;
   }
-
-  const data = ref([         {
-          src: 'backgrounds/bg.jpg',
-          fav: false,
-          name: 'mar'
-        },
-        {
-          src: 'backgrounds/md.jpg',
-          fav: false,
-          name: 'Senta senta'
-        },
-        {
-          src: 'backgrounds/bg-2.jpg',
-          fav: false,
-          name: 'cielo'
-        },
-        {
-          src: 'backgrounds/md2.jpg',
-          fav: false,
-          name: 'desierto'
-        },
-        {
-          src: 'backgrounds/md.jpg',
-          fav: false,
-          name: 'Senta senta'
-        },
-        {
-          src: 'backgrounds/bg-2.jpg',
-          fav: false,
-          name: 'cielo'
-        },
-        {
-          src: 'backgrounds/md2.jpg',
-          fav: false,
-          name: 'desierto',
-          favs: 0,
-          dif: 1, 
-          elem: false,
-        },
-      ]);
 
 </script>
 

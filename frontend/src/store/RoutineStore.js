@@ -29,9 +29,5 @@ export const useRoutineStore = defineStore('routine', () => {
         routineList.value = routines
     }
 
-    function routineExists(name) {
-        return routineList.value.some(routine => routine.name === name);
-    }
-
-    return { routineList, fetchRoutines, routineExists, filters, secOptions, repOptions, cycleRepOptions }
+    return { routineList, fetchRoutines, filters, secOptions, repOptions, cycleRepOptions }
 })

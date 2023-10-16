@@ -1,6 +1,42 @@
-const routines = [
-    
-]
+import { ref } from 'vue' 
+
+const routines =  ref([         
+  {
+  src: 'backgrounds/bg.jpg',
+  fav: false,
+  name: 'mar'
+},
+{
+  src: 'backgrounds/md.jpg',
+  fav: false,
+  name: 'Senta senta'
+},
+{
+  src: 'backgrounds/bg-2.jpg',
+  fav: false,
+  name: 'cielo'
+},
+{
+  src: 'backgrounds/md2.jpg',
+  fav: false,
+  name: 'desierto'
+},
+{
+  src: 'backgrounds/md.jpg',
+  fav: false,
+  name: 'Senta senta'
+},
+{
+  src: 'backgrounds/bg-2.jpg',
+  fav: false,
+  name: 'cielo'
+},
+{
+  src: 'backgrounds/md2.jpg',
+  fav: false,
+  name: 'desierto'
+},
+])
   
 function getRoutines(okCallback) {
     setTimeout(() => okCallback(routines), 3000)
