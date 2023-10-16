@@ -3,38 +3,59 @@ import { ref } from 'vue'
 const routines =  ref([         
   {
   src: 'backgrounds/bg.jpg',
-  fav: false,
-  name: 'mar'
+  fav: true,
+  name: 'mar',
+  favs: 10,
+  dif: 0,
+  space: 0,
 },
 {
   src: 'backgrounds/md.jpg',
   fav: false,
-  name: 'Senta senta'
+  name: 'Senta senta',
+  favs: 10,
+  dif: 0,
+  space: 1,
 },
 {
   src: 'backgrounds/bg-2.jpg',
-  fav: false,
-  name: 'cielo'
+  fav: true,
+  name: 'cielo',
+  favs: 100,
+  dif: 1,
+  space: 2,
 },
 {
   src: 'backgrounds/md2.jpg',
-  fav: false,
-  name: 'desierto'
+  fav: true,
+  name: 'desierto',
+  favs: 10,
+  dif: 0,
+  space: 0,
 },
 {
   src: 'backgrounds/md.jpg',
   fav: false,
-  name: 'Senta senta'
+  name: 'Senta senta',
+  favs: 10,
+  dif: 2,
+  space: 2,
 },
 {
   src: 'backgrounds/bg-2.jpg',
   fav: false,
-  name: 'cielo'
+  name: 'cielo',
+  favs: 10,
+  dif: 0,
+  space: 0,
 },
 {
   src: 'backgrounds/md2.jpg',
   fav: false,
-  name: 'desierto'
+  name: 'desierto',
+  favs: 0,
+  dif: 0,
+  space: 0,
 },
 ])
   

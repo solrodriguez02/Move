@@ -119,6 +119,8 @@
   }
 
   function addFilter( selected,choice) {
+    if (choice==null)
+      return;
     if ( !selected.includes(choice)){
       selected.push(choice);
       selectedCount++;
