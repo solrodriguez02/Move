@@ -5,8 +5,9 @@
           v-model='form'
           @submit.prevent='onSubmit'>
 
-          <div class='field-text'> Title </div>
+          <div class='field-text'> Name </div>
           <v-text-field
+              :v-model='form.name'
               :readonly='loading'
               :rules='[required]'
               variant='outlined'
@@ -15,78 +16,74 @@
               rounded
               placeholder='Enter the exercise name'/>
 
-          <div class='field' v-for='field in formFields' :key='field.name'>
+          <div class='field' v-for='(field, index) in routineStore.filters' :key='field.label'>
               <div class='field-text'> {{ field.label }} </div>
               <v-select
-                  :items='field.items'
+                  :v-model='form[field.formID]'
+                  :items='field.options'
                   :multiple="field.label == 'Elements required'"
                   :chips="field.label == 'Elements required'"
                   :rules="[required]"
                   variant='outlined'
                   density='compact'
                   rounded
-                  :placeholder='field.placeholder'/>
+                  :placeholder='placeholders[index]'/>
           </div>
 
           <div class='field-text-image'> Image </div>
           <v-file-input
+              :v-model='form.image'
               label='Attach a representative image for the routine'
               density='compact'
               variant='outlined'
               rounded/>
 
-          <RouterLink to='/createdbyyou' class='save-button'>
-              <v-btn
-                  :disabled='!form'
-                  :loading='loading'
-                  block
-                  rounded
-                  color='violet'
-                  size='large'
-                  type='submit'
-                  variant='elevated'> Save </v-btn>
-          </RouterLink>
+            <v-btn class='save-button'
+                :disabled='!form'
+                :loading='loading'
+                block
+                rounded
+                color='violet'
+                size='large'
+                type='submit'
+                variant='elevated'> Save </v-btn>
       </v-form>
 
   </div>
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router';
-import { ref } from 'vue';
+import { RouterLink } from 'vue-router'
+import { ref } from 'vue'
+import { useRoutineStore } from '@/store/RoutineStore'
 
-const form = ref(false);
+const routineStore = useRoutineStore()
 const loading = ref(false);
 
-const difficulties = ref(['Easy', 'Medium', 'Difficult']);
-const elements = ref(['None', 'Dumbell', 'Jump rope', 'Mat', 'Resistance band', 'Step', 'Kettlebell', 'Foam roller', 'Ankle Weights' ]);
-const space = ref(['Ideal for reduced spaces', 'Requires some space', 'Much space is needed']);
-const muscleGroups = ref(['Chest', 'Back', 'Shoulders', 'Arms', 'Biceps', 'Triceps', 'Legs', 'Quadriceps', 'Hamstrings', 'Calves', 'Glutes', 'Abdominals', 'Lower Back', 'Core']);
-const approach = ref(['Cardio', 'Strength', 'HIIT', 'Flexibility', 'Bodyweight', 'Resistance', 'CrossFit', 'Yoga', 'Pilates', 'Functional', 'Calisthenics', 'Aerobic ', 'Streching']);
+const form = ref({
+    name: '',
+    difficulty: '',
+    approach: '',
+    elements: '', 
+    space: '',
+    image: '',
+})
 
-const formFields = ref([
-    { label: 'Difficulty', placeholder: 'Enter the exercise difficulty', items: difficulties },
-    { label: 'Approach', placeholder: 'How much space is it necesary', items:  approach},
-    { label: 'Elements required', placeholder: 'Does the exercise require any element?', items:  elements },
-    { label: 'Space requirements', placeholder: 'How much space is it necesary', items:  space},
-]);
-
-const formTexts = ref([
-  { label: 'Description', placeholder: 'What are the steps to follow to perform the exercise? How would you describe it?' },
-  { label: 'Make it easier', placeholder: 'Is there an easier way to exercise it?' },
-  { label: 'Make it harder', placeholder: 'Is there a more challenging way to exercise it?' },
-]);
+const placeholders = ref([
+    'Enter the exercise difficulty',
+    'Does the exercise require any element?',
+    'How much space is it necesary?',
+    'Which approach does your exercise represent the most?'
+])
 
 const onSubmit = () => {
-if (!form.value) return;
-loading.value = true;
-setTimeout(() => (loading.value = false), 2000);
-};
+    // faltan hacer las funciones en RoutineStore
+    //$router.push('/createdbyyou');
+}
 
 const required = (v) => {
-return !!v || 'Field is required';
-};
-
+    return !!v || 'Field is required';
+}
 </script>
 
 <style scoped src='@/styles/SaveRoutine.scss'></style>
