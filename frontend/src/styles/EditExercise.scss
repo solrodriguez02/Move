@@ -1,0 +1,107 @@
+@use 'colors'; 
+
+.exercise {
+margin-top: 2%;
+}
+
+.grey-section {
+background-color: #f0f0f0;
+border-radius: 40px;
+padding: 4% 10%;
+}
+
+.workout-section {
+display: flex;
+margin: 2% 0;
+height: 350px;
+}
+
+.workout-image {
+width: 55%;
+height: 100%;
+margin: 0 2% 1% 1%;
+}
+
+.image {
+width: 100%;
+height: 100%;
+border-radius: 24px;
+}
+
+.highlights {
+margin-top: 40px;
+margin-left: 0.2%;
+}
+
+.highlight-item {
+width: 180px;
+height: 145px;
+border-radius: 24px;
+margin: 0 30px 12% 30px;
+}
+
+.highlight-text {
+text-align: center;
+color: white;
+margin-top: 5%;
+}
+
+.highlight-icon {
+text-align: center;
+margin-top: 10%;
+}
+
+.workout-description {
+width: 1000%;
+}
+
+.workout-details {
+display: flex;
+flex-wrap: wrap;
+}
+
+.exercise-item {
+margin: 3% 0;
+border-radius: 12px;
+padding: 1%;
+}
+
+.sec-reps-options {
+display: flex;
+align-items: center;
+margin: 40px 0 40px 0;
+}
+
+.secs-reps-label {
+color:#3f62fc;
+margin-left: 10px;
+font-weight: bold;
+}
+
+.sec-reps-input {
+width: 40px;
+height: 40px;
+padding: 5px 0;
+background-color: rgb(255, 255, 255);
+border-radius: 12px;
+color: black;
+margin: 0 10px 0 20px;
+}
+
+.save-button {
+background-color:#aeaeae;
+color: white;
+font-weight: bold;
+padding: 10px 40px;
+border-radius: 24px;  
+margin-left: 6%;
+}
+
+.edit-section {
+    margin-left: 3%;
+    width: 40%;
+    background-color: #dcdcdc;
+    border-radius: 24px;
+    padding: 40px 12% 40px 12%;
+    text-align: center;
+}
