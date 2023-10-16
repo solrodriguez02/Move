@@ -54,7 +54,7 @@
         </v-form>
     </v-card>
     <div>
-        <img class='signup-image' src='@/assets/signup.jpg' alt='signup model'/>
+        <img class='signin-image' src='@/assets/signup.jpg' alt='signup model'/>
     </div>
 </div>
 </template>
@@ -63,6 +63,7 @@
 import { RouterLink } from 'vue-router';
 import { ref } from 'vue';
 import { useAuthenticateStore } from '@/store/AuthenticationStore'
+import { UserApi, Credentials } from '@/api/user.js'
 
 const authenticateStore = useAuthenticateStore();
 const form = ref(false);

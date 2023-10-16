@@ -28,11 +28,7 @@
             size="large"
             type="submit"
             variant="elevated"
-            @click = 'authenticateStore.logInUser(
-{
-  "username": formFields[0].value,
-  "password": formFields[1].value,
-})'
+            @click = 'UserApi.login({ "username": formFields[0], "password": formFields[1]}, true);'
             class='sign-button'>
             Sign In
             </v-btn>
@@ -54,14 +50,15 @@
 import { RouterLink } from 'vue-router';
 import { ref } from 'vue';
 import { useAuthenticateStore } from '@/store/AuthenticationStore'
+import { UserApi, Credentials} from '@/api/user'
 
-const authenticateStore = useAuthenticateStore();
 const form = ref(false);
 const loading = ref(false);
 const formFields= ref([
-    { label: 'Username', placeholder: 'Enter your email', value: null },
+    { label: 'Username', placeholder: 'Enter your username', value: null },
     { label: 'Password', placeholder: 'Enter your password', value: null },
 ])
+const credentials = new Credentials(formFields[0], formFields[1]);
 
 const onSubmit = () => {
   if (!form.value) return;
