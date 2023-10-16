@@ -89,26 +89,4 @@ return !!v || 'Field is required';
 
 </script>
 
-<style scoped>
-.create-exercise {
-  margin: 0 20%;
-  padding-bottom: 5%;
-}
-
-.header {
-  text-align: center;
-  margin-bottom: 2%;
-}
-
-.field-text {
-  margin: 0.5% 2%;
-}
-
-.field-text-image {
-  margin: 0.5% 6%;
-}
-
-.save-button {
-  text-decoration: none;
-}
-</style>
+<style scoped src='@/styles/SaveRoutine.scss'></style>

@@ -1,0 +1,338 @@
+@use 'colors'; 
+ 
+  .create-routine {
+    margin: 0 4%;
+  }
+  .header {
+    display: flex;
+  }
+  
+  .title {
+    width:92%;
+  }
+  
+  .carousel {
+    margin: 1.5% 0;
+  }
+  
+  .carousel-cycles {
+    display: flex;
+    width: 100%;
+    height: 60px;
+    border-radius: 24px;
+    background-color: #8fa3ffb9;
+  }
+  
+  .carousel-cycle {
+    display: flex;
+    justify-content: center;
+    width: 140px;
+    height: 35px;
+    background-color: rgba(255, 255, 255, 0.719);
+    border-radius: 20px;
+    margin: 7px;
+    padding: 7px 0;
+    color: black;
+  }
+  
+  .carousel-cycle-active {
+    display: flex;
+    justify-content: center;
+    width: 140px;
+    height: 40px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 20px;
+    margin: 7px;
+    padding: 6px 0;
+    border: 3px solid colors.$blue;
+    color: black;
+    font-weight: bold;
+  }
+  
+  
+  .cycle-text {
+    text-align: center;
+    margin: 18px 10px 20px 25px;
+  }
+  
+  .cycle-name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; 
+  }
+  
+  .cycle-icon {
+    margin-right: 5px;
+    color: black;
+  }
+  
+  .carousel-add {
+    width: 80px;
+    height: 35px;
+    border: 1px solid rgba(0, 0, 0, 0.693);
+    border-radius: 20px;
+    padding: 4px 0;
+    margin: 0 10px;
+  }
+  
+  .carousel-exercises {
+    height: 140px;
+    border-radius: 24px;
+    display: flex;
+  }
+  
+  .carousel-exercises-box {
+    margin-right: 2%;
+  }
+  .carousel-reps {
+    height: 100%;
+    width: 2%;
+    margin: 2.5% 5% 2.5% 2.5%;
+  }
+  
+  .reps-text {
+    margin-left: 15px;
+    font-weight: bold;
+  }
+  
+  .reps-input {
+    margin-top: 10px;
+    width: 70px;
+    height: 35px;
+    padding: 3px 0;
+    background-color: rgb(255, 255, 255);
+    border-radius: 12px;
+    color: colors.$blue;
+    font-weight: bold;
+  }
+  
+  .carousel-exercise {
+    height: 80px;
+    width: 140px;
+    margin: 16px 20px 16px 0;
+  }
+  
+  .carousel-empty-exercise {
+    height: 90px;
+    width: 140px;
+    margin: 16px 20px 16px 0;
+    border-radius: 12px;
+    border: 2px dotted colors.$dark_gray;
+  }
+  
+  .carousel-link {
+    text-decoration: none;
+  }
+  
+  .carousel-image {
+    border-radius: 12px;
+    height: 70%;
+    width: 100%;
+  }
+  
+  .image-container {
+    position: relative;
+    background-color: white;
+    border-radius: 12px;
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.877);
+    display: none;
+    border-radius: 12px;
+  }
+  
+  .time-container {
+    display: flex;
+    align-items: center;
+    margin-top: 25px;
+  }
+  
+  .edit-icon {
+    position: absolute;
+    margin-bottom: 30px;
+  }
+  
+  .image-container:hover .overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .overlay-text {
+    color: colors.$blue;
+    font-size: 16px;
+    padding: 5px 0 5px 0;
+  }
+  
+  .carousel-exercise-name {
+    margin-top: 2%;
+    color: black;
+    text-align: center;
+    justify-content: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; 
+  }
+  
+  .searcher {
+    display: flex;
+    height: 43px;
+    margin: 2.5% 0;
+  }
+  
+  .search {
+    width: 82%;
+  }
+  
+  .filter-button {
+    margin: 10px 24px;
+  }
+  
+  .new-button {
+    height: 90%;
+    width: 160px;
+    display: flex;
+    align-items: center;
+    background-color: colors.$gray;
+    border-radius: 24px;
+    padding: 0 30px;
+    margin: 2px;
+    text-decoration: none;
+    color: black;
+  }
+  
+  .exercise-search {
+    width: 100%;
+    height: 100vh;
+  }
+  
+  .sec-reps {
+    display: flex;
+    height: 60px;
+    align-items: center;
+    margin: 1.5% 0;
+  }
+  
+  .sec-reps-options {
+    display: flex;
+    align-items: center;
+    margin-left: 14%;
+  }
+  
+  .secs-reps-label {
+    color: colors.$blue;
+    margin-left: 10px;
+  }
+  
+  .sec-reps-input {
+    width: 85px;
+    height: 40px;
+    padding: 5px 0;
+    background-color: colors.$gray;
+    border-radius: 12px;
+    color: black;
+    margin: 0 10px 0 10px;
+  }
+  
+  .rest {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 60px;
+    background-color: colors.$dark_gray;
+    border-radius: 6px;
+    margin-top: 1.5%;
+    margin-bottom: 1%;
+    cursor: pointer;
+    color: white;
+    padding-left: 2%;
+  }
+  
+  .rest-item {
+    margin-left: 6%;
+    color: white;
+  }
+  
+  .exercise {
+    display: flex;
+    width: 100%;
+    height: 55px;
+    background-color: none;
+    border-radius: 6px;
+    margin: 1% 0;
+    align-items: center;
+  }
+  
+  .add {
+    display: flex;
+    align-items: center;
+    margin-left: 2%;
+    cursor: pointer;
+    color: colors.$dark_gray;
+    width: 90%;
+  }
+  
+  .exercise-image-box {
+    height: 60px;
+    width: 105px;
+    margin-left: 3%;
+  }
+  
+  .exercise-image {
+    height: 100%;
+    width: 100%;
+  }
+  
+  .exercise-icon {
+    color:colors.$blue;
+    margin-right: 10px;
+  }
+  
+  .exercise-text {
+    margin-left: 3%;
+    color: colors.$dark_gray;
+    width: 140px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; 
+  }
+  
+  .next-icon {
+    margin-left: auto; 
+    margin-right: 2%;
+  }
+  
+  .load-exercises-box {
+    margin: 6% 50%;
+  }
+  
+  .load-cycle-box {
+    margin: 4% 40%;
+  }
+  
+  .apply-filters-button {
+    background-color: colors.$blue;
+    color: white;
+    padding: 8px 30px;
+    border-radius: 24px;
+    margin: 10px 25px 10px 38%;
+  }
+  
+  .filters-header {
+    padding: 0 25px 0 10px;
+    text-align: center;
+  }
+  
+  .delete-exercise-button {
+    color: colors.$dark_gray;
+    margin-left: auto;
+    margin-right: 3%;
+    margin-bottom: 5px;
+  }
+  

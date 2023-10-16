@@ -1,10 +1,8 @@
 <template>
-  <RouterLink to='/Routine' class="router-link">
-<div class = 'appbar'>
+<div class = 'appbar' @click="goBack">
   <v-icon icon='$back'></v-icon>
-  <p>Full Body Session</p>  
+  <p>{{ previousTabName }}</p>  
 </div>
-</RouterLink>
 
 <div class='exercise'>
   <div class='grey-section'>
@@ -47,6 +45,15 @@
 <script setup>
   import { ref } from 'vue'
 
+  import { useRouter } from 'vue-router'
+
+  const router = useRouter()
+  const previousTabName = ref(null)
+
+  const goBack = () => {
+    router.go(-1)
+  }
+
   const exerciseItems = ref([
     { title:'Description', detail:'01. Stand tall with your feet hip-width apart and your arms by your sides, to start. <br><br> 02. Brace your core and bring your hands to your hips as you step one foot forwards. Bend both legs until they form 90-degree angles. Make sure your front knee doesn\'t extend past your toes. <br><br> 03. Keep your weight in your front leg. Your back leg should just help maintain balance, and your chest should stay tall. Press through your front foot to return to the starting position. That\'s 1 rep.' },
     { title:'Make it easier', detail:'Move slowly. Really slowly. Or do fewer reps and sets until you improve your balance and strength.' },
@@ -61,79 +68,4 @@
   ])
 </script>
 
-<style scoped>
-.appbar {
-    display: flex;
-    margin-left: 2%;
-    font-weight: bold;
-    color: slategrey;
-  }
-  .exercise {
-    margin-top: 2%;
-  }
-
-  .grey-section {
-    background-color: #f0f0f0;
-    border-radius: 40px;
-    padding: 4% 10%;
-  }
-
-  .workout-section {
-    display: flex;
-    margin-top: 2%;
-  }
-
-  .workout-image {
-    width: 1200%;
-    height: 30%;
-    margin: 1% 2% 1% 1%;
-  }
-
-  .image {
-    width: 100%;
-    height: 100%;
-    border-radius: 24px;
-  }
-
-  .highlights {
-    margin-top: 3.5%;
-  }
-
-  .highlight-item {
-    width: 180px;
-    height: 145px;
-    border-radius: 24px;
-    margin: 0 0 12% 50px;
-  }
-
-  .highlight-text {
-    text-align: center;
-    color: white;
-    margin-top: 5%;
-  }
-
-  .highlight-icon {
-    text-align: center;
-    margin-top: 10%;
-  }
-
-  .workout-description {
-    width: 1000%;
-  }
-
-  .workout-details {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .exercise-item {
-    margin: 3% 0;
-    border-radius: 12px;
-    padding: 1%;
-  }
-
-  .router-link {
-  text-decoration: none;
-  color: inherit;
-}
-</style>
+<style scoped src='@/styles/Exercise.scss'></style>

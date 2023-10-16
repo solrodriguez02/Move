@@ -1,0 +1,67 @@
+.signin {
+    display: flex;
+    width: 100%;
+    height: 80vh;
+    margin-top: 2%;
+}
+
+.signup {
+    display: flex;
+    width: 100%;
+    height: 150vh;
+    margin-top: 2%;
+}
+
+.signin-form {
+    width: 30%;
+    margin-left: 12%;
+    margin-top: 5%;
+    margin-right: 15%;
+}
+
+.signup-form {
+    width: 30%;
+    margin-left: 12%;
+    margin-right: 15%;
+}
+
+.signin-header {
+    text-align: center;
+    margin-bottom: 10%;
+}
+
+.signup-header {
+    text-align: center;
+    margin-bottom: 5%;
+}
+
+.field {
+    margin-top: 2%;
+}
+
+.sign-button {
+    margin-top: 5%;
+    height: 50px;
+}
+
+.field-text {
+    margin-left: 4%;
+    margin-bottom: 1%;
+    font-size: 16px;
+}
+
+.other-option {
+    margin-top: 10%;
+}
+
+.link {
+    text-decoration: none;
+    color: black;
+    text-align: center;
+}
+
+.signin-image {
+    height: 100%;
+    width: 100%;
+    border-radius: 24px;
+}

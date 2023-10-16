@@ -1,7 +1,7 @@
 <template>
-    <div class='sign'>
-    <v-card variant='flat' class='sign-form'>
-        <h2 class='header'>Create your account</h2>
+    <div class='signup'>
+    <v-card variant='flat' class='signup-form'>
+        <h2 class='signup-header'>Create your account</h2>
         <v-form
             v-model="form"
             @submit.prevent="onSubmit">
@@ -87,53 +87,4 @@ const required = (v) => {
 };
 </script>
 
-<style scoped>
-.sign {
-    display: flex;
-    width: 100%;
-    height: 150vh;
-    margin-top: 2%;
-}
-
-.sign-form {
-    width: 30%;
-    margin-left: 12%;
-    margin-right: 15%;
-}
-
-.header {
-    text-align: center;
-    margin-bottom: 5%;
-}
-
-.field {
-    margin-top: 2%;
-}
-
-.sign-button {
-    margin-top: 5%;
-    height: 50px;
-}
-
-.field-text {
-    margin-left: 4%;
-    margin-bottom: 1%;
-    font-size: 16px;
-}
-
-.other-option {
-    margin-top: 10%;
-}
-
-.link {
-    text-decoration: none;
-    color: black;
-    text-align: center;
-}
-
-.signup-image {
-    height: 100%;
-    width: 100%;
-    border-radius: 24px;
-}
-</style>
+<style scoped src='@/styles/SignIn.scss'></style>

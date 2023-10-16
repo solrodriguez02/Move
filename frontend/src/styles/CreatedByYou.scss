@@ -1,0 +1,61 @@
+@use 'colors'; 
+
+.created {
+  margin: 0 15%;
+}
+
+.header {
+  display: flex;
+  margin: 2%;
+}
+
+.create-new {
+ margin-left: auto;
+ text-decoration: none;
+}
+
+.new-button{
+  background-color: colors.$turquoise;
+  color: white;
+  border-radius: 24px;
+  width: 140px;
+  height: 40px;
+}
+
+.routine {
+  display: flex;
+  width: 100%;
+  height: 90px;
+  border-radius: 12px;
+  background-color: colors.$gray;
+  margin: 2% 0;
+  font-weight: bold;
+}
+
+.to-routine {
+  display: flex;
+  text-decoration: none;
+  color: black;
+  width: 90%;
+}
+
+.routine-image-box {
+  width: 110px;
+  height: 80%; 
+  margin: 8px 12px;
+}
+
+.routine-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+}
+
+.routine-name {
+  margin: 30px 12px;
+}
+
+.options-button {
+  margin-left: auto;
+  margin-right: 20px;
+}

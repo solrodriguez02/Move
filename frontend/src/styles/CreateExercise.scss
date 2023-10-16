@@ -1,0 +1,47 @@
+.field-text {
+    margin: 2% 2%;
+    width: 100%;
+    font-weight: bold;
+}
+
+.field-text-box {
+    margin-left: 4%;
+    margin-bottom: 1%;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.field-box {
+    margin-top: 1%;
+    width: 100%;
+}
+
+.all-fields {
+    margin-top: 1%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.field-left {
+    width: 48%;
+    margin-right: 2%;
+    margin-bottom: 1%;
+}
+.field-right {
+    width: 48%;
+    margin-left: 2%;
+    margin-bottom: 1%;
+}
+
+.field-header {
+    display: flex;
+}
+
+.aligned-text {
+  display: flex;
+  align-items: center;
+}
+
+.avatar-card {
+    margin-top: 1%;
+}
