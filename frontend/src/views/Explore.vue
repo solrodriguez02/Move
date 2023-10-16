@@ -7,12 +7,12 @@
       <v-sheet width="900">
         <v-text-field 
         v-model="searchInApi"
-        @keydown.enter="searchRoutines(searchInApi, selected); searchWasMade=true; key++;"
+        @keydown.enter="key += searchRoutines(searchInApi, selected, searchWasMade); "
             density='compact'
             placeholder='Search rutine'
-            prepend-inner-icon='$search'
             rounded
             variant='outlined'>
+            <v-btn icon="$search" flat class="mr-3 ml-0 search" size="x-small" @click="key += searchRoutines(searchInApi, selected, searchWasMade)" />
         </v-text-field>  
       </v-sheet>
     </v-sheet>
@@ -25,7 +25,6 @@
                 cols="12" min-width="80">
                 <v-col v-for='filter in routineStore.filters'>
                   <v-autocomplete
-                    :class='filter.label'
                     :label='filter.label'
                     :items='filter.options'
                     variant="solo"
@@ -67,7 +66,7 @@
   </v-progress-circular>
 
   <div v-else>
-  <v-sheet v-if="!searchWasMade" >
+  <v-sheet v-if="!searchWasMade[0]" >
       <v-row v-for='category in categories'>
         <v-container class='title' >   
           <v-row no-gutters class="pa-0 ma-0 mb-3 align-center">
@@ -98,7 +97,7 @@
   const routineStore = useRoutineStore()
   const loading = ref(false)
 
-  const searchWasMade = ref(false);
+  const searchWasMade = ref([false]);
   const searchInApi = ref('');
   const selected = ref([]);
   var data  = ref([]);
@@ -134,11 +133,13 @@
     delete(selected[i]);
     selectedCount--;
   }
-  function searchRoutines(searchInApi, selected){
+  function searchRoutines(searchInApi, selected,searchWasMade){
     if(searchInApi!=='' || selectedCount>0){ 
-      data = routineStore.searchRutine(searchInApi,selected); 
+      data = routineStore.searchRutine(searchInApi,selected);
+      searchWasMade[0] = true; 
+      return 1;
     }
-    console.log(data)
+    return 0;
   }
 </script>
 
