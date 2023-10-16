@@ -35,7 +35,7 @@
         </button>
       </v-slide-group-item>
       <v-slide-group-item>
-        <button>
+        <button @click="addCycle">
           <div class='carousel-add'>
             <v-icon icon='$add'/>
           </div>
@@ -269,6 +269,11 @@
     filterDialog.value = false;
     // codigo para aplicar los filtros
   };
+
+  const addCycle = () => {
+    createRoutineStore.addCycle()
+    selectCycleIndex(lastCycleIndex)
+  }
 
 </script>
 

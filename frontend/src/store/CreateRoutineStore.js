@@ -31,9 +31,9 @@ export const useCreateRoutineStore = defineStore('createRoutine', () => {
       ])
     
       const cycleList = ref([
-        { name:'Warm up', icon:'$warm', reps:'1', exercises: ref([])},
-        { name:'Cycle 1', icon:'$fire', reps:'2', exercises: cycleExercises1},
-        { name:'Cooling', icon:'$cool', reps:'1', exercises: cycleExercises}
+        { name:'Warm up', icon:'$warm', reps: 1, exercises: ref([])},
+        { name:'Cycle 1', icon:'$fire', reps: 2, exercises: cycleExercises1},
+        { name:'Cooling', icon:'$cool', reps: 1, exercises: cycleExercises}
       ])
 
     /* Pense en implementar algo asi (para poder identificar los casos en los que se esta creando una rutina de cero
@@ -75,18 +75,17 @@ export const useCreateRoutineStore = defineStore('createRoutine', () => {
     function getLastCycleIndex() {
         return cycleList.value.length - 1
     }
-
-    /*
-
-    function pushCycle(cycle) {
+    
+    function addCycle() {    
         cycleList.value.push({
-            
+            name: 'Cycle ' + (cycleList.value.length - 1),
+            icon: '$fire',
+            reps: 1,
+            exercises: ref([])
         })
     }
-    
-    function addCycle(cycle) {    
-        pushCycle(cycle)
-    }
+
+    /*
 
     function pushExercise(exercise, cycleIndex) {
         cycleList[cycleIndex].exercises.value.push({
@@ -102,5 +101,5 @@ export const useCreateRoutineStore = defineStore('createRoutine', () => {
     }
     */
 
-    return { cycleList, init, routineExists, getLastCycleIndex }
+    return { cycleList, init, routineExists, getLastCycleIndex, addCycle }
 })
