@@ -1,10 +1,8 @@
 <template>
-<RouterLink to='/MyRoutines' class="router-link">
-<div class = 'appbar'>
+<div class = 'appbar' @click="goBack">
   <v-icon icon='$back'></v-icon>
-  <p>My routines</p>  
+  <p>{{ previousTabName }}</p>  
 </div>
-</RouterLink>
 
 <div class='gray-section'>  
 
@@ -117,6 +115,14 @@
   import leftLungeImage from '@/assets/temporary/leftlunge.png';
   import rightLungeImage from '@/assets/temporary/rightlunge.jpg';
   import LegsDownImage from '@/assets/temporary/legsdown.png';
+  import { useRouter } from 'vue-router'
+
+  const router = useRouter()
+  const previousTabName = ref(null)
+
+  const goBack = () => {
+    router.go(-1)
+  }
 
   const cycleOptionIndex = ref(0)
 
