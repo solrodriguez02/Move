@@ -34,11 +34,6 @@ export const useRoutineStore = defineStore('routine', () => {
         return data;
       }
 
-    function getData( headline, selected,data){
-        // pido a api
-        return data;
-    }
-
     function searchRutine(searchInApi, selected){  
         // mando a api el input 
         // searchInApi tiene input/busqueda
@@ -47,8 +42,15 @@ export const useRoutineStore = defineStore('routine', () => {
           if ( selected[i] !== undefined ){
             // mando a api
           }
-        }      
+        } 
+        const ans = Routines.routines;
+        //fetchRoutines()
+        console.log("searc"+searchInApi)
+        if ( searchInApi=='notFound' )      
+          return null;
+        console.log("DEV BIEN")
+        return ans;    
     }
 
-    return { routineList, fetchRoutines, getDataCategory, getData, searchRutine, filters, secOptions, repOptions, cycleRepOptions }
+    return { routineList, fetchRoutines, getDataCategory, searchRutine, filters, secOptions, repOptions, cycleRepOptions }
 })

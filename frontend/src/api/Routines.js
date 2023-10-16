@@ -73,4 +73,4 @@ function getRoutine(name, okCallback, errorCallback) {
     }, 3000);
   }
   
-export default { getRoutines, getRoutine }
+export default { getRoutines, getRoutine, routines }
