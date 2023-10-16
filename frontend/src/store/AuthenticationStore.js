@@ -26,5 +26,5 @@ export const useAuthenticateStore = defineStore('authenticate', () => {
         token.value.push(response['token']);
     }
 
-    return {token, registerUser, verifyEmail, logInUser, printToken}
+    return {token, registerUser, verifyEmail, logInUser}
 });
