@@ -232,7 +232,7 @@
   import { useExerciseStore } from '@/store/ExerciseStore'
   import { useCreateRoutineStore } from '@/store/CreateRoutineStore'
   import { useRoutineStore } from '@/store/RoutineStore'
-  import WarningDialog from "@/views/WarningDialog.vue"
+  import WarningDialog from "@/components/WarningDialog.vue"
 
   const exerciseStore = useExerciseStore()
   const createRoutineStore = useCreateRoutineStore()
