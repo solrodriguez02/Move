@@ -29,5 +29,14 @@ export const useRoutineStore = defineStore('routine', () => {
         routineList.value = routines
     }
 
-    return { routineList, fetchRoutines, filters, secOptions, repOptions, cycleRepOptions }
+    function getDataCategory(headline,data){
+        // pido a api
+        return data;
+      }
+      function getData( headline, selected,data){
+        // pido a api
+        return data;
+      }
+
+    return { routineList, fetchRoutines, getDataCategory, filters, secOptions, repOptions, cycleRepOptions }
 })

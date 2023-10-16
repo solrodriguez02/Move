@@ -24,8 +24,8 @@
             </v-col>
         </v-row>
         </v-container>
-        <displaySomeRoutines :items="getDataCategory(category.headline, routineStore.routineList.value)" class='display' v-if="!category.viewAll"/>
-        <displayAllRoutines :items="getDataCategory(category.headline, routineStore.routineList.value)" class='display' v-else />
+        <displaySomeRoutines :items="routineStore.getDataCategory(category.headline, routineStore.routineList.value)" class='display' v-if="!category.viewAll"/>
+        <displayAllRoutines :items="routineStore.getDataCategory(category.headline, routineStore.routineList.value)" class='display' v-else />
       </v-row>
     </div>
     
@@ -55,15 +55,6 @@
 
   function changeView( category) {
       category.viewAll = !category.viewAll;
-  }
-
-  function getDataCategory(headline,data){
-    // pido a api
-    return data;
-  }
-  function getData( headline, selected,data){
-    // pido a api
-    return data;
   }
 
 </script>
