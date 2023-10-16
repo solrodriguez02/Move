@@ -23,7 +23,7 @@
   }
 
   .gray-section {
-    background-color: #f0f0f0;
+    background-color: colors.$gray;
     border-radius: 40px 40px 0 0;
     margin-top: 2%;
     height: 100%;
@@ -51,7 +51,7 @@
   }
 
   .time-text {
-    color: #3f62fc;
+    color: colors.$blue;
     font-weight: bold;
     font-size: 18px;
     margin-left: 10px;
@@ -141,7 +141,7 @@
     border-radius: 24px;
     font-weight: bold;
     background-color: white;
-    color:#3f62fc;
+    color: colors.$blue;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   }
 
@@ -157,7 +157,7 @@
   .cycle-reps {
     display: flex;
     background-color: white;
-    color:#3f62fc;
+    color: colors.$blue;
     border-radius: 12px;
     padding: 5px 18px 5px 14px;
     margin-left: 2%;
@@ -188,14 +188,14 @@
 }
 
 .exercise-icon {
-  color:#3f62fc;
+  color: colors.$blue;
   margin: 0 1% 0 2%;
 }
 
 .exercise-text {
   margin-left: 3%;
   margin-right: 5%;
-  color: #3d3b42;
+  color: colors.$dark_gray;
   width: 140px;
   overflow: hidden;
   white-space: nowrap;
@@ -203,7 +203,7 @@
 }
 
 .exercise-time {
-  color:#3f62fc;
+  color: colors.$blue;
   font-weight: bold;
 }
 

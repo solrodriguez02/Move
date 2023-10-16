@@ -1,7 +1,7 @@
 <template>
-    <div class='sign'>
-    <v-card variant='flat' class='sign-form'>
-        <h2 class='header'>Sign in</h2>
+    <div class='signin'>
+    <v-card variant='flat' class='signin-form'>
+        <h2 class='signin-header'>Sign in</h2>
         <v-form
             v-model="form"
             @submit.prevent="onSubmit">

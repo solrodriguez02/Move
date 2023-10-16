@@ -1,7 +1,7 @@
 <template>
-    <div class='sign'>
-    <v-card variant='flat' class='sign-form'>
-        <h2 class='header'>Create your account</h2>
+    <div class='signup'>
+    <v-card variant='flat' class='signup-form'>
+        <h2 class='signup-header'>Create your account</h2>
         <v-form
             v-model="form"
             @submit.prevent="onSubmit">
@@ -87,4 +87,4 @@ const required = (v) => {
 };
 </script>
 
-<style scoped src='@/styles/SignUp.scss'></style>
+<style scoped src='@/styles/SignIn.scss'></style>

@@ -4,14 +4,15 @@
     display: flex;
     margin-left: 2%;
     font-weight: bold;
-    color: slategrey;
+    color: colors.$dark_gray;
   }
+  
   .exercise {
     margin-top: 2%;
   }
 
   .grey-section {
-    background-color: #f0f0f0;
+    background-color: colors.$gray;
     border-radius: 40px;
     padding: 4% 10%;
   }
