@@ -1,0 +1,33 @@
+import { ref } from 'vue'
+import { defineStore } from 'pinia'
+
+export const useNavigationStore = defineStore('navigation', () => {
+    function getTabText(tab){
+        switch(tab) {
+            case '/createroutine': 
+              return 'Create Routine'
+            case '/explore':
+              return 'Explore'
+            case '/myroutines':
+              return 'My Routines'
+            case'/exercise':
+              return 'Exercise'
+            case'/createdbyyou':
+              return 'Created by You'
+            case'/saveroutine':
+              return 'save routine'
+            case'/createexercise':
+              return 'Create Exercise'
+            case '/routine':
+              return 'routine'
+            case'/editexercise':
+              return 'edit exercise'
+            case '/userprofile':
+              return 'user profile'
+            default: 
+              return 'Go Back'
+          }
+    }
+
+    return { getTabText } 
+})

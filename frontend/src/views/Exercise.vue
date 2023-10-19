@@ -2,7 +2,7 @@
 <div class = 'appbar'>
   <button @click="goBack" class="button">
     <v-icon icon='$back'></v-icon>
-    <p>{{ getTab() }}</p>
+    <p>{{navigationStore.getTabText(getTab())}}</p>
   </button>  
 </div>
 
@@ -46,13 +46,15 @@
 
 <script setup>
   import { ref } from 'vue'
-
   import { useRouter } from 'vue-router'
+  import { useNavigationStore } from '@/store/NavigationStore'
 
   const router = useRouter()
 
-  function getTab(){
-    return router.options.history.state.back 
+  const navigationStore= useNavigationStore()
+
+  function getTab() {
+    return router.options.history.state.back
   }
 
   const goBack = () => {
