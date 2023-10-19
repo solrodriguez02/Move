@@ -1,10 +1,15 @@
 <template>
   <div class='page'>
     <div class='header'>
-       <h1>My routines</h1>
-       <RouterLink to='/createroutine' class="link">
-       <v-btn rounded flat id='butCreate' class="text-none">
-          Create new +</v-btn></RouterLink> 
+      <h1>My routines</h1>
+      <div class="link">
+      <RouterLink to='/createdbyyou'>
+        <v-icon icon='$edit' color='dark_gray' class='edit-icon'/>
+      </RouterLink>
+       <RouterLink to='/createroutine'>
+        <v-btn rounded flat id='butCreate' class="text-none">Create new +</v-btn>
+      </RouterLink> 
+      </div>
     </div>
 
     <v-progress-circular v-if="loading"
