@@ -4,7 +4,7 @@
   <div class='appbar'>
     <button @click='goBackDialog = true' class='button'>
       <v-icon icon='$back'></v-icon>
-      <p> {{ getTab() }} </p>
+      <p> {{navigationStore.getTabText(getTab())}} </p>
     </button>  
   </div>
 
@@ -245,11 +245,13 @@
   import { useExerciseStore } from '@/store/ExerciseStore'
   import { useCreateRoutineStore } from '@/store/CreateRoutineStore'
   import { useRoutineStore } from '@/store/RoutineStore'
+  import { useNavigationStore } from '@/store/NavigationStore'
   import WarningDialog from "@/components/WarningDialog.vue"
 
   const exerciseStore = useExerciseStore()
   const createRoutineStore = useCreateRoutineStore()
   const routineStore = useRoutineStore()
+  const navigationStore = useNavigationStore()
   const loading = ref(false)
   const filterDialog = ref(false)
   const deleteDialog = ref(false)
@@ -257,6 +259,7 @@
   const selectedSecValue = ref(30)
   const selectedRepValue = ref('-')
   const cycleIndex = ref(0)
+  const router = useRouter()
 
   onBeforeMount (async () => {
     loading.value = true
@@ -265,12 +268,15 @@
     loading.value = false
   })
 
-  const router = useRouter()
 
-  function getTab(){
-    return router.options.history.state.back 
+
+  function getTab() {
+    return router.options.history.state.back
   }
 
+  const goBack = () => {
+    router.go(-1)
+  }
   const selectCycleIndex = (index) => {
     cycleIndex.value = index
   }

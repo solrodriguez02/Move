@@ -1,5 +1,18 @@
 @use 'colors'; 
  
+  .appbar {
+    display: flex;
+    margin-left: 2%;
+    font-weight: bold;
+    color: colors.$dark_gray;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .button {
+    display: flex;
+    align-items: center;
+  }
   .create-routine {
     margin: 0 4%;
   }

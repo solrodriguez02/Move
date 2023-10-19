@@ -2,7 +2,7 @@
 
   <div class = 'appbar' @click="goBack">
     <v-icon icon='$back'></v-icon>
-    <p>{{ previousTabName }}</p>  
+    <p>{{navigationStore.getTabText(getTab())}}</p>  
   </div>
 
   <div class='gray-section'>  
@@ -137,14 +137,20 @@
   import LegsDownImage from '@/assets/temporary/legsdown.png'
   import { useRouter } from 'vue-router'
   import WarningDialog from "@/components/WarningDialog.vue"
+  import { useNavigationStore } from '@/store/NavigationStore'
 
   const router = useRouter()
-  const previousTabName = ref(null)
 
   const cycleOptionIndex = ref(0)
   const isFavorite = ref(false)
   const deleteDialog = ref(false)
   const shareDialog = ref(false)
+
+  const navigationStore= useNavigationStore()
+
+  function getTab() {
+    return router.options.history.state.back
+  }
 
   const goBack = () => {
     router.go(-1)
