@@ -66,4 +66,4 @@
 </script>
 
 <style scoped src='@/styles/MyRoutines.scss'/>
-<style scoped src='@/styles/Globals.scss'></style>
+<style scoped src='@/styles/Globals.scss'/>
