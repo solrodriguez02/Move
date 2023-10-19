@@ -1,59 +1,63 @@
 <template>
-  <div class='create-exercise'>
-      <h2 class='header'>Describe your routine</h2>
+    <v-container>
+      <h1 style="margin-bottom: 2%;">Save Routine</h1>
       <v-form class='form'
-          v-model='form'
-          @submit.prevent='onSubmit'>
-
-          <div class='field-text'> Name </div>
+        v-model="form"
+        @submit.prevent="onSubmit">
+          
+        <div class='field-text-box'> Name </div>
           <v-text-field
-              :v-model='form.name'
-              :readonly='loading'
-              :rules='[required]'
-              variant='outlined'
-              density='compact'
-              clearable
-              rounded
-              placeholder='Enter the exercise name'/>
-
-          <div class='field' v-for='(field, index) in routineStore.filters' :key='field.label'>
-              <div class='field-text'> {{ field.label }} </div>
-              <v-select
-                  :v-model='form[field.formID]'
-                  :items='field.options'
-                  :multiple="field.label == 'Elements required'"
-                  :chips="field.label == 'Elements required'"
-                  :rules="[required]"
-                  variant='outlined'
-                  density='compact'
-                  rounded
-                  :placeholder='placeholders[index]'/>
-          </div>
-
-          <div class='field-text-image'> Image </div>
-          <v-file-input
+          :v-model='form.name'
+          :readonly='loading'
+          :rules='[required]'
+          variant='outlined'
+          clearable
+          rounded
+          placeholder='Enter the exercise name'/>
+        <div class='all-fields'>
+          <div v-for='(field,index) in routineStore.filters' :key='field.label' :class="index === 0 || index === 2 ? 'field-left' : 'field-right'"> 
+            <div class='field-header'>
+              <v-avatar size='36px' class="avatar-card" :color='field.color'>
+                <v-icon color='white' :icon='field.icon'></v-icon>
+              </v-avatar>
+              <div class='field-text aligned-text' > {{ field.label }} </div>
+            </div>
+          <v-select
+            :v-model='form[field.formID]'
+            :items='field.options'
+            :multiple="field.label == 'Elements required' || field.label == 'Approach'"
+            :chips="field.label == 'Elements required' || field.label == 'Approach'"
+            :rules="[required]"
+            variant='outlined'
+            rounded
+            :placeholder='placeholders[index]'/>
+        </div>
+      </div>
+        <div class='field-box'>
+          <div class='field-text-box'> Image </div>
+            <v-file-input
               :v-model='form.image'
               label='Attach a representative image for the routine'
-              density='compact'
               variant='outlined'
               rounded/>
-
-            <v-btn class='save-button'
-                :disabled='!form'
-                :loading='loading'
-                block
-                rounded
-                color='violet'
-                size='large'
-                type='submit'
-                variant='elevated'> Save </v-btn>
+        </div>
+    
+        <v-btn
+          :disabled='!form'
+          :loading='loading'
+          block
+          rounded
+          color='violet'
+          size='large'
+          type='submit'
+          variant='elevated'> Save </v-btn>
+    
+        <div v-show="exerciseCreated">Rutina guardada con éxito.</div>
       </v-form>
-
-  </div>
-</template>
+    </v-container>
+    </template>
 
 <script setup>
-import { RouterLink } from 'vue-router'
 import { ref } from 'vue'
 import { useRoutineStore } from '@/store/RoutineStore'
 
@@ -87,3 +91,4 @@ const required = (v) => {
 </script>
 
 <style scoped src='@/styles/SaveRoutine.scss'></style>
+
