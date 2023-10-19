@@ -1,11 +1,10 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import millImage from '@/assets/temporary/mill.png';
-import legsUpImage from '@/assets/temporary/legsup.png';
-import leftLungeImage from '@/assets/temporary/leftlunge.png';
-import rightLungeImage from '@/assets/temporary/rightlunge.jpg';
-import LegsDownImage from '@/assets/temporary/legsdown.png';
-import Routines from '@/api/Routines'
+import millImage from '@/assets/temporary/mill.png'
+import legsUpImage from '@/assets/temporary/legsup.png'
+import leftLungeImage from '@/assets/temporary/leftlunge.png'
+import rightLungeImage from '@/assets/temporary/rightlunge.jpg'
+import LegsDownImage from '@/assets/temporary/legsdown.png'
 
 export const useCreateRoutineStore = defineStore('createRoutine', () => {
 
@@ -30,11 +29,7 @@ export const useCreateRoutineStore = defineStore('createRoutine', () => {
         { name:'Left leg lunge', sec:'-', reps: 15, image: leftLungeImage },
       ])
     
-      const cycleList = ref([
-        { name:'Warm up', icon:'$warm', reps: 1, exercises: ref([])},
-        { name:'Cycle 1', icon:'$fire', reps: 2, exercises: cycleExercises1},
-        { name:'Cooling', icon:'$cool', reps: 1, exercises: cycleExercises}
-      ])
+      const cycleList = ref([])
 
     /* Pense en implementar algo asi (para poder identificar los casos en los que se esta creando una rutina de cero
      de los casos donde se esta editando una existente): apenas se entra a la pagina se pregunta si existe una rutina 
@@ -64,23 +59,26 @@ export const useCreateRoutineStore = defineStore('createRoutine', () => {
         })
     }*/
 
-    function init() {
-        setCycles(initCycles)
-    }
-
-    function setCycles(cycles) {
-        cycleList.value = cycles
-    }
-
     function getCycleLenght() {
         return cycleList.value.length
     }
+
+    function init() {
+        if(getCycleLenght() == 0) {
+            pushCycle('Warm up', '$warm', 0)
+            pushCycle('Cycle 1', '$fire', 1)
+            pushCycle('Cooling', '$cool', 2)
+        }
+    }
     
     function addCycle() {    
-        const position = getCycleLenght() - 1;
+        pushCycle('Cycle ' + (getCycleLenght() - 1), '$fire', getCycleLenght() - 1)
+    }
+
+    function pushCycle(name, icon, position) {
         cycleList.value.splice(position, 0, {
-            name: 'Cycle ' + position,
-            icon: '$fire',
+            name: name,
+            icon: icon,
             reps: 1,
             exercises: ref([])
         });
@@ -90,21 +88,22 @@ export const useCreateRoutineStore = defineStore('createRoutine', () => {
         cycleList.value.splice(index, 1);
     }
 
-    /*
+    function addExercise(cycleIndex, exercise, secs, reps) {    
+        pushExercise(cycleIndex, exercise, secs, reps)
+    }
 
-    function pushExercise(exercise, cycleIndex) {
-        cycleList[cycleIndex].exercises.value.push({
+    function pushExercise(cycleIndex, exercise, secs, reps) {
+        cycleList.value[cycleIndex].exercises.push( {
             name: exercise.name,
-            duration: exercise.secs, 
-            repetitions: exercise.reps, 
+            sec: secs,
+            reps: reps,
             image: exercise.image
-        })
+        });
+    }
+
+    function deleteExercise() {
+        // TODO 
     }
     
-    function addExercise(exercise, cycleIndex) {    
-        pushExercise(exercise, cycleIndex)
-    }
-    */
-
-    return { cycleList, init, routineExists, getCycleLenght, deleteCycle, addCycle }
+    return { cycleList, init, routineExists, getCycleLenght, addCycle, deleteCycle, addExercise, deleteExercise }
 })

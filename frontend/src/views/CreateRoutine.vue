@@ -98,9 +98,9 @@
       v-model="deleteDialog"
       title='Are you sure you want to delete this cycle?'
       message='If you delete this cycle, all the exercises will be deleted too.'
-      custom-button-text="Delete"
-      :on-custom-action="applyDelete"
-      :on-close="closeDeleteDialog"
+      custom-button-text='Delete'
+      :on-custom-action='deleteCycle'
+      :on-close='closeDeleteDialog'
     />
     
   </v-sheet>
@@ -144,7 +144,7 @@
           </v-chip-group>
         </v-card-text>
         <v-card-actions>
-          <button @click="applyFilters" class='apply-filters-button'>Apply filters</button>
+          <button @click='applyFilters' class='apply-filters-button'>Apply filters</button>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -190,13 +190,13 @@
     
     <v-progress-circular v-if="loading"
       indeterminate
-      color="blue"
+      color='blue'
       class='load-exercises-box'>
     </v-progress-circular>
 
     <div v-else class='exercises' v-for='exercise in exerciseStore.exerciseList' :key='exercise.name'>
       <div class='exercise'>
-        <div class='add' @click='addExerciseToCycle(cycleIndex, exercise.ID)'>
+        <div class='add' @click='addExercise(cycleIndex, exercise)'>
           <v-icon icon='$add'/>
           <div class='exercise-image-box'>
             <img :src='exercise.image' :alt='exercise.name' class='exercise-image'/>
@@ -236,6 +236,7 @@
 
   onBeforeMount (async () => {
     loading.value = true
+    createRoutineStore.init()
     await exerciseStore.fetchExercises()
     loading.value = false
   })
@@ -244,7 +245,12 @@
     cycleIndex.value = index
   }
 
-  const applyDelete = () => {
+  const addCycle = () => {
+    createRoutineStore.addCycle()
+    selectCycleIndex(createRoutineStore.getCycleLenght() - 2) 
+  }
+
+  const deleteCycle = () => {
     deleteDialog.value = false
     createRoutineStore.deleteCycle(cycleIndex.value)
     selectCycleIndex(cycleIndex.value - 1)
@@ -259,13 +265,8 @@
     // codigo para aplicar los filtros
   };
 
-  const addCycle = () => {
-    createRoutineStore.addCycle()
-    selectCycleIndex(createRoutineStore.getCycleLenght() - 2) 
-  }
-
-  const addExerciseToCycle = (cycleIdx, exerciseID) => {
-    createRoutineStore.addExerciseToCycle(cycleIdx, exerciseStore.getExercise(exerciseID))
+  const addExercise = (cycleIdx, exercise) => {
+    createRoutineStore.addExercise(cycleIdx, exercise, selectedSecValue.value, selectedRepValue.value)
   }
 </script>
 
