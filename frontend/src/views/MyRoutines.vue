@@ -2,7 +2,7 @@
   <div class='page'>
     <div class='header'>
        <h1>My routines</h1>
-       <RouterLink to='/' class="link">
+       <RouterLink to='/createroutine' class="link">
        <v-btn rounded flat id='butCreate' class="text-none">
           Create new +</v-btn></RouterLink> 
     </div>

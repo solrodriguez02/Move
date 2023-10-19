@@ -1,6 +1,22 @@
 <template>
 <div class='create-routine'>
 
+  <div class='appbar'>
+    <button @click='goBackDialog = true' class='button'>
+      <v-icon icon='$back'></v-icon>
+      <p> {{ getTab() }} </p>
+    </button>  
+  </div>
+
+  <warning-dialog
+    v-model='goBackDialog'
+    title='Are you sure you want to quit this page?'
+    message='If you do so, your routine will be deleted. Press Cancel to continue editing and then go to "next" to save your changes.'
+    custom-button-text="Quit"
+    :on-custom-action='quitCreateRoutine'
+    :on-close='closeGoBackDialog'
+  />
+
   <div class='header'>
     <div class='title'>
       <h2>Create your routine</h2>
@@ -222,8 +238,8 @@
 </template>
   
 <script setup>
-  import { ref, onBeforeMount } from 'vue'
-  import { RouterLink } from 'vue-router'
+  import { ref, onBeforeMount, onMounted, onBeforeUnmount } from 'vue'
+  import { RouterLink, useRouter } from 'vue-router'
   import { useExerciseStore } from '@/store/ExerciseStore'
   import { useCreateRoutineStore } from '@/store/CreateRoutineStore'
   import { useRoutineStore } from '@/store/RoutineStore'
@@ -235,6 +251,7 @@
   const loading = ref(false)
   const filterDialog = ref(false)
   const deleteDialog = ref(false)
+  const goBackDialog = ref(false);
   const selectedSecValue = ref(30)
   const selectedRepValue = ref('-')
   const cycleIndex = ref(0)
@@ -245,6 +262,12 @@
     await exerciseStore.fetchExercises()
     loading.value = false
   })
+
+  const router = useRouter()
+
+  function getTab(){
+    return router.options.history.state.back 
+  }
 
   const selectCycleIndex = (index) => {
     cycleIndex.value = index
@@ -259,16 +282,24 @@
     deleteDialog.value = false
     createRoutineStore.deleteCycle(cycleIndex.value)
     selectCycleIndex(cycleIndex.value - 1)
-  };
+  }
 
   const closeDeleteDialog = () => {
     deleteDialog.value = false
-  };
+  }
+
+  const closeGoBackDialog = () => {
+    goBackDialog.value = false;
+  }
+
+  const quitCreateRoutine = () => {
+    router.go(-1);
+  }
 
   const applyFilters = () => {
     filterDialog.value = false
     // codigo para aplicar los filtros
-  };
+  }
 
   const addExercise = (cycleIdx, exercise) => {
     createRoutineStore.addExercise(cycleIdx, exercise, selectedSecValue.value, selectedRepValue.value)
