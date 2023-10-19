@@ -76,3 +76,4 @@
 </script>
 
 <style scoped src='@/styles/Exercise.scss'></style>
+<style scoped src='@/styles/Globals.scss'></style>

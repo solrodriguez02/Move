@@ -240,7 +240,7 @@
 </template>
   
 <script setup>
-  import { ref, onBeforeMount, onMounted, onBeforeUnmount } from 'vue'
+  import { ref, onBeforeMount } from 'vue'
   import { RouterLink, useRouter } from 'vue-router'
   import { useExerciseStore } from '@/store/ExerciseStore'
   import { useCreateRoutineStore } from '@/store/CreateRoutineStore'
@@ -268,15 +268,10 @@
     loading.value = false
   })
 
-
-
   function getTab() {
     return router.options.history.state.back
   }
 
-  const goBack = () => {
-    router.go(-1)
-  }
   const selectCycleIndex = (index) => {
     cycleIndex.value = index
   }
@@ -319,3 +314,4 @@
 </script>
 
 <style scoped src='@/styles/CreateRoutine.scss'></style>
+<style scoped src='@/styles/Globals.scss'></style>

@@ -1,0 +1,20 @@
+@use 'colors'; 
+
+.basics {
+  margin: 2% 10%;
+  height: 100vh;
+}
+
+.appbar {
+  display: flex;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: colors.$dark_gray;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+}
