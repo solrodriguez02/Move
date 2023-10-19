@@ -1,0 +1,40 @@
+@use 'colors'; 
+
+.box {
+    display: flex;
+    width: 100%;
+    height: 90px;
+    border-radius: 12px;
+    background-color: colors.$gray;
+    margin: 2% 0;
+    font-weight: bold;
+    padding-right: 20px;
+  }
+  
+  .link {
+    display: flex;
+    text-decoration: none;
+    color: black;
+    width: 90%;
+  }
+  
+  .image-box {
+    width: 110px;
+    height: 80%; 
+    margin: 8px 12px;
+  }
+  
+  .image {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+  }
+  
+  .name {
+    margin: 30px 12px;
+  }
+  
+  .options-button {
+    margin-left: auto;
+    margin-right: 20px;
+  }
