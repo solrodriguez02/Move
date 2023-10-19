@@ -1,5 +1,5 @@
 <template>
-  <div class='page'>
+  <div class='basics'>
     <div class='header'>
       <h1>My routines</h1>
       <div class="link">
@@ -66,3 +66,4 @@
 </script>
 
 <style scoped src='@/styles/MyRoutines.scss'/>
+<style scoped src='@/styles/Globals.scss'></style>

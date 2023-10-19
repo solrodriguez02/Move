@@ -1,15 +1,20 @@
 @use 'colors'; 
 
-.appbar {
-    display: flex;
-    margin-left: 2%;
-    font-weight: bold;
-    color: colors.$dark_gray;
-    justify-content: flex-start;
-    align-items: center;
-  }
+.basics {
+  margin: 2% 10%;
+  height: 100vh;
+}
 
-  .button {
-    display: flex;
-    align-items: center;
-  }
+.appbar {
+  display: flex;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: colors.$dark_gray;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+}
