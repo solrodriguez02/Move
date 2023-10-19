@@ -1,33 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import millImage from '@/assets/temporary/mill.png'
-import legsUpImage from '@/assets/temporary/legsup.png'
-import leftLungeImage from '@/assets/temporary/leftlunge.png'
-import rightLungeImage from '@/assets/temporary/rightlunge.jpg'
-import LegsDownImage from '@/assets/temporary/legsdown.png'
 
 export const useCreateRoutineStore = defineStore('createRoutine', () => {
-
-    const cycleExercises = ref([
-        { name:'Mill', sec:30, reps: '-', image: millImage },
-        { name:'Legs up', sec:60, reps: 15, image: legsUpImage },
-        { name:'Left leg lunge', sec:'-', reps: 15, image: leftLungeImage },
-        { name:'Right leg lunge', sec:'-', reps: 15, image: rightLungeImage },
-        { name:'Legs down', sec:30, reps: 10, image: LegsDownImage },
-        { name:'Mill', sec:45, reps: '-', image: millImage },
-        { name:'Legs up', sec:30, reps: '-', image: legsUpImage },
-        { name:'Left leg lunge', sec:15, reps: '-', image: leftLungeImage },
-      ])
-    
-      const cycleExercises1 = ref([
-        { name:'Left leg lunge', sec:30, reps: '-', image: leftLungeImage },
-        { name:'Right leg lunge', sec:30, reps: '-', image: rightLungeImage },
-        { name:'Legs down', sec:30, reps: 15, image: LegsDownImage },
-        { name:'Mill', sec:45, reps: '-', image: millImage },
-        { name:'Mill', sec:30, reps: '-', image: millImage },
-        { name:'Legs up', sec:60, reps: 15, image: legsUpImage },
-        { name:'Left leg lunge', sec:'-', reps: 15, image: leftLungeImage },
-      ])
     
       const cycleList = ref([])
 
@@ -89,10 +63,6 @@ export const useCreateRoutineStore = defineStore('createRoutine', () => {
     }
 
     function addExercise(cycleIndex, exercise, secs, reps) {    
-        pushExercise(cycleIndex, exercise, secs, reps)
-    }
-
-    function pushExercise(cycleIndex, exercise, secs, reps) {
         cycleList.value[cycleIndex].exercises.push( {
             name: exercise.name,
             sec: secs,
@@ -101,8 +71,8 @@ export const useCreateRoutineStore = defineStore('createRoutine', () => {
         });
     }
 
-    function deleteExercise() {
-        // TODO 
+    function deleteExercise(cycleIndex, exerciseIndex) {
+        cycleList.value[cycleIndex].exercises.splice(exerciseIndex, 1)
     }
     
     return { cycleList, init, routineExists, getCycleLenght, addCycle, deleteCycle, addExercise, deleteExercise }

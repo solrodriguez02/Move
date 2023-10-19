@@ -66,7 +66,7 @@
     </v-progress-circular>
 
     <v-slide-group v-else show-arrows class='carousel-exercises-box'>
-      <v-slide-group-item v-for="exercise in createRoutineStore.cycleList[cycleIndex].exercises" :key='exercise.name'>
+      <v-slide-group-item v-for="(exercise, index) in createRoutineStore.cycleList[cycleIndex].exercises" :key='exercise.name'>
         <div class='carousel-exercise'>
           <RouterLink class='carousel-link' to='/exercise'>
             <div class='image-container'>
@@ -81,8 +81,13 @@
                 </div>
               </div>
             </div>
-            <p class='carousel-exercise-name'> {{ exercise.name }} </p>
           </RouterLink>
+          <div class='bottom-container'>
+            <p class='carousel-exercise-name'> {{ exercise.name }} </p>
+            <button @click='deleteExercise(cycleIndex, index)'>
+              <v-icon icon='$delete' size='20' color='dark_gray'></v-icon>
+            </button>
+          </div>
         </div>
       </v-slide-group-item>
       <v-slide-group-item>
@@ -90,7 +95,7 @@
       </v-slide-group-item>
     </v-slide-group>
 
-    <button v-show='cycleIndex!=0 && cycleIndex!=1 && cycleIndex!=createRoutineStore.getCycleLenght() - 1' @click='deleteDialog = true' class='delete-exercise-button'>
+    <button v-show='cycleIndex!=0 && cycleIndex!=1 && cycleIndex!=createRoutineStore.getCycleLenght() - 1' @click='deleteDialog = true' class='delete-cycle-button'>
       <v-icon icon='$delete'/>
     </button>
 
@@ -267,6 +272,10 @@
 
   const addExercise = (cycleIdx, exercise) => {
     createRoutineStore.addExercise(cycleIdx, exercise, selectedSecValue.value, selectedRepValue.value)
+  }
+
+  const deleteExercise = (cycleIdx, exerciseIdx) => {
+    createRoutineStore.deleteExercise(cycleIdx, exerciseIdx)
   }
 </script>
 

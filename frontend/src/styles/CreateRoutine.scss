@@ -84,10 +84,11 @@
   .carousel-exercises-box {
     margin-right: 2%;
   }
+
   .carousel-reps {
     height: 100%;
     width: 2%;
-    margin: 2.5% 5% 2.5% 2.5%;
+    margin: 2.5% 60px 2.5% 2.5%;
   }
   
   .reps-text {
@@ -170,8 +171,15 @@
     padding: 5px 0 5px 0;
   }
   
+  .bottom-container {
+    display: flex;
+    justify-content: center;
+    padding: 0 10px;
+  }
+
   .carousel-exercise-name {
     margin-top: 2%;
+    margin-right: 10px;
     color: black;
     text-align: center;
     justify-content: center;
@@ -329,7 +337,7 @@
     text-align: center;
   }
   
-  .delete-exercise-button {
+  .delete-cycle-button {
     color: colors.$dark_gray;
     margin-left: auto;
     margin-right: 3%;

@@ -23,7 +23,7 @@ export default createVuetify({
           turquoise: '#0FC2C8',
           lightblue: '#2AAAF4',
           gray: '#E1E0E0',
-          dark_gray: '#616161'
+          dark_gray: '#3d3b42'
         },
       },
     },
