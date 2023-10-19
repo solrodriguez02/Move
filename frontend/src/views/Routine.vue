@@ -1,11 +1,11 @@
 <template>
-<div class = 'appbar' @click="goBack">
-  <v-icon icon='$back'></v-icon>
-  <p>{{ previousTabName }}</p>  
-</div>
 
-<div class='gray-section'>  
+  <div class = 'appbar' @click="goBack">
+    <v-icon icon='$back'></v-icon>
+    <p>{{ previousTabName }}</p>  
+  </div>
 
+  <div class='gray-section'>  
   <div class = 'top-bar'>
     <h2 class = 'highlight-text'>Full Body Session</h2>
     <div class = 'icons-top-right'>
@@ -22,7 +22,7 @@
         </template>
         <v-list width='180'>
           <v-list-item v-for='(option, index) in menuOptions' :key='index'>
-            <button class='menu-option'>
+            <button class='menu-option' @click='option.function'>
               <v-icon :icon='option.icon' class='menu-option-icon'/>
               <v-list-item-title>{{ option.title }}</v-list-item-title>
             </button>
@@ -31,6 +31,26 @@
       </v-menu>
     </div>
   </div>
+
+  <warning-dialog
+    v-model='deleteDialog'
+    title='Are you sure you want delete the routine?'
+    message="If you do so, your routine will be deleted permanently, you won't be able to recover it."
+    custom-button-text='Delete'
+    :on-custom-action='deleteRoutine'
+    :on-close='closeDeleteDialog'
+    type='alert'
+  />
+
+  <warning-dialog
+    v-model='shareDialog'
+    title='Share routine'
+    message="Press Copy Link to copy the routine's link to your clipboard."
+    custom-button-text='Copy Link'
+    :on-custom-action='shareRoutine'
+    :on-close='closeShareDialog'
+    type='informative'
+  />
 
   <div class = 'routine-general'> 
     <div class = 'img-section'>
@@ -110,23 +130,25 @@
 <script setup>
 
   import { ref } from 'vue'
-  import millImage from '@/assets/temporary/mill.png';
+  import millImage from '@/assets/temporary/mill.png'
   import legsUpImage from '@/assets/temporary/legsup.png';
-  import leftLungeImage from '@/assets/temporary/leftlunge.png';
-  import rightLungeImage from '@/assets/temporary/rightlunge.jpg';
-  import LegsDownImage from '@/assets/temporary/legsdown.png';
+  import leftLungeImage from '@/assets/temporary/leftlunge.png'
+  import rightLungeImage from '@/assets/temporary/rightlunge.jpg'
+  import LegsDownImage from '@/assets/temporary/legsdown.png'
   import { useRouter } from 'vue-router'
+  import WarningDialog from "@/components/WarningDialog.vue"
 
   const router = useRouter()
   const previousTabName = ref(null)
 
+  const cycleOptionIndex = ref(0)
+  const isFavorite = ref(false)
+  const deleteDialog = ref(false)
+  const shareDialog = ref(false)
+
   const goBack = () => {
     router.go(-1)
   }
-
-  const cycleOptionIndex = ref(0)
-
-  const isFavorite = ref(false)
 
   const selectCycleOptionIndex = (index) => {
     cycleOptionIndex.value = index
@@ -143,16 +165,46 @@
     }
   }
 
+  const showDeleteDialog = () => {
+    deleteDialog.value = true
+  }
+
+  const showShareDialog = () => {
+    shareDialog.value = true
+  }
+
+  const closeDeleteDialog = () => {
+    deleteDialog.value = false
+  }
+
+  const closeShareDialog = () => {
+    shareDialog.value = false
+  }
+
+  const deleteRoutine = () => {
+    // codigo para eliminar la rutina
+    router.go(-1)
+  }
+
+  const editRoutine = () => {
+    router.push('/createroutine')
+  }
+
+  const shareRoutine = async () => {
+    const link = router.currentRoute.value.fullPath;
+    await navigator.clipboard.writeText(link);
+    closeShareDialog()
+  }
+
   const menuOptions = ref([
-    { title:'Share', icon:'$share' },
-    { title:'Edit', icon:'$edit' },
-    { title:'Delete', icon:'$delete' },
+    { title:'Share', icon:'$share', function: showShareDialog },
+    { title:'Edit', icon:'$edit', function: editRoutine },
+    { title:'Delete', icon:'$delete', function: showDeleteDialog },
   ])
 
   const toggleFavorite = () => {
     isFavorite.value = !isFavorite.value;
   };
-
    
   const highlightsItems = ref([
     { name:'Difficulty', detail:'Medium difficulty', icon:'$flash', color:'turquoise'},
