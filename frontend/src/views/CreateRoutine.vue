@@ -15,6 +15,7 @@
     custom-button-text="Quit"
     :on-custom-action='quitCreateRoutine'
     :on-close='closeGoBackDialog'
+    type='alert'
   />
 
   <div class='header'>
@@ -122,6 +123,7 @@
       custom-button-text='Delete'
       :on-custom-action='deleteCycle'
       :on-close='closeDeleteDialog'
+      type='alert'
     />
     
   </v-sheet>
