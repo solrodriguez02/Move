@@ -13,7 +13,7 @@
           variant='outlined'
           clearable
           rounded
-          placeholder='Enter the exercise name'/>
+          placeholder='Enter the routine name'/>
         <div class='all-fields'>
           <div v-for='(field,index) in routineStore.filters' :key='field.label' :class="index === 0 || index === 2 ? 'field-left' : 'field-right'"> 
             <div class='field-header'>
