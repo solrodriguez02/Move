@@ -1,7 +1,9 @@
 <template>
-<div class = 'appbar' @click="goBack">
-  <v-icon icon='$back'></v-icon>
-  <p>{{ previousTabName }}</p>  
+<div class = 'appbar'>
+  <button @click="goBack" class="button">
+    <v-icon icon='$back'></v-icon>
+    <p>{{ getTab() }}</p>
+  </button>  
 </div>
 
 <div class='exercise'>
@@ -48,7 +50,10 @@
   import { useRouter } from 'vue-router'
 
   const router = useRouter()
-  const previousTabName = ref(null)
+
+  function getTab(){
+    return router.options.history.state.back 
+  }
 
   const goBack = () => {
     router.go(-1)
