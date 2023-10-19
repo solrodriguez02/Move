@@ -314,3 +314,4 @@
 </script>
 
 <style scoped src='@/styles/CreateRoutine.scss'></style>
+<style scoped src='@/styles/Globals.scss'></style>
