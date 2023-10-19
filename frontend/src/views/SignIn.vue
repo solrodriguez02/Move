@@ -28,11 +28,18 @@
             size="large"
             type="submit"
             variant="elevated"
-            @click = 'UserApi.login({ "username": formFields[0], "password": formFields[1]}, true);'
+            @click = 'login(formFields[0].value, formFields[1].value)'
             class='sign-button'>
             Sign In
             </v-btn>
-
+            <v-alert
+            v-show="hasError"
+            color="red"
+            closable
+            variant="tonal"
+            icon="$error"
+            title="Error"
+            :text= "error"></v-alert>
             <div class='other-option'>
                 <RouterLink to='/signup' class='link'> 
                     <p>Don't have an account? <strong>Sign up</strong> </p> 
@@ -49,9 +56,29 @@
 <script setup>
 import { RouterLink } from 'vue-router';
 import { ref } from 'vue';
-import { useAuthenticateStore } from '@/store/AuthenticationStore'
 import { UserApi, Credentials} from '@/api/user'
+import { useSecurityStore } from '@/store/SecurityStore'
+import { onBeforeMount } from 'vue';
 
+const securityStore = useSecurityStore()
+var hasError = ref(false);
+var error = ref(null);
+
+async function login(username, password){
+    try {
+        const credentials = new Credentials(username, password);
+        await securityStore.login(credentials, true);
+    }catch(error){  
+        hasError = true;
+        this.error = error.description;
+    }
+}
+
+onBeforeMount(() => {
+    const securityStore = useSecurityStore()
+    securityStore.initialize()
+})
+//todavia no funciona el llamado usando el login de api js
 const form = ref(false);
 const loading = ref(false);
 const formFields= ref([

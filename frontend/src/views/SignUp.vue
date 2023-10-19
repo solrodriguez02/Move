@@ -28,20 +28,7 @@
             size="large"
             type="submit"
             variant="elevated"
-            @click = 'authenticateStore.registerUser(
-{
-  "username": formFields[2].value,
-  "password": formFields[4].value,
-  "firstName": formFields[0].value,
-  "lastName": formFields[1].value,
-  "gender": "male",
-  "birthdate": 284007600000,
-  "email": formFields[3].value,
-  "phone": "98295822",
-  "avatarUrl": "https://flic.kr/p/3ntH2u",
-  "metadata": null
-}
-            )'
+            @click = 'registerUser(formFields[2].value, formFields[4].value, formFields[0].value, formFields[1].value, formFields[3].value)'
             class='sign-button'>
             Sign up
             </v-btn>
@@ -62,10 +49,13 @@
 <script setup>
 import { RouterLink } from 'vue-router';
 import { ref } from 'vue';
-import { useAuthenticateStore } from '@/store/AuthenticationStore'
-import { UserApi, Credentials } from '@/api/user.js'
+import { UserApi, PersonalInfo } from '@/api/user.js'
 
-const authenticateStore = useAuthenticateStore();
+async function registerUser(username, password, firstName, lastName, email){
+    const user = new PersonalInfo(username, password, firstName, lastName, email)
+    await UserApi.register(user);
+}
+
 const form = ref(false);
 const loading = ref(false);
 const formFields= ref([
