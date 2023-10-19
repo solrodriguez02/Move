@@ -7,8 +7,8 @@
         <v-card-title> {{ title }} </v-card-title>
         <v-card-text> {{ message }} </v-card-text>
         <v-card-actions class='buttons-box'>
-          <v-btn @click="handleClose" variant='outlined' rounded class='button'>Cancel</v-btn>
-          <v-btn @click="handleCustomAction" variant='outlined' color='red' rounded class='button'>{{ customButtonText }}</v-btn>
+          <v-btn @click='handleClose' variant='outlined' rounded class='button'>Cancel</v-btn>
+          <v-btn @click='handleCustomAction' variant='outlined' :color="type == 'alert'? 'red':'blue'" rounded class='button'>{{ customButtonText }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -18,7 +18,7 @@
 <script setup>
     import { defineProps } from "vue";
     
-    const { dialog, title, message, customButtonText, onCustomAction, onClose } = defineProps(["dialog", "title", "message", "customButtonText", "onCustomAction", "onClose"]);
+    const { dialog, title, message, customButtonText, onCustomAction, onClose, type } = defineProps(['dialog', 'title', 'message', 'customButtonText', 'onCustomAction', 'onClose', 'type']);
     
     const handleClose = () => {
         onClose()

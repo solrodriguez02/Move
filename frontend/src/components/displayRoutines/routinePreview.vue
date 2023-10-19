@@ -1,10 +1,10 @@
 <template>
-    <RouterLink to='/' class="text-decoration-none">
+    <RouterLink to='/' class='text-decoration-none'>
     <v-card 
             :class="['cardRoutine', image]"
             @click="toggle" 
-            color="grey-lighten-1"> 
-            <div class="text-right image-container">
+            color='gray'> 
+            <div class='text-right image-container'>
               <v-img 
                     :src="`https://cdn.vuetifyjs.com/images/${r.src}`" 
                     :alt="r.name" class="imgRoutine"

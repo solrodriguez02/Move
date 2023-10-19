@@ -51,9 +51,17 @@ import { RouterLink } from 'vue-router';
 import { ref } from 'vue';
 import { UserApi, PersonalInfo } from '@/api/user.js'
 
+var hasError = ref(true);
+var error = ref(null);
+
 async function registerUser(username, password, firstName, lastName, email){
+    try{
     const user = new PersonalInfo(username, password, firstName, lastName, email)
     await UserApi.register(user);
+    }catch(error){  
+        hasError = true;
+        this.error = error.description;
+    }
 }
 
 const form = ref(false);
