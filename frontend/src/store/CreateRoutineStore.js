@@ -72,17 +72,22 @@ export const useCreateRoutineStore = defineStore('createRoutine', () => {
         cycleList.value = cycles
     }
 
-    function getLastCycleIndex() {
-        return cycleList.value.length - 1
+    function getCycleLenght() {
+        return cycleList.value.length
     }
     
     function addCycle() {    
-        cycleList.value.push({
-            name: 'Cycle ' + (cycleList.value.length - 1),
+        const position = getCycleLenght() - 1;
+        cycleList.value.splice(position, 0, {
+            name: 'Cycle ' + position,
             icon: '$fire',
             reps: 1,
             exercises: ref([])
-        })
+        });
+    }
+
+    function deleteCycle(index) {
+        cycleList.value.splice(index, 1);
     }
 
     /*
@@ -101,5 +106,5 @@ export const useCreateRoutineStore = defineStore('createRoutine', () => {
     }
     */
 
-    return { cycleList, init, routineExists, getLastCycleIndex, addCycle }
+    return { cycleList, init, routineExists, getCycleLenght, deleteCycle, addCycle }
 })

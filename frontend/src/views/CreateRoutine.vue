@@ -26,31 +26,21 @@
     <p class='cycle-text'>Cycles</p>
     <v-slide-group
       show-arrows>
-      <v-slide-group-item v-for="(cycle, index) in createRoutineStore.cycleList" :key="cycle.name">
-        <button v-show="index < lastCycleIndex" @click="selectCycleIndex(index)">
+      <v-slide-group-item v-for='(cycle, index) in createRoutineStore.cycleList' :key='cycle.name'>
+        <button @click='selectCycleIndex(index)'>
           <div :class="cycleIndex === index ? 'carousel-cycle-active' : 'carousel-cycle'">
             <v-icon :icon='cycle.icon' class='cycle-icon'/>
             <p class='cycle-name'> {{ cycle.name }} </p>
           </div>
         </button>
-      </v-slide-group-item>
-      <v-slide-group-item>
-        <button @click="addCycle">
+        <button v-show='index == createRoutineStore.getCycleLenght() - 2 && createRoutineStore.getCycleLenght() < 10' @click='addCycle'>
           <div class='carousel-add'>
             <v-icon icon='$add'/>
           </div>
         </button>
       </v-slide-group-item>
-      <v-slide-group-item>
-        <button @click="selectCycleIndex(lastCycleIndex)">
-          <div :class="cycleIndex === lastCycleIndex ? 'carousel-cycle-active' : 'carousel-cycle'">
-            <v-icon :icon='createRoutineStore.cycleList[lastCycleIndex].icon' class='cycle-icon'/>
-            <p class='cycle-name'> {{ createRoutineStore.cycleList[lastCycleIndex].name }} </p>
-          </div>
-        </button>
-      </v-slide-group-item>
     </v-slide-group>
-  </v-sheet>
+  </v-sheet>  
   </div>
 
   <h4>Add your exercises</h4>
@@ -100,14 +90,14 @@
       </v-slide-group-item>
     </v-slide-group>
 
-    <button @click='deleteDialog = true' class='delete-exercise-button'>
+    <button v-show='cycleIndex!=0 && cycleIndex!=1 && cycleIndex!=createRoutineStore.getCycleLenght() - 1' @click='deleteDialog = true' class='delete-exercise-button'>
       <v-icon icon='$delete'/>
     </button>
 
     <warning-dialog
       v-model="deleteDialog"
-      title="Are you sure you want to delete this cycle?"
-      message="If you delete this cycle, all the exercises will be deleted too."
+      title='Are you sure you want to delete this cycle?'
+      message='If you delete this cycle, all the exercises will be deleted too.'
       custom-button-text="Delete"
       :on-custom-action="applyDelete"
       :on-close="closeDeleteDialog"
@@ -191,7 +181,7 @@
   </div>
 
   <div class='exercise-search'>
-    <div class='rest' onclick="">
+    <div class='rest' @click=''>
       <v-icon icon='$add'/>
       <v-icon icon='$rest' class='rest-item'/>
       <p class='rest-item'>Rest</p>
@@ -206,7 +196,7 @@
 
     <div v-else class='exercises' v-for='exercise in exerciseStore.exerciseList' :key='exercise.name'>
       <div class='exercise'>
-        <div class='add' onclick="">
+        <div class='add' @click='addExerciseToCycle(cycleIndex, exercise.ID)'>
           <v-icon icon='$add'/>
           <div class='exercise-image-box'>
             <img :src='exercise.image' :alt='exercise.name' class='exercise-image'/>
@@ -237,14 +227,12 @@
   const exerciseStore = useExerciseStore()
   const createRoutineStore = useCreateRoutineStore()
   const routineStore = useRoutineStore()
-
   const loading = ref(false)
-  const filterDialog = ref(false);
-  const deleteDialog = ref(false);
+  const filterDialog = ref(false)
+  const deleteDialog = ref(false)
   const selectedSecValue = ref(30)
   const selectedRepValue = ref('-')
   const cycleIndex = ref(0)
-  const lastCycleIndex = createRoutineStore.getLastCycleIndex()
 
   onBeforeMount (async () => {
     loading.value = true
@@ -257,24 +245,28 @@
   }
 
   const applyDelete = () => {
-    deleteDialog.value = false;
-    // codigo para eliminar un ejercicio del cyclo
+    deleteDialog.value = false
+    createRoutineStore.deleteCycle(cycleIndex.value)
+    selectCycleIndex(cycleIndex.value - 1)
   };
 
   const closeDeleteDialog = () => {
-    deleteDialog.value = false;
+    deleteDialog.value = false
   };
 
   const applyFilters = () => {
-    filterDialog.value = false;
+    filterDialog.value = false
     // codigo para aplicar los filtros
   };
 
   const addCycle = () => {
     createRoutineStore.addCycle()
-    selectCycleIndex(lastCycleIndex)
+    selectCycleIndex(createRoutineStore.getCycleLenght() - 2) 
   }
 
+  const addExerciseToCycle = (cycleIdx, exerciseID) => {
+    createRoutineStore.addExerciseToCycle(cycleIdx, exerciseStore.getExercise(exerciseID))
+  }
 </script>
 
 <style scoped src='@/styles/CreateRoutine.scss'></style>
