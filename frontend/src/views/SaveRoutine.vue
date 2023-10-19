@@ -74,10 +74,10 @@ const form = ref({
 })
 
 const placeholders = ref([
-    'Enter the exercise difficulty',
-    'Does the exercise require any element?',
+    'Enter the routine difficulty',
+    'Does the routine require any element?',
     'How much space is it necesary?',
-    'Which approach does your exercise represent the most?'
+    'Which approach does your routine represent the most?'
 ])
 
 const onSubmit = () => {
