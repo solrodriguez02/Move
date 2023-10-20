@@ -72,5 +72,5 @@ export const useCreateRoutineStore = defineStore('createRoutine', () => {
         cycleList.value[cycleIndex].exercises.splice(exerciseIndex, 1)
     }
     
-    return { cycleList, init, routineExists, getCycleLenght, addCycle, deleteCycle, addExercise, deleteExercise }
+    return { cycleList, init, getCycleLenght, addCycle, deleteCycle, addExercise, deleteExercise }
 })
