@@ -8,35 +8,35 @@ class RoutineApi {
     }
 
     static async createRoutine(routineInfo, controller){
-        return await Api.post(UserApi.getUrl(), true, routineInfo, controller);
+        return await Api.post(RoutineApi.getUrl(), true, routineInfo, controller);
     }
 
     static async getAllRoutine(routineInfo, controller){
-        return await Api.get(UserApi.getUrl(), true, routineInfo, controller);
+        return await Api.get(RoutineApi.getUrl(), true, routineInfo, controller);
     }
 
     static async modifyRoutine(idRoutine, routineInfo, controller){
-        return await Api.put(UserApi.getUrl(idRoutine), true, routineInfo, controller);
+        return await Api.put(RoutineApi.getUrl(idRoutine), true, routineInfo, controller);
     }
 
     static async deleteRoutine(idRoutine, routineInfo, controller){
-        return await Api.delete(UserApi.getUrl(idRoutine), true, routineInfo, controller);
+        return await Api.delete(RoutineApi.getUrl(idRoutine), true, routineInfo, controller);
     }   
     
     static async createCycle(idRoutine, cycleInfo, controller){
-        return await Api.post(UserApi.getUrl(idRoutine.append("/cycles")), true, cycleInfo, controller);
+        return await Api.post(RoutineApi.getUrl(idRoutine.append("/cycles")), true, cycleInfo, controller);
     }
 
     static async getAllRoutineCycles(idRoutine, routineInfo, controller){
-        return await Api.get(UserApi.getUrl(idRoutine.append("/cycles")), true, routineInfo, controller);
+        return await Api.get(RoutineApi.getUrl(idRoutine.append("/cycles")), true, routineInfo, controller);
     }
 
     static async modifyCycle(idRoutine, idCycle, cycleInfo, controller){
-        return await Api.put(UserApi.getUrl(idRoutine.append("/cycles/")).append(idCycle), true, cycleInfo, controller);
+        return await Api.put(RoutineApi.getUrl(idRoutine.append("/cycles/")).append(idCycle), true, cycleInfo, controller);
     }
 
     static async deleteCycle(idRoutine, idCycle, controller){
-        return await Api.delete(UserApi.getUrl(idRoutine.append("/cycles/")).append(idCycle), true, controller);
+        return await Api.delete(RoutineApi.getUrl(idRoutine.append("/cycles/")).append(idCycle), true, controller);
     }
 }
 
