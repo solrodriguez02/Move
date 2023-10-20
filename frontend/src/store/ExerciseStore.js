@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import Exercises from '@/api/Exercises'
+import { exerciseInfo, exerciseApi } from '@/api/exercises'
 
 /* 
   Campos que creo q deberian ir en exercise: 
@@ -49,8 +50,9 @@ export const useExerciseStore = defineStore('exercise', () => {
         })
     }
     
-    function addExercise(exercise) {    
+    async function addExercise(exercise) {    
         if (exerciseExists(exercise.name)) return
+        await exerciseApi.createExercise(exercise, true);
         pushExercise(exercise)
     }
 
