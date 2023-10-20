@@ -75,6 +75,16 @@ const router = createRouter({
       component: () => import('@/views/MyExercises.vue')
     },
     {
+      path: '/editprofile',
+      name: 'edit profile',
+      component: () => import('@/views/EditProfile.vue')
+    },
+    {
+      path: '/verifyemail',
+      name: 'verify email',
+      component: () => import('@/views/VerifyEmail.vue')
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'notfound',
       component: () => import('@/views/NotFound.vue')
