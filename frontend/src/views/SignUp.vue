@@ -16,6 +16,7 @@
                 clearable
                 rounded
                 :placeholder='field.placeholder'
+                :type="field.label === 'Password' || field.label === 'Repeat password' ? 'password' : 'text'"
                 />
             </div>
 

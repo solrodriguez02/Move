@@ -7,17 +7,18 @@
             @submit.prevent="onSubmit">
 
             <div class='field' v-for='field in formFields' :key='field.label'>
-                <div class='field-text'> {{field.label}} </div>
-                <v-text-field
-                v-model="field.value"
-                :readonly="loading"
-                :rules="[required]"
-                variant="outlined"
-                clearable
-                rounded
-                :placeholder='field.placeholder'
-                />
-            </div>
+    <div class='field-text'> {{field.label}} </div>
+    <v-text-field
+        v-model="field.value"
+        :readonly="loading"
+        :rules="[required]"
+        variant="outlined"
+        clearable
+        rounded
+        :placeholder='field.placeholder'
+        :type="field.label === 'Password' ? 'password' : 'text'"
+    />
+</div>
 
             <v-btn
             :disabled="!form"
@@ -56,7 +57,7 @@
 <script setup>
 import { RouterLink } from 'vue-router';
 import { ref } from 'vue';
-import { UserApi, Credentials} from '@/api/user'
+import { Credentials} from '@/api/user'
 import { useSecurityStore } from '@/store/SecurityStore'
 import { onBeforeMount } from 'vue';
 
