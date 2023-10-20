@@ -15,9 +15,6 @@ export const useCreateRoutineStore = defineStore('createRoutine', () => {
 
     */
     
-    function routineExists() {
-        return false
-    }
 
     /*function fetchRoutine(name) {
         return new Promise((resolve) => {

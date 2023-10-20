@@ -126,4 +126,7 @@ function getRoutine(id, okCallback) {
 
   }
   
+  
+
+
 export default { getRoutines, getRoutine, routines }

@@ -13,7 +13,7 @@
     title='Are you sure you want to quit this page?'
     message='If you do so, your routine will be deleted. Press Cancel to continue editing and then go to "next" to save your changes.'
     custom-button-text="Quit"
-    :on-custom-action='quitCreateRoutine'
+    :on-custom-action="() => quitCreateRoutine(getTab())"
     :on-close='closeGoBackDialog'
     type='alert'
   />
@@ -295,8 +295,8 @@
     goBackDialog.value = false;
   }
 
-  const quitCreateRoutine = () => {
-    router.go(-1);
+  const quitCreateRoutine = (path) => {
+    router.push(path)
   }
 
   const applyFilters = () => {

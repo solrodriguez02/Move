@@ -16,4 +16,40 @@ function getExercises(okCallback) {
     setTimeout(() => okCallback(exercises), 3000)
 }
   
-export default { getExercises }
+class exerciseApi {
+    static getUrl(slug) {
+        return `${Api.baseUrl}/exercises${ slug ? `/${slug}` : ""}`;
+    }
+
+    static async getAllExercises(controller){
+        return await Api.get(UserApi.getUrl(), true, controller);
+    }
+
+    static async createExercise(exerciseInfo, controller){
+        return await Api.post(UserApi.getUrl(), true, exerciseInfo, controller);
+    }
+
+    static async getExercise(idExercise, controller){
+        return await Api.get(UserApi.getUrl(idExercise), true, controller);
+    }
+    
+    static async modifyExercise(idExercise, exerciseInfo, controller){
+        return await Api.put(UserApi.getUrl(idExercise), true, exerciseInfo, controller);
+    }
+
+    static async deleteExercise(idExercise, controller){
+        return await Api.delete(UserApi.getUrl(idExercise), true, controller);
+    }   
+}
+
+
+class exerciseInfo{
+    constructor(name, detail, type, metadata){
+        this.name = name;
+        this.detail = detail;
+        this.type = type;
+        this.metadata = metadata;
+    }
+}
+
+export {getExercises, exerciseApi, exerciseInfo, exercises}
