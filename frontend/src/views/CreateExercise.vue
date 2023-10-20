@@ -7,7 +7,7 @@
       
     <div class='field-text-box'> Name </div>
       <v-text-field
-      :v-model='form.name'
+      :v-model='formFields[0].value'
       :readonly='loading'
       :rules='[required]'
       variant='outlined'
@@ -23,7 +23,7 @@
           <div class='field-text aligned-text' > {{ field.label }} </div>
         </div>
       <v-select
-        :v-model='form[field.formID]'
+        :v-model='formFields[index+3].value'
         :items='field.items'
         :multiple="field.label == 'Elements required' || field.label =='Muscle groups'"
         :chips="field.label == 'Elements required' || field.label =='Muscle groups'"
@@ -35,7 +35,7 @@
   </div>
   <div class='field-text-box'> Description </div>
     <v-textarea
-      :v-model='form.detail'
+      :v-model='formFields[1].value'
       auto-grow
       variant='outlined'
       rows='3'
@@ -46,7 +46,7 @@
     <div class='field-box'>
       <div class='field-text-box'> Image </div>
         <v-file-input
-          :v-model='form.image'
+          :v-model='formFields[2].value'
           label='Attach a representative image for the exercise'
           variant='outlined'
           rounded/>
@@ -70,21 +70,23 @@
 <script setup>
   import { ref } from 'vue'
   import { useExerciseStore } from '@/store/ExerciseStore'
-  import { exerciseInfo } from '@/api/Exercise';
+  import { exerciseInfo } from '@/api/exercises';
 
   const exerciseStore = useExerciseStore()
   const loading = ref(false);
   const exerciseCreated = ref(false);
 
-  const form = ref({
-    name: '',
-    detail: '',
-    image: '',
-    difficulty: '',
-    muscleGroup: '',
-    elements: '', 
-    space: '',
-  })
+  const formFields= ref([
+    { label: 'name', value: null },
+    { label: 'detail', value: null },
+    { label: 'image', value: null },
+    { label: 'difficulty', value: null },
+    { label: 'muscleGroups', value: null },
+    { label: 'elements', value: null },
+    { label: 'space', value: null },
+])
+
+  const form = ref(false)
 
   const placeholders = ref([
     'Enter the exercise difficulty',

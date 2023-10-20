@@ -1,7 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import exercises from '@/api/exercises'
-import { exerciseInfo, exerciseApi } from '@/api/exercises'
+import { exerciseInfo, exerciseApi, getExercises } from '@/api/exercises'
 
 /* 
   Campos que creo q deberian ir en exercise: 
@@ -22,7 +21,7 @@ export const useExerciseStore = defineStore('exercise', () => {
 
     function fetchExercises() {
         return new Promise((resolve) => {
-            exercises.getExercises((exercises) => {
+            getExercises((exercises) => {
               setExercises(exercises)
               resolve()
             })
@@ -45,7 +44,7 @@ export const useExerciseStore = defineStore('exercise', () => {
             muscleGroup: exercise.muscleGroup,
             elements: exercise.elements, 
             space: exercise.space,
-            description: exercise.description,
+            detail: exercise.detail,
             image: exercise.image
         })
     }

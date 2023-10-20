@@ -1,3 +1,5 @@
+import { Api } from "./api.js";
+
 class cycleApi {
     static getUrl(slug) {
         return `${Api.baseUrl}/cycles${ slug ? `/${slug}` : ""}`;
