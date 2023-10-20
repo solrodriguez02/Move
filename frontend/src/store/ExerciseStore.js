@@ -21,23 +21,22 @@ export const useExerciseStore = defineStore('exercise', () => {
 
     async function fetchExercises() {
         const exercises = await exerciseApi.getAllExercises(true)
-        console.log(exercises.content[0])
-        filterExercises(exercises.content)
+        filterExercises(exercises.content, exercises.content.length)
     }
 
-    function filterExercises(exercises ) {
-        for (let i = 0; i < 2; i++) {
+    function filterExercises(exercises, exerciseCount) {
+        for (let i = 0; i < exerciseCount; i++) {
             const exercise = exercises[i]
-            console.log(exercise)
             if(exercise.image == null) {
                 exercise.image = 'https://static.vecteezy.com/system/resources/previews/006/923/598/non_2x/running-man-abstract-logo-free-vector.jpg'
             }
-            pushExercise(exercise.name, exercise.detail, exercise.image, exercise.difficulty, exercise.muscleGroups, exercise.elements, exercise.space )
+            pushExercise(exercise.id, exercise.name, exercise.detail, exercise.image, exercise.difficulty, exercise.muscleGroups, exercise.elements, exercise.space )
         }
     }
 
-    function pushExercise(name, detail, image, difficulty, muscleGroup, elements, space) {
+    function pushExercise(id, name, detail, image, difficulty, muscleGroup, elements, space) {
         exerciseList.value.push({
+            id: id,
             name: name,
             detail: detail,
             image: image,
@@ -50,7 +49,7 @@ export const useExerciseStore = defineStore('exercise', () => {
     
     async function addExercise(exercise) {    
         await exerciseApi.createExercise(exercise, true);
-        pushExercise(exercise.name, exercise.detail, exercise.image, exercise.difficulty, exercise.muscleGroup, exercise.elements, exercise.space)
+        pushExercise(exercise.id, exercise.name, exercise.detail, exercise.image, exercise.difficulty, exercise.muscleGroup, exercise.elements, exercise.space)
     }
 
     function deleteExercise(id) {

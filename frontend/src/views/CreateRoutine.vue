@@ -108,7 +108,7 @@
         </div>
       </v-slide-group-item>
       <v-slide-group-item>
-        <div class='carousel-empty-exercise'></div>
+        <div v-show='getExercisesLenght(cycleIndex) < maxExerciseCount' class='carousel-empty-exercise'></div>
       </v-slide-group-item>
     </v-slide-group>
 
@@ -259,6 +259,7 @@
   const selectedSecValue = ref(30)
   const selectedRepValue = ref('-')
   const cycleIndex = ref(0)
+  const maxExerciseCount = ref(15)
   const router = useRouter()
 
   onBeforeMount (async () => {
@@ -304,8 +305,13 @@
     // codigo para aplicar los filtros
   }
 
+  const getExercisesLenght = (cycleIdx) => {
+    return createRoutineStore.cycleList[cycleIdx].exercises.length
+  }
+
   const addExercise = (cycleIdx, exercise) => {
-    createRoutineStore.addExercise(cycleIdx, exercise, selectedSecValue.value, selectedRepValue.value)
+    if(getExercisesLenght(cycleIdx) <= maxExerciseCount.value) 
+      createRoutineStore.addExercise(cycleIdx, exercise, selectedSecValue.value, selectedRepValue.value)
   }
 
   const deleteExercise = (cycleIdx, exerciseIdx) => {
