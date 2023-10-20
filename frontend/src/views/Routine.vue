@@ -16,7 +16,7 @@
   <div class='gray-section'>  
 
       <div class = 'top-bar'>
-        <h2 class = 'highlight-text'>Full Body Session</h2>
+        <h2 class = 'highlight-text'>{{ data.name }}</h2>
         <div class = 'icons-top-right'>
 
           <button @click="toggleFavorite" class='favorite-button'>
@@ -64,8 +64,8 @@
   <div class = 'routine-general'> 
     <div class = 'img-section'>
       <div class = 'header-info'>
-        <img src='@/assets/temporary/profile-pic.png' alt='profile picture' height='50' width='50' class='image-profile'/>
-        <p class='username'>By {{ data.username }}</p>
+        <img :src='data.username.img' alt='profile picture' height='50' width='50' class='image-profile'/>
+        <p class='username'>By {{ data.username.name }}</p>
         <div class = 'total-duration'>
           <v-icon icon= '$time' color='blue'></v-icon>
           <p class='time-text'>{{ data.time }}</p>
@@ -175,6 +175,8 @@
     
   }) 
 
+  const cycles = ref([])
+
   function loadData(){
    
     data.value = routineStore.getRoutineData()
@@ -189,10 +191,20 @@
       { name:'Space', detail:space, icon:'$space', color:'violet' },
   ];
 
-  cycles.value[0].exercises = data.value.warm
-  cycles.value[1].exercises = data.value.cycles
-  cycles.value[2].exercises = data.value.cooling
 
+  cycles.value.push({ name:'Warm up', reps:1, exercises: data.value.warm})
+  
+  var aux
+  for (var c=0; c<data.value.cycles.length ; c++) {
+    aux = []
+    for (var i=0; i<data.value.cycles[c].exercises.length ; i++){
+      aux.push( data.value.cycles[c].exercises[i])
+    }
+      
+    cycles.value.push({ name:'Cycle '+c, reps:data.value.cycles[c].reps, exercises: aux})
+  }
+  
+  cycles.value.push({ name:'Cooling', reps:1, exercises: data.value.cooling})
 
   }
 
@@ -212,7 +224,7 @@
     switch(index) {
       case 0: 
         return cycleOptionIndex.value == 0
-      case lastCycleIndex: 
+      case data.value.cycles.length+1: 
         return cycleOptionIndex.value == lastCycleOptionIndex
       default: 
         return cycleOptionIndex.value == 1
@@ -275,11 +287,6 @@
     { name:'Left leg lunge', sec:'-', reps: 15, image: leftLungeImage },
   ])
 
-  const cycles = ref([
-    { name:'Warm up', icon:'$warm', reps:1, exercises: null},
-    { name:'Cycle 1', icon:'$fire', reps:0, exercises: null},
-    { name:'Cooling', icon:'$cool', reps:1, exercises: null}
-  ])
 
   const cyclesOptions = ref([
     { name:'Warm up', icon:'$warm' },

@@ -75,21 +75,34 @@ const routinesData = ref(
     highlights: [
       0, ["glutes", "quads"], ["none"], 0
     ], 
-    username:'Riquelme',
+    username: {
+      name: 'Riquelme',
+      img: 'https://storage.googleapis.com/sworkit-assets/images/exercises/standard/middle-frame/step-touch.jpg'
+    },
     time:'30 m',
     warm: [
-      { name:'Left leg lunge', sec:30, reps: '-', image: 'rightlunge.jpg' },
+      { name:'Left leg lunge', sec:30, reps: '-', image: 'https://storage.googleapis.com/sworkit-assets/images/exercises/standard/middle-frame/step-touch.jpg' },
     ],
-    cycles: [
-      [
-        { name:'Left leg lunge', sec:30, reps: '-', image: 'rightlunge.jpg' },
-        { name:'Right leg lunge', sec:30, reps: '-', image: 'rightlunge.jpg' },
-        { name:'Mill', sec:30, reps: '-', image: 'mill.png' },
-        { name:'Legs up', sec:60, reps: 15, image: 'legsUp.png' },
-      ]
+    cycles: [ {
+      exercises: [
+        { name:'Left leg lunge', sec:30, reps: '-', image: 'https://storage.googleapis.com/sworkit-assets/images/exercises/standard/middle-frame/step-touch.jpg' },
+        { name:'Right leg lunge', sec:30, reps: '-', image: 'https://storage.googleapis.com/sworkit-assets/images/exercises/standard/middle-frame/step-touch.jpg' },
+        { name:'Mill', sec:30, reps: '-', image: 'https://storage.googleapis.com/sworkit-assets/images/exercises/standard/middle-frame/step-touch.jpg' },
+        { name:'Legs up', sec:60, reps: 15, image: 'https://storage.googleapis.com/sworkit-assets/images/exercises/standard/middle-frame/step-touch.jpg' },
+      ],
+      reps: 2
+    },
+    {
+      exercises: [
+        { name:'Left leg lunge', sec:30, reps: '-', image: 'https://storage.googleapis.com/sworkit-assets/images/exercises/standard/middle-frame/step-touch.jpg' },
+        { name:'Mill', sec:30, reps: '-', image: 'https://storage.googleapis.com/sworkit-assets/images/exercises/standard/middle-frame/step-touch.jpg' },
+        { name:'Legs up', sec:60, reps: 15, image: 'https://storage.googleapis.com/sworkit-assets/images/exercises/standard/middle-frame/step-touch.jpg' },
+      ],
+      reps: 1
+    },
     ],
     cooling: [
-      { name:'Left leg lunge', sec:30, reps: '-', image: 'rightlunge.jpg' },
+      { name:'Left leg lunge', sec:30, reps: '-', image: 'https://storage.googleapis.com/sworkit-assets/images/exercises/standard/middle-frame/step-touch.jpg' },
     ]
   },
   ]
