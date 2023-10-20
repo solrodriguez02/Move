@@ -75,7 +75,7 @@ export const useRoutineStore = defineStore('routine', () => {
             // mando a api
           }
         } 
-        const ans = Routines.routines;
+        const ans = routines.routines;
         //fetchRoutines()
         
         if ( searchInApi=='notFound' )      

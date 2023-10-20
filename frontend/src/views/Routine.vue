@@ -120,9 +120,9 @@
           <label v-show="exercise.sec!='-'" class='exercise-time'> {{ exercise.sec + 's'}} </label>
           <v-icon v-show="exercise.reps!='-'" icon='$reps' size='20' class='exercise-icon'/>
           <label v-show="exercise.reps!='-'" class='exercise-time'> {{ exercise.reps + ' reps'}} </label>
-        <div class='next-icon'>
-          <RouterLink to='/exercise'>
-              <v-icon icon='$next' color='dark_gray'/>
+        <div class='next-icon'> 
+          <RouterLink :to="`/exercise/${exercise.id}`" >
+              <v-icon icon='$next' color='dark_gray' @click="excercise!=undefined? console.log(excercise.id):console.log(2)" />
           </RouterLink>
         </div>
       </div>
@@ -141,11 +141,6 @@
 <script setup>
 
   import { ref,onBeforeMount } from 'vue'
-  import millImage from '@/assets/temporary/mill.png'
-  import legsUpImage from '@/assets/temporary/legsup.png';
-  import leftLungeImage from '@/assets/temporary/leftlunge.png'
-  import rightLungeImage from '@/assets/temporary/rightlunge.jpg'
-  import LegsDownImage from '@/assets/temporary/legsdown.png'
   import { useRouter,useRoute } from 'vue-router'
   import WarningDialog from "@/components/WarningDialog.vue"
   import { useNavigationStore } from '@/store/NavigationStore'
@@ -270,22 +265,10 @@
 
   const toggleFavorite = () => {
     isFavorite.value = !isFavorite.value;
+    //todo post de fav
   };
    
-  const difficulty = ['Easy', 'Medium', 'Difficult']
   const highlightsItems = ref([])
-    
-  const cycleExercises = ref([])
-
-  const cycleExercises1 = ref([
-    { name:'Left leg lunge', sec:30, reps: '-', image: leftLungeImage },
-    { name:'Right leg lunge', sec:30, reps: '-', image: rightLungeImage },
-    { name:'Legs down', sec:30, reps: 15, image: LegsDownImage },
-    { name:'Mill', sec:45, reps: '-', image: millImage },
-    { name:'Mill', sec:30, reps: '-', image: millImage },
-    { name:'Legs up', sec:60, reps: 15, image: legsUpImage },
-    { name:'Left leg lunge', sec:'-', reps: 15, image: leftLungeImage },
-  ])
 
 
   const cyclesOptions = ref([
@@ -295,7 +278,6 @@
   ])
 
   const lastCycleOptionIndex = cyclesOptions.value.length - 1
-  const lastCycleIndex = cycles.value.length - 1
 
   </script>
 

@@ -20,8 +20,8 @@ const router = createRouter({
       component: () => import('@/views/MyRoutines.vue')
     },
     {
-      path: '/exercise',
-      name: 'exercise',
+      path: '/exercise/:exerciseId',
+      name: 'exercise/:exerciseId',
       component: () => import('@/views/Exercise.vue')
     },
     {

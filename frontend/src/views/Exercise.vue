@@ -45,13 +45,26 @@
 </template>
 
 <script setup>
-  import { ref } from 'vue'
-  import { useRouter } from 'vue-router'
+  
+  import { ref,onBeforeMount } from 'vue'
+  import { useRouter, useRoute } from 'vue-router'
   import { useNavigationStore } from '@/store/NavigationStore'
-
+  //import { useExerciseStore } from '@/store/ExerciseStore';
+  
   const router = useRouter()
-
+  const route = useRoute()
   const navigationStore= useNavigationStore()
+  const loading = ref(false)
+ // const excerciseStore = useExerciseStore()
+
+  onBeforeMount (async () => {
+    console.log(route.params.exerciseId)
+    loading.value = true
+  //  await excerciseStore.fetchExercises( )
+    loading.value = false 
+    loadData()
+    
+  }) 
 
   function getTab() {
     return router.options.history.state.back
