@@ -31,7 +31,6 @@ export const useSecurityStore = defineStore("security", {
             Api.token = token
         },
         updateToken(token, rememberMe) {
-            if (rememberMe)
             //se guarda en el localStorage
             localStorage.setItem(SECURITY_TOKEN_KEY, token)
             //se actualiza el token para que se pueda usar

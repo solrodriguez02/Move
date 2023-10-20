@@ -80,6 +80,7 @@ class Api {
   }
 
   static async post(url, secure, data, controller) {
+    debugger;
     return await Api.fetch(url, secure, Api.createCallInfo(data, 'POST'), controller);
   }
 
@@ -90,4 +91,8 @@ class Api {
   static async delete(url, secure, controller) {
     return await Api.fetch(url, secure, Api.createCallInfo({}, 'DELETE'), controller);
   }
+  static setToken(token) {
+    this.token = token;
+  }
+
 }
