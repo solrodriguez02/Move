@@ -172,7 +172,7 @@
       </v-card>
     </v-dialog>
       
-      <RouterLink to='/createexercise' class='new-button'>
+      <RouterLink to='/createexercise' class='new-exercise-button'>
         <button >
           <p>New exercise</p>
         </button>
@@ -314,3 +314,4 @@
 </script>
 
 <style scoped src='@/styles/CreateRoutine.scss'></style>
+<style scoped src='@/styles/Globals.scss'></style>

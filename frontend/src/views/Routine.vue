@@ -288,3 +288,4 @@
   </script>
 
   <style scoped src='@/styles/Routine.scss'></style>
+  <style scoped src='@/styles/Globals.scss'></style>

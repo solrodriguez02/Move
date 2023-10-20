@@ -52,6 +52,14 @@ export const useRoutineStore = defineStore('routine', () => {
     function setRoutine(routineFound) {
       routineData.value = routineFound
     }
+     
+    function addRoutine() {
+      // ToDo
+    }
+
+    function deleteRoutine() {
+      // ToDo
+    }
 
     function getDataCategory(headline,data){
         // pido a api
@@ -76,9 +84,11 @@ export const useRoutineStore = defineStore('routine', () => {
         return ans;    
     }
 
+
     function getRoutineData(){
       console.log('jsjs'+ routineData.value.id);
       return routineData.value;
     }
-    return { routineList, routineData, fetchRoutines, fetchRoutine, getDataCategory, searchRutine, getRoutineData, filters, secOptions, repOptions, cycleRepOptions }
+    return { routineList, routineData, fetchRoutines, fetchRoutine, getDataCategory, searchRutine, getRoutineData, filters, secOptions, repOptions, cycleRepOptions, deleteRoutine, addRoutine }
+
 })

@@ -54,5 +54,9 @@ export const useExerciseStore = defineStore('exercise', () => {
         pushExercise(exercise)
     }
 
-    return { exerciseList, filters, fetchExercises, exerciseExists, addExercise }
+    function deleteExercise(id) {
+        // falta implementar
+    }
+
+    return { exerciseList, filters, fetchExercises, exerciseExists, addExercise, deleteExercise }
 })

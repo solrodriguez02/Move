@@ -32,7 +32,8 @@
     import { ref } from 'vue'
     const menuItems = ref([
           { title: 'Explore', path: '/explore'},
-          { title: 'My Routines', path: '/myroutines'}
+          { title: 'My Routines', path: '/myroutines'},
+          { title: 'My Exercises', path: '/myexercises'}
      ])
   </script>
 

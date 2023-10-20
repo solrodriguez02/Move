@@ -1,18 +1,6 @@
 @use 'colors'; 
  
-  .appbar {
-    display: flex;
-    margin-left: 2%;
-    font-weight: bold;
-    color: colors.$dark_gray;
-    justify-content: flex-start;
-    align-items: center;
-  }
 
-  .button {
-    display: flex;
-    align-items: center;
-  }
   .create-routine {
     margin: 0 4%;
   }
@@ -215,7 +203,7 @@
     margin: 10px 24px;
   }
   
-  .new-button {
+  .new-exercise-button {
     height: 90%;
     width: 160px;
     display: flex;

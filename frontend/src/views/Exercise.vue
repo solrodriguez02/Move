@@ -1,5 +1,5 @@
 <template>
-<div class = 'appbar'>
+<div class = 'appbar appbar-margin'>
   <button @click="goBack" class="button">
     <v-icon icon='$back'></v-icon>
     <p>{{navigationStore.getTabText(getTab())}}</p>
@@ -76,3 +76,4 @@
 </script>
 
 <style scoped src='@/styles/Exercise.scss'></style>
+<style scoped src='@/styles/Globals.scss'></style>

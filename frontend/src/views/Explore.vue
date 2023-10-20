@@ -1,10 +1,11 @@
 <template>
-  <v-container fill-height>
-    <v-sheet class="d-flex mb-5 ma-2 pa-2 mt-0" >
+<div class='basics'>
+  <div>
+    <v-sheet class='d-flex mb-5'>
       <v-sheet class="me-auto">
         <h1>Explore</h1>
       </v-sheet>
-      <v-sheet width="900">
+      <v-sheet width='900'>
         <v-text-field 
         v-model="searchInApi"
         @keydown.enter="key += searchRoutines(searchInApi, selected, searchWasMade); "
@@ -57,7 +58,7 @@
   </v-row>
   </v-sheet>
     </v-sheet>
-  </v-container>
+  </div>
 
   <v-progress-circular v-if="loading"
     indeterminate
@@ -68,6 +69,7 @@
   <div v-else>
   <v-sheet v-if="!searchWasMade[0]" >
       <v-row v-for='category in categories'>
+        <v-sheet class="routines-box" max-width="1140">
         <v-container class='title' >   
           <v-row no-gutters class="pa-0 ma-0 mb-3 align-center">
             <v-col >
@@ -80,10 +82,11 @@
         </v-container>
         <displaySomeRoutines :items="routineStore.getDataCategory(category.headline,routineStore.routineList.value)" class='display' v-if="!category.viewAll"/>
         <displayAllRoutines :items="routineStore.getDataCategory(category.headline,routineStore.routineList.value)" class='display' v-else />
+      </v-sheet>
       </v-row>
   </v-sheet> 
     <displayAllRoutines v-else :items="data" class='display' :key="key" />
-  
+</div>
 </div>
 
 </template>
@@ -144,3 +147,4 @@
 </script>
 
 <style scoped src='@/styles/MyRoutines.scss'/>
+<style scoped src='@/styles/Globals.scss'/>

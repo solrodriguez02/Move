@@ -1,40 +1,31 @@
 @use 'colors'; 
 
-.page {
-    height: 100vh;
-    width: 100%;
-  }
+.header {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  padding-bottom: 4%;
+}
 
-  .header {
-    display: flex;
-    width: 90%;
-    align-content: center;
-    justify-content: center;
-    
-    align-items: center;
-    margin: auto;
-    padding-bottom: 4%;
-  }
+.link {
+  margin-left: auto;
+}
 
-  .link {
-    margin-left: 60%;
-  }
+.options {
+  display: flex;
+}
 
-  .edit-icon {
-    margin-right: 30px;  
-  }
+.edit-icon {
+  margin-right: 20px;  
+}
 
-  #butCreate{
-    background-color: colors.$turquoise;
-    color: white;
-    font-size: large;
-  }
+#butCreate{
+  background-color: colors.$turquoise;
+  color: white;
+  font-size: large;
+}
 
 .title{
-    display: flex;
-    width: 80%;
-    height: 90%;
-    margin: auto;
     padding-bottom: 0% ;
     padding-top: 0% ;
 }

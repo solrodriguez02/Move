@@ -26,6 +26,14 @@ class UserApi {
     static async getCurrent(controller) {
         return Api.get(UserApi.getUrl('current'), true, controller);
     }
+
+    static async logout(personalInfo, controller) {
+        await Api.put(UserApi.getUrl('logout'), true, personalInfo, controller);
+    }
+
+    static async getCurrentRoutines(controller) {
+        return Api.get(UserApi.getUrl('current/routines'), true, controller);
+    }
 }
 
 class Credentials {

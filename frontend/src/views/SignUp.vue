@@ -32,7 +32,15 @@
             class='sign-button'>
             Sign up
             </v-btn>
-
+            <v-alert
+            v-if="hasError"
+            color="red"
+            closable
+            variant="tonal"
+            icon="$error"
+            title="Error"
+            @click:close="hasError = false"
+            :text= "error"></v-alert>
             <div class='other-option'>
                 <RouterLink to='/signin' class='link'> 
                     <p>Already have an account? <strong>Sign in</strong> </p> 
@@ -47,20 +55,28 @@
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter} from 'vue-router';
 import { ref } from 'vue';
 import { UserApi, PersonalInfo } from '@/api/user.js'
 
-var hasError = ref(true);
+
+var hasError = ref(false);
 var error = ref(null);
+var router = useRouter();
 
 async function registerUser(username, password, firstName, lastName, email){
     try{
-    const user = new PersonalInfo(username, password, firstName, lastName, email)
-    await UserApi.register(user);
+        const user = new PersonalInfo(username, password, firstName, lastName, email)
+        await UserApi.register(user);
+        router.push("/");
     }catch(error){  
         hasError = true;
-        this.error = error.description;
+        if (error.description.includes("constraint"))
+                this.error = "Username or email already exists";
+        else if (error.description.includes("Invalid"))
+                this.error = "Email format is not valid";
+        else
+                this.error = error.description;
     }
 }
 

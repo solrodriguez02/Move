@@ -1,8 +1,8 @@
 <template>
-<div class='created'>
+<div class='basics'>
 
   <div class='header'>
-    <h2>Created by you</h2>
+    <h1>Created by you</h1>
     <div class='create-new'>
       <RouterLink to='/createroutine'>
         <button class='new-button'>
@@ -14,33 +14,40 @@
   </div>
 
   <div class='rutines' v-for='routine in routines'>
-    <div class='routine'>
-      <RouterLink :to='routine.link' class='to-routine'>
-        <div class='routine-image-box'>
-          <img :src='routine.img' :alt='routine.name' class='routine-image'/>
-        </div>
-        <p class='routine-name'>{{ routine.name }}</p>
-      </RouterLink>
-      <button class='options-button'>
-        <v-icon icon='$options'/>
-      </button>
-    </div>
+    <HorizontalBox :items='{name: routine.name, link: routine.link, img: routine.img, deleteFunction: deleteRoutine, editFunction: editRoutine}'/>
   </div>
 
 </div>
 </template>
   
 <script setup>
-    import { ref } from 'vue';
-    import { RouterLink } from 'vue-router';
+    import { ref } from 'vue'
+    import { RouterLink } from 'vue-router'
+    import { useRouter } from 'vue-router'
+    import { useRoutineStore } from '@/store/RoutineStore'
+    import HorizontalBox from '@/components/HorizontalBox.vue'
 
-    import image1 from '@/assets/temporary/chillout.png';
-    import image2 from '@/assets/temporary/keepmoving.png';
+    import image1 from '@/assets/temporary/chillout.png'
+    import image2 from '@/assets/temporary/keepmoving.png'
+
+    const router = useRouter()
+    const routineStore = useRoutineStore()
 
     const routines = ref([
       { name:'Chill out', img: image1, link:'/routine' },
       { name:'Keep moving', img: image2, link:'/routine' },
     ])
+
+    function deleteRoutine(id) {
+        routineStore.deleteRoutine(id)
+    }
+
+    function editRoutine(id) {
+        //router.push({ name: 'EditExercise', params: { id: id } })
+        router.push('/createroutine')
+    }
+
 </script>
 
-<style scoped src='@/styles/CreatedByYou.scss'></style>
+<style scoped src='@/styles/CreatedByYou.scss'/>
+<style scoped src='@/styles/Globals.scss'/>
