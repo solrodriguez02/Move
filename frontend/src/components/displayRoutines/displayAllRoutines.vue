@@ -1,5 +1,5 @@
 <template>
-   <v-sheet class="box mx-auto"  max-width="1120">
+   <v-sheet class="mx-auto"  max-width="1120" color='transparent'>
       <v-container class=" d-flex align-content-stretch flex-wrap" >
         <h4 v-if="props.items===null" class="mx-auto notFound">
           No results found

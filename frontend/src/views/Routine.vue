@@ -68,7 +68,7 @@
         <p class='username'>By {{ data.username }}</p>
         <div class = 'total-duration'>
           <v-icon icon= '$time' color='blue'></v-icon>
-          <p class='time-text'>30 min</p>
+          <p class='time-text'>{{ data.time }}</p>
         </div>
       </div>
       <div class='routine-img'>
@@ -171,14 +171,30 @@
     console.log(route.params.routineId)
     await routineStore.fetchRoutine( route.params.routineId )
     loading.value = false 
-    data.value = routineStore.getRoutineData()
+    loadData()
     
-    isFavorite.value = data.value.fav
   }) 
-  
-  
+
+  function loadData(){
+   
+    data.value = routineStore.getRoutineData()
+    isFavorite.value = data.value.fav
+
+    const filter = routineStore.filters[0].options[data.value.highlights[0]]
+    const space = routineStore.filters[2].options[data.value.highlights[3]]
+    highlightsItems.value = [
+      { name:'Difficulty', detail: filter + " difficulty" , icon:'$flash', color:'turquoise'},
+      { name:'Muscle groups', detail:data.value.highlights[1].join(", "), icon:'$person', color:'lightblue' },
+      { name:'Elements required', detail:data.value.highlights[2].join(", "), icon:'$dumbbell', color:'blue' },
+      { name:'Space', detail:space, icon:'$space', color:'violet' },
+  ];
+
+  cycles.value[0].exercises = data.value.warm
+  cycles.value[1].exercises = data.value.cycles
+  cycles.value[2].exercises = data.value.cooling
 
 
+  }
 
   function getTab() {
     return router.options.history.state.back
@@ -244,20 +260,10 @@
     isFavorite.value = !isFavorite.value;
   };
    
-  const highlightsItems = ref([
-    { name:'Difficulty', detail:'Medium difficulty', icon:'$flash', color:'turquoise'},
-    { name:'Muscle groups', detail:'Glutes, quads, hamstrings and calves', icon:'$person', color:'lightblue' },
-    { name:'Elements required', detail:'Optional, not required', icon:'$dumbbell', color:'blue' },
-    { name:'Space', detail:'Ideal for reduced spaces', icon:'$space', color:'violet' },
-  ]);
-
-  const cycleExercises = ref([
-    { name:'Legs down', sec:30, reps: 10, image: LegsDownImage },
-    { name:'Legs up', sec:60, reps: 15, image: legsUpImage },
-    { name:'Left leg lunge', sec:'-', reps: 15, image: leftLungeImage },
-    { name:'Right leg lunge', sec:'-', reps: 15, image: rightLungeImage },
-    { name:'Legs down', sec:30, reps: 10, image: LegsDownImage },
-  ])
+  const difficulty = ['Easy', 'Medium', 'Difficult']
+  const highlightsItems = ref([])
+    
+  const cycleExercises = ref([])
 
   const cycleExercises1 = ref([
     { name:'Left leg lunge', sec:30, reps: '-', image: leftLungeImage },
@@ -270,10 +276,9 @@
   ])
 
   const cycles = ref([
-    { name:'Warm up', icon:'$warm', reps:'1', exercises: cycleExercises},
-    { name:'Cycle 1', icon:'$fire', reps:'2', exercises: cycleExercises1},
-    { name:'Cycle 2', icon:'$fire', reps:'1', exercises: cycleExercises},
-    { name:'Cooling', icon:'$cool', reps:'1', exercises: cycleExercises1}
+    { name:'Warm up', icon:'$warm', reps:1, exercises: null},
+    { name:'Cycle 1', icon:'$fire', reps:0, exercises: null},
+    { name:'Cooling', icon:'$cool', reps:1, exercises: null}
   ])
 
   const cyclesOptions = ref([

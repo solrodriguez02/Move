@@ -72,11 +72,11 @@ const routinesData = ref(
     src: 'backgrounds/md2.jpg',
     fav: true,
     name: 'mar',
-    dif: 0,
-    muscle: ["glutes", "quads"],
-    elem: 0,
-    space: 0,
+    highlights: [
+      0, ["glutes", "quads"], ["none"], 0
+    ], 
     username:'Riquelme',
+    time:'30 m',
     warm: [
       { name:'Left leg lunge', sec:30, reps: '-', image: 'rightlunge.jpg' },
     ],

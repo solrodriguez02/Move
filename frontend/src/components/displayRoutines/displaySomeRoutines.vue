@@ -1,8 +1,7 @@
 <template>
   
-  <v-sheet max-width="1120" color='transparent'>
+  <v-sheet  max-width="1038" color='transparent'>
     <v-slide-group
-   
       show-arrow
     >
       <h4 v-if="props.items===null" class="mx-auto notFound">
