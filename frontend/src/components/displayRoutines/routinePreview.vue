@@ -1,5 +1,5 @@
 <template>
-    <RouterLink to='/' class='text-decoration-none'>
+    <RouterLink :to="`routine/${r.id}`"  class='text-decoration-none'>
     <v-card 
             :class="['cardRoutine', image]"
             @click="toggle" 
@@ -28,10 +28,11 @@
             </div>  
             <p class='descripRoutine' style="text-overflow: ellipsis;">{{ r.name }}</p>
           </v-card>
-    </RouterLink>
+        </RouterLink>   
 </template>
 
 <script setup>
+import { RouterLink } from 'vue-router';
 const difficulty = [ 'Easy','Medium','Hard'];
 
 const props = defineProps(['r']);

@@ -14,6 +14,7 @@ import Routines from '@/api/Routines'
 
 export const useRoutineStore = defineStore('routine', () => {
     const routineList = ref([])
+    const routineData = ref(null)
 
     const filters = ref([
       { label: 'Difficulty', options: ['Easy', 'Medium', 'Difficult'], selected: ref([]), color: 'turquoise', icon: '$flash' },
@@ -35,8 +36,21 @@ export const useRoutineStore = defineStore('routine', () => {
         })
     }
 
+    function fetchRoutine( routineId ) {
+      return new Promise((resolve) => {
+          Routines.getRoutine(routineId,(routine) => {
+            setRoutine(routine)
+            resolve()
+          })
+      })
+  }
+
     function setRoutines(routines) {
         routineList.value = routines
+    }
+
+    function setRoutine(routineFound) {
+      routineData.value = routineFound
     }
 
     function getDataCategory(headline,data){
@@ -55,12 +69,16 @@ export const useRoutineStore = defineStore('routine', () => {
         } 
         const ans = Routines.routines;
         //fetchRoutines()
-        console.log("searc"+searchInApi)
+        
         if ( searchInApi=='notFound' )      
           return null;
-        console.log("DEV BIEN")
+        
         return ans;    
     }
 
-    return { routineList, fetchRoutines, getDataCategory, searchRutine, filters, secOptions, repOptions, cycleRepOptions }
+    function getRoutineData(){
+      console.log('jsjs'+ routineData.value.id);
+      return routineData.value;
+    }
+    return { routineList, routineData, fetchRoutines, fetchRoutine, getDataCategory, searchRutine, getRoutineData, filters, secOptions, repOptions, cycleRepOptions }
 })

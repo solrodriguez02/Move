@@ -7,72 +7,72 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: () => import('../views/Home.vue')
+      component: () => import('@/views/Home.vue')
     }, 
     {
       path: '/explore',
       name: 'explore',
-      component: () => import('../views/Explore.vue')
+      component: () => import('@/views/Explore.vue')
     },
     {
       path: '/myroutines',
       name: 'my routines',
-      component: () => import('../views/MyRoutines.vue')
+      component: () => import('@/views/MyRoutines.vue')
     },
     {
       path: '/exercise',
       name: 'exercise',
-      component: () => import('../views/Exercise.vue')
+      component: () => import('@/views/Exercise.vue')
     },
     {
       path: '/createdbyyou',
       name: 'created by you',
-      component: () => import('../views/CreatedByYou.vue')
+      component: () => import('@/views/CreatedByYou.vue')
     },
     {
       path: '/createroutine',
       name: 'create routine',
-      component: () => import('../views/CreateRoutine.vue')
+      component: () => import('@/views/CreateRoutine.vue')
     },
     {
       path: '/saveroutine',
       name: 'save routine',
-      component: () => import('../views/SaveRoutine.vue')
+      component: () => import('@/views/SaveRoutine.vue')
     },
     {
       path: '/createexercise',
       name: 'create exercise',
-      component: () => import('../views/CreateExercise.vue')
+      component: () => import('@/views/CreateExercise.vue')
     },
     {
       path: '/signin',
       name: 'sign in',
-      component: () => import('../views/SignIn.vue')
+      component: () => import('@/views/SignIn.vue')
     },
     {
       path: '/signup',
       name: 'sign up',
-      component: () => import('../views/SignUp.vue')
+      component: () => import('@/views/SignUp.vue')
     },
     {
-      path: '/routine',
-      name: 'routine',
-      component: () => import('../views/Routine.vue')
+      path: '/routine/:routineId',
+      name: 'routine/:routineId',
+      component: () => import('@/views/Routine.vue')
     },
     {
       path: '/editexercise',
       name: 'edit exercise',
-      component: () => import('../views/EditExercise.vue')
+      component: () => import('@/views/EditExercise.vue')
     },
     {
       path: '/userprofile',
       name: 'user profile',
-      component: () => import('../views/UserProfile.vue')
+      component: () => import('@/views/UserProfile.vue')
     },
     {
       path: '/myexercises',
       name: 'my exercises',
-      component: () => import('../views/MyExercises.vue')
+      component: () => import('@/views/MyExercises.vue')
     },
     {
       path: '/:pathMatch(.*)*',

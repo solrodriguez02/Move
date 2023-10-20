@@ -1,36 +1,45 @@
 <template>
 
-  <div class = 'appbar' @click="goBack">
+  <div class = 'appbar appbar-margin' @click="goBack">
     <v-icon icon='$back'></v-icon>
     <p>{{navigationStore.getTabText(getTab())}}</p>  
   </div>
 
-  <div class='gray-section'>  
-  <div class = 'top-bar'>
-    <h2 class = 'highlight-text'>Full Body Session</h2>
-    <div class = 'icons-top-right'>
+  <v-progress-circular v-if="loading"
+      indeterminate
+      color="blue"
+      class='load-cycle-box'>
+    </v-progress-circular>
+    
+  <div v-else>
 
-      <button @click="toggleFavorite" class='favorite-button'>
-        <v-icon :icon="isFavorite ? '$favfull' : '$favempty'" size='30'/>
-      </button>
-        
-      <v-menu>
-        <template v-slot:activator='{ props }'>
-          <button v-bind='props'>
-            <v-icon icon='$options' size='30'/>
+  <div class='gray-section'>  
+
+      <div class = 'top-bar'>
+        <h2 class = 'highlight-text'>Full Body Session</h2>
+        <div class = 'icons-top-right'>
+
+          <button @click="toggleFavorite" class='favorite-button'>
+            <v-icon :icon="isFavorite ? '$favfull' : '$favempty'" size='30'/>
           </button>
-        </template>
-        <v-list width='180'>
-          <v-list-item v-for='(option, index) in menuOptions' :key='index'>
-            <button class='menu-option' @click='option.function'>
-              <v-icon :icon='option.icon' class='menu-option-icon'/>
-              <v-list-item-title>{{ option.title }}</v-list-item-title>
-            </button>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </div>
-  </div>
+            
+          <v-menu>
+            <template v-slot:activator='{ props }'>
+              <button v-bind='props'>
+                <v-icon icon='$options' size='30'/>
+              </button>
+            </template>
+            <v-list width='180'>
+              <v-list-item v-for='(option, index) in menuOptions' :key='index'>
+                <button class='menu-option' @click='option.function'>
+                  <v-icon :icon='option.icon' class='menu-option-icon'/>
+                  <v-list-item-title>{{ option.title }}</v-list-item-title>
+                </button>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </div>
+      </div>
 
   <warning-dialog
     v-model='deleteDialog'
@@ -56,14 +65,14 @@
     <div class = 'img-section'>
       <div class = 'header-info'>
         <img src='@/assets/temporary/profile-pic.png' alt='profile picture' height='50' width='50' class='image-profile'/>
-        <p class='username'>By Carolo Dominguez</p>
+        <p class='username'>By {{ data.username }}</p>
         <div class = 'total-duration'>
           <v-icon icon= '$time' color='blue'></v-icon>
           <p class='time-text'>30 min</p>
         </div>
       </div>
       <div class='routine-img'>
-        <v-img src='@/assets/temporary/RoutineImage.png' alt='Routine image' cover aspect-ratio="16/9" height='295px' width='600px' class='image'/>
+        <v-img :src='`https://cdn.vuetifyjs.com/images/${data.src}`' alt='Routine image' cover aspect-ratio="16/9" height='295px' width='600px' class='image'/>
       </div>
     </div>
 
@@ -120,6 +129,8 @@
     </div>
   </div>
 
+</div>
+
   </div>
 
 </div>
@@ -129,24 +140,45 @@
   
 <script setup>
 
-  import { ref } from 'vue'
+  import { ref,onBeforeMount } from 'vue'
   import millImage from '@/assets/temporary/mill.png'
   import legsUpImage from '@/assets/temporary/legsup.png';
   import leftLungeImage from '@/assets/temporary/leftlunge.png'
   import rightLungeImage from '@/assets/temporary/rightlunge.jpg'
   import LegsDownImage from '@/assets/temporary/legsdown.png'
-  import { useRouter } from 'vue-router'
+  import { useRouter,useRoute } from 'vue-router'
   import WarningDialog from "@/components/WarningDialog.vue"
   import { useNavigationStore } from '@/store/NavigationStore'
+  import { useRoutineStore } from '@/store/RoutineStore'
+  import { RouterLink } from 'vue-router';
 
+  const routineStore = useRoutineStore()
   const router = useRouter()
+  const loading = ref(true)
+  const route = useRoute()
 
   const cycleOptionIndex = ref(0)
-  const isFavorite = ref(false)
+  
   const deleteDialog = ref(false)
   const shareDialog = ref(false)
 
   const navigationStore= useNavigationStore()
+
+  const data = ref(null)
+  const isFavorite = ref(null)
+
+  onBeforeMount (async () => {
+    console.log(route.params.routineId)
+    await routineStore.fetchRoutine( route.params.routineId )
+    loading.value = false 
+    data.value = routineStore.getRoutineData()
+    
+    isFavorite.value = data.value.fav
+  }) 
+  
+  
+
+
 
   function getTab() {
     return router.options.history.state.back
