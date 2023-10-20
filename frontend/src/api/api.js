@@ -88,6 +88,6 @@ class Api {
   }
 
   static async delete(url, secure, controller) {
-    return await Api.fetch(url, secure, Api.createCallInfo(data, 'DELETE'), controller);
+    return await Api.fetch(url, secure, Api.createCallInfo({}, 'DELETE'), controller);
   }
 }
