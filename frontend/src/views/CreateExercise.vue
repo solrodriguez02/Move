@@ -35,7 +35,7 @@
   </div>
   <div class='field-text-box'> Description </div>
     <v-textarea
-      :v-model='form.description'
+      :v-model='form.detail'
       auto-grow
       variant='outlined'
       rows='3'
@@ -70,6 +70,7 @@
 <script setup>
   import { ref } from 'vue'
   import { useExerciseStore } from '@/store/ExerciseStore'
+  import { exerciseInfo } from '@/api/Exercise';
 
   const exerciseStore = useExerciseStore()
   const loading = ref(false);
@@ -77,12 +78,12 @@
 
   const form = ref({
     name: '',
+    detail: '',
+    image: '',
     difficulty: '',
     muscleGroup: '',
     elements: '', 
     space: '',
-    description: '',
-    image: '',
   })
 
   const placeholders = ref([
@@ -92,10 +93,11 @@
     'How much space is it necesary',
   ])
 
-  const onSubmit = () => {
-    const exerciseStore = useExerciseStore()
-        exerciseStore.addExercise(form);
-        exerciseCreated.value = true;
+  async function onSubmit() {
+    const details =  {'image': form.image, 'difficulty': form.difficulty, 'muscleGroup': form.muscleGroup, 'elements': form.elements, 'space': form.space }
+    const exerciseData = new exerciseInfo(form.name, form.detail, 'exercise', details);
+    await exerciseStore.addExercise(exerciseData);
+    exerciseCreated.value = true;
         //$router.push('/createdbyyou');
   }
 
