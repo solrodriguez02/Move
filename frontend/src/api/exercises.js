@@ -52,4 +52,4 @@ class exerciseInfo{
     }
 }
 
-export {getExercises, exerciseApi, exerciseInfo}
+export {getExercises, exerciseApi, exerciseInfo, exercises}

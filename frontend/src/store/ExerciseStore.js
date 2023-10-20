@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import Exercises from '@/api/Exercises'
+import exercises from '@/api/exercises'
 import { exerciseInfo, exerciseApi } from '@/api/exercises'
 
 /* 
@@ -22,7 +22,7 @@ export const useExerciseStore = defineStore('exercise', () => {
 
     function fetchExercises() {
         return new Promise((resolve) => {
-            Exercises.getExercises((exercises) => {
+            exercises.getExercises((exercises) => {
               setExercises(exercises)
               resolve()
             })
