@@ -3,13 +3,13 @@
     <v-card 
             :class="['cardRoutine', image]"
             @click="toggle" 
-            color='gray'> 
+            color='grey-lighten-1'> 
             <div class='text-right image-container'>
               <v-img 
                     :src="`https://cdn.vuetifyjs.com/images/${r.src}`" 
                     :alt="r.name" class="imgRoutine"
                     @click="toggle" cover>
-                    <v-btn v-if="r.fav" icon='$favfull' class="me-2 mt-2" size="small"/>
+                    <v-btn v-if="r.fav" icon='$favfull' class="me-2 mt-2" size="small" color="white"/>
               </v-img>
               <div class='overlay'>
                 <v-container class="ml-0">

@@ -11,8 +11,12 @@
   margin-left: auto;
 }
 
+.options {
+  display: flex;
+}
+
 .edit-icon {
-  margin-right: 30px;  
+  margin-right: 20px;  
 }
 
 #butCreate{
@@ -22,8 +26,6 @@
 }
 
 .title{
-    width: 96%;
-    height: 90%;
     padding-bottom: 0% ;
     padding-top: 0% ;
 }
