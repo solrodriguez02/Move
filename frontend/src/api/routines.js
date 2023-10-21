@@ -136,8 +136,8 @@ function getRoutine(id, okCallback) {
         return await Api.post(RoutineApi.getUrl(), true, routinePrevInfoPost, controller);
     }
 
-    static async getAllRoutines(controller){
-      return await Api.get(RoutineApi.getUrl(), true, controller);
+    static async getAllRoutines(routineInfo, controller){
+      return await Api.get(RoutineApi.getUrl(), true, routineInfo, controller);
       
     }
 
@@ -186,15 +186,15 @@ class routineInfo {
 }
 
 
-class routinePrevInfoPost {
-  constructor(name, detail, difficultyId, elementsRequiredArray, requiredSpaceId, approachId ){
+class routinePrevInfo {
+  constructor(name, src, favs, difficultyId, elementsRequiredArray, requiredSpaceId, approachId ){
       // elementos = [], el resto son vals
       this.name = name;
-      this.src = detail; 
-      this.difficulty = "rooky"                 // campo obligatorio 
+      this.detail = src; 
+      this.isPublic = true;                     // campo obligatorio 
+      this.difficulty = "rookie"                 // campo obligatorio 
       this.metadata = {
-        "fav": 0,
-        "favs": 0,
+        "favs": favs,
         "filters": {
           "difficulty": difficultyId,
           "elements": elementsRequiredArray, 
@@ -202,9 +202,8 @@ class routinePrevInfoPost {
           "approachId": approachId
         }
       };
-      this.isPublic = true;                     // campo obligatorio 
   }
 }
 
 
-export default { RoutineApi, routinePrevInfoPost, routineInfo, routinePrevInfoPost, getRoutines, getRoutine, routines }
+export default { RoutineApi, routinePrevInfo, routineInfo, getRoutines, getRoutine, routines }
