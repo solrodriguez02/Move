@@ -176,10 +176,10 @@ class routineInfo {
         name: user.username,
       }
       this.favs = metadata.favs
-      this.filter[0] = metadata.filter.difficulty
-      this.filter[1] = metadata.filter.elements
-      this.filter[2] = metadata.filter.requiredSpaceId
-      this.filter[3] = metadata.filter.approachId
+      this.highlights[0] = metadata.filter.difficulty
+      this.highlights[1] = metadata.filter.elements
+      this.highlights[2] = metadata.filter.requiredSpaceId
+      this.highlights[3] = metadata.filter.approachId
       this.cycles = cyclesArray
   }
 }
