@@ -27,8 +27,8 @@ class UserApi {
         return Api.get(UserApi.getUrl('current'), true, controller);
     }
 
-    static async logout(personalInfo, controller) {
-        await Api.put(UserApi.getUrl('logout'), true, personalInfo, controller);
+    static async modifyCurrent(personalInfo, controller) {
+        return Api.put(UserApi.getUrl('current'), true, personalInfo, controller);
     }
 
     static async getCurrentRoutines(controller) {
