@@ -136,9 +136,8 @@ function getRoutine(id, okCallback) {
         return await Api.post(RoutineApi.getUrl(), true, routinePrevInfoPost, controller);
     }
 
-    static async getAllRoutines(controller){
-      return await Api.get(RoutineApi.getUrl(), true, controller);
-      
+    static async getAllRoutines(controller, queryGetRoutines ){
+      return await Api.get(RoutineApi.getUrl(), queryGetRoutines, false, controller);
     }
 
     static async modifyRoutine(idRoutine, routineInfo, controller){
@@ -168,7 +167,7 @@ function getRoutine(id, okCallback) {
   
 
 class routineInfo {
-  constructor(id, name, detail, user, difficulty, categories, metadata){
+  constructor(id, name, detail, user, metadata){
       this.id = id; 
       this.name = name;
       this.src = detail; 
@@ -176,25 +175,24 @@ class routineInfo {
         id: user.id,
         name: user.username,
       }
-      this.fav = metadata.fav
       this.favs = metadata.favs
-      this.filter[0] = difficulty
-      this.filter[1] = categories.elementsRequiredId
-      this.filter[2] = categories.requiredSpaceId
-      this.filter[3] = categories.approachId
+      this.filter[0] = metadata.filter.difficulty
+      this.filter[1] = metadata.filter.elements
+      this.filter[2] = metadata.filter.requiredSpaceId
+      this.filter[3] = metadata.filter.approachId
   }
 }
 
 
-class routinePrevInfoPost {
-  constructor(name, detail, difficultyId, elementsRequiredArray, requiredSpaceId, approachId ){
+class routinePrevInfo {
+  constructor(name, src, favs, difficultyId, elementsRequiredArray, requiredSpaceId, approachId ){
       // elementos = [], el resto son vals
       this.name = name;
-      this.src = detail; 
-      this.difficulty = "rooky"                 // campo obligatorio 
+      this.detail = src; 
+      this.isPublic = true;                     // campo obligatorio 
+      this.difficulty = "rookie"                 // campo obligatorio 
       this.metadata = {
-        "fav": 0,
-        "favs": 0,
+        "favs": favs,
         "filters": {
           "difficulty": difficultyId,
           "elements": elementsRequiredArray, 
@@ -202,9 +200,14 @@ class routinePrevInfoPost {
           "approachId": approachId
         }
       };
-      this.isPublic = true;                     // campo obligatorio 
   }
 }
 
+class queryGetRoutines {
+  constructor(page, items=1 ){
+    this.page = page
+    this.items = items 
+  }
+}
 
-export default { RoutineApi, routinePrevInfoPost, routineInfo, routinePrevInfoPost, getRoutines, getRoutine, routines }
+export default { RoutineApi, routinePrevInfo, routineInfo, getRoutines, getRoutine, routines }
