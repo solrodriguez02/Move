@@ -81,7 +81,9 @@ class Api {
   }
 
 
-  static async get(url, queryInfo, secure, controller) {
+  static async get(url, secure, queryInfo, controller) {
+    console.log( 'query:' )
+    console.log( 'query:'+ queryInfo )
     return await Api.fetch(url, secure, queryInfo, controller);
   }
 
