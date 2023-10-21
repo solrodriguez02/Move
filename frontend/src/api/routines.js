@@ -137,7 +137,7 @@ function getRoutine(id, okCallback) {
     }
 
     static async getAllRoutines(controller, queryGetRoutines ){
-      return await Api.get(RoutineApi.getUrl(), queryGetRoutines, false, controller);
+      return await Api.get(RoutineApi.getUrl(), false,  queryGetRoutines, controller);
     }
 
     static async modifyRoutine(idRoutine, routineInfo, controller){

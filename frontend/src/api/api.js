@@ -75,8 +75,12 @@ class Api {
     }
   }
 
-  static async get(url, queryInfo, secure, controller) {
-    return await Api.fetch(url, queryInfo, secure, controller);
+  static async get(url, secure, queryInfo={}, controller) {
+    return await Api.fetch(url, secure, queryInfo, controller);
+  }
+
+  static async get(url, secure, controller) {
+    return await Api.fetch(url, secure, {},controller);
   }
 
   static async post(url, secure, data, controller) {
