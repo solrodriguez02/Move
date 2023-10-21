@@ -45,9 +45,9 @@
       shaped/>
     <div class='field-box'>
       <div class='field-text-box'> Image </div>
-        <v-file-input
+        <v-text-field
           v-model='formFields[2].image'
-          label='Attach a representative image for the exercise'
+          placeholder='Enter a representative image for the exercise by its URL'
           variant='outlined'
           rounded/>
     </div>
@@ -88,7 +88,7 @@
   ])
 
   async function onSubmit() {
-    const details = { image: formFields.value[2].image, difficulty: formFields.value[3].label, muscleGroups: formFields.value[4].label, elements: formFields.value[5].label, space: formFields.value[6].label }
+    const details = { image: formFields.value[2].image, difficulty: formFields.value[3].label, muscleGroups: formFields.value[4].label, elements: formFields.value[5].label, space: formFields.value[6].label, creator: 'user' }
     const exerciseData = new exerciseInfo(formFields.value[0].name, formFields.value[1].detail, 'exercise', details);
     await exerciseStore.addExercise(exerciseData);
     exerciseCreated.value = true;

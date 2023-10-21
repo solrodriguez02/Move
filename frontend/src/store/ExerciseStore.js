@@ -32,14 +32,15 @@ export const useExerciseStore = defineStore('exercise', () => {
     function filterExercises(exercises, exerciseCount) {
         for (let i = 0; i < exerciseCount; i++) {
             const exercise = exercises[i]
-            if(exercise.image == null) {
-                exercise.image = 'https://static.vecteezy.com/system/resources/previews/006/923/598/non_2x/running-man-abstract-logo-free-vector.jpg'
+            const details = exercise.metadata
+            if(details.image == null) {
+                details.image = 'https://static.vecteezy.com/system/resources/previews/006/923/598/non_2x/running-man-abstract-logo-free-vector.jpg'
             }
-            pushExercise(exercise.id, exercise.name, exercise.detail, exercise.image, exercise.difficulty, exercise.muscleGroups, exercise.elements, exercise.space )
+            pushExercise(exercise.id, exercise.name, exercise.detail, details.image, details.difficulty, details.muscleGroups, details.elements, details.space, details.creator )
         }
     }
 
-    function pushExercise(id, name, detail, image, difficulty, muscleGroup, elements, space) {
+    function pushExercise(id, name, detail, image, difficulty, muscleGroup, elements, space, creator) {
         exerciseList.value.push({
             id: id,
             name: name,
@@ -49,12 +50,13 @@ export const useExerciseStore = defineStore('exercise', () => {
             muscleGroup: muscleGroup,
             elements: elements, 
             space: space,
+            creator: creator,
         })
     }
     
     async function addExercise(exercise) {    
         await exerciseApi.createExercise(exercise, true);
-        pushExercise(exercise.id, exercise.name, exercise.detail, exercise.image, exercise.difficulty, exercise.muscleGroup, exercise.elements, exercise.space)
+        pushExercise(exercise.id, exercise.name, exercise.detail, exercise.image, exercise.difficulty, exercise.muscleGroup, exercise.elements, exercise.space, exercise.creator)
     }
 
     async function deleteExercise(id) {
