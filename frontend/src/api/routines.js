@@ -81,6 +81,7 @@ const routinesData = ref(
       img: 'https://storage.googleapis.com/sworkit-assets/images/exercises/standard/middle-frame/step-touch.jpg'
     },
     time:'30 m', //todo se calcula 
+    updated: false,
     warm: [
       { name:'Left leg lunge', sec:30, reps: '-', id:0, image: 'https://storage.googleapis.com/sworkit-assets/images/exercises/standard/middle-frame/step-touch.jpg' },
     ],
@@ -136,8 +137,10 @@ function getRoutine(id, okCallback) {
         return await Api.post(RoutineApi.getUrl(), true, routinePrevInfoPost, controller);
     }
 
-    static async getAllRoutines(controller, queryGetRoutines ){
-      return await Api.get(RoutineApi.getUrl(), queryGetRoutines, false, controller);
+    static async getAllRoutines( queryGetRoutines, controller ){
+      const ans= await Api.get(RoutineApi.getUrl(), queryGetRoutines, true, controller);
+      console.log(ans)
+      return ans; 
     }
 
     static async modifyRoutine(idRoutine, routineInfo, controller){
@@ -205,10 +208,13 @@ class routinePrevInfo {
 }
 
 class queryGetRoutines {
-  constructor(page, items=1 ){
+  constructor(page, size, order ){
     this.page = page
-    this.items = items 
+    if ( size!=null)
+      this.size = size 
+    if ( order!=null)
+      this.orderBy = order
   }
 }
 
-export default { RoutineApi, routinePrevInfo, routineInfo, getRoutines, getRoutine, routines }
+export default { RoutineApi, routinePrevInfo, queryGetRoutines, routineInfo, getRoutines, getRoutine, routines }

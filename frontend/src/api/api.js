@@ -23,6 +23,7 @@ class Api {
     else{
         return {
             method: methodName,
+            params: JSON.stringify(content)
         }
     }
 }
@@ -36,8 +37,12 @@ class Api {
     //si es un endpoint con seguridad agrego esa linea
     if (secure && Api.token) {
       //se agrega el headers si no estaba en el init (podría ser un GET o un DELETE)
-      if (!init.headers)
+      if (!init.headers){
         init.headers = {};
+        if ( init != {})
+          url = url + '?' + new URLSearchParams(init)
+      }
+        
       //con esto se evita pisar todo lo que ya habia en el init agregando el campo authorization
       init.headers['Authorization'] = `bearer ${Api.token}`;
     }
@@ -76,7 +81,7 @@ class Api {
   }
 
   static async get(url, queryInfo, secure, controller) {
-    return await Api.fetch(url, queryInfo, secure, controller);
+    return await Api.fetch(url, secure, queryInfo, controller);
   }
 
   static async post(url, secure, data, controller) {

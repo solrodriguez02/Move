@@ -91,8 +91,9 @@ export const useRoutineStore = defineStore('routine', () => {
     }
 
     async function getApiRoutines(){
-      const apiAns = await routines.RoutineApi.getAllRoutines()
-      console.log(apiAns)
+      const query = new routines.queryGetRoutines(0,7,null)
+      const apiAns = await routines.RoutineApi.getAllRoutines( query, true)
+      console.log('Api' + apiAns)
       const ans = []
       /*
       for (var i=0; i<apiAns.totalCount; i++ ){
