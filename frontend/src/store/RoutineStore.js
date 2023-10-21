@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import routines from '@/api/routines'
+import { getRoutine, getRoutines, routines, RoutineApi} from '@/api/routines'
 
 /* 
   Campos que creo q deberian ir en routine: 
@@ -29,7 +29,7 @@ export const useRoutineStore = defineStore('routine', () => {
 
     function fetchRoutines() {
         return new Promise((resolve) => {
-            routines.getRoutines((routines) => {
+            getRoutines((routines) => {
               setRoutines(routines)
               resolve()
             })
@@ -38,7 +38,7 @@ export const useRoutineStore = defineStore('routine', () => {
 
     function fetchRoutine( routineId ) {
       return new Promise((resolve) => {
-          routines.getRoutine(routineId,(routine) => {
+          getRoutine(routineId,(routine) => {
             setRoutine(routine)
             resolve()
           })
@@ -75,7 +75,7 @@ export const useRoutineStore = defineStore('routine', () => {
             // mando a api
           }
         } 
-        const ans = routines.routines;
+        const ans = routines;
         //fetchRoutines()
         
         if ( searchInApi=='notFound' )      
@@ -91,7 +91,7 @@ export const useRoutineStore = defineStore('routine', () => {
     }
 
     async function getApiRoutines(){
-      const apiAns = await routines.RoutineApi.getAllRoutines()
+      const apiAns = await RoutineApi.getAllRoutines()
       console.log(apiAns)
       const ans = []
       /*

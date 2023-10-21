@@ -211,4 +211,4 @@ class queryGetRoutines {
   }
 }
 
-export default { RoutineApi, routinePrevInfo, routineInfo, getRoutines, getRoutine, routines }
+export { RoutineApi, routinePrevInfo, routineInfo, getRoutines, getRoutine, routines }
