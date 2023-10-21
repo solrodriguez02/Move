@@ -8,19 +8,19 @@ class CycleApi {
     }
 
     static async addExercise(idCycle, exerciseInfo, controller){
-        return await Api.post(cycleApi.getUrl(idCycle.append("/exercises")), true, exerciseInfo, controller);
+        return await Api.post(CycleApi.getUrl(idCycle.append("/exercises")), true, exerciseInfo, controller);
     }
 
     static async getExercises(idCycle, controller){
-        return await Api.get(cycleApi.getUrl(idCycle), true, controller);
+        return await Api.get(CycleApi.getUrl(idCycle), true, controller);
     }
     
     static async modifyCycleExercise(idCycle, idExercise, exerciseInfo, controller){
-        return await Api.put(cycleApi.getUrl(idCycle.append("/execises/")).append(idExercise), true, exerciseInfo, controller);
+        return await Api.put(CycleApi.getUrl(idCycle.append("/execises/")).append(idExercise), true, exerciseInfo, controller);
     }
 
     static async deleteCycleExercise(idCycle, idExercise, controller){
-        return await Api.delete(cycleApi.getUrl(idCycle.append("/execises/")).append(idExercise), true, controller);
+        return await Api.delete(CycleApi.getUrl(idCycle.append("/execises/")).append(idExercise), true, controller);
     }   
 
 }

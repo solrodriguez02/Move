@@ -50,10 +50,10 @@ class PersonalInfo {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.gender = "male",
+        this.gender = 'male',
         this.birthdate = 284007600000,
-        this.phone = "98295822",
-        this.avatarUrl= "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+        this.phone = '98295822',
+        this.avatarUrl= 'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg',
         this.metadata = null
     }
 }

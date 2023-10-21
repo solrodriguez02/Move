@@ -137,10 +137,11 @@ function getRoutine(id, okCallback) {
         return await Api.post(RoutineApi.getUrl(), true, routinePrevInfoPost, controller);
     }
 
+
     static async getAllRoutines( queryGetRoutines, controller ){
-      const ans= await Api.get(RoutineApi.getUrl(), queryGetRoutines, true, controller);
+      const ans= await Api.get(RoutineApi.getUrl(), true, queryGetRoutines, controller);
       console.log(ans)
-      return ans; 
+      return ans;     
     }
 
     static async modifyRoutine(idRoutine, routineInfo, controller){
@@ -217,4 +218,5 @@ class queryGetRoutines {
   }
 }
 
-export default { RoutineApi, routinePrevInfo, queryGetRoutines, routineInfo, getRoutines, getRoutine, routines }
+
+export { RoutineApi, routinePrevInfo, routineInfo, getRoutines, getRoutine, routines, queryGetRoutines }

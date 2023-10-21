@@ -70,10 +70,10 @@ const registerStore = useRegisterStore()
 async function registerUser(username, password, firstName, lastName, email){
     try{
         const user = new PersonalInfo(username, password, firstName, lastName, email)
-        const result = await UserApi.register(user)
-        registerStore.setUserInfo(email, result.id) 
+        await UserApi.register(user)
+        registerStore.setUserEmail(email) 
         router.push("/verifyemail")
-    }catch(error){  
+    } catch(error){  
         hasError = true
         if (error.description.includes("constraint"))
                 this.error = "Username or email already exists"
