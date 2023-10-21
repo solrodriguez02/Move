@@ -139,7 +139,7 @@ function getRoutine(id, okCallback) {
 
 
     static async getAllRoutines( queryGetRoutines, controller ){
-      const ans= await Api.get(RoutineApi.getUrl(), true, queryGetRoutines, controller);
+      const ans= await Api.getWithParam(RoutineApi.getUrl(), true, queryGetRoutines, controller);
       console.log(ans)
       return ans;     
     }
