@@ -69,12 +69,14 @@
   
 <script setup>
   import { ref } from 'vue'
+  import { useRouter } from 'vue-router'
   import { useExerciseStore } from '@/store/ExerciseStore'
-  import { exerciseInfo } from '@/api/exercises';
+  import { exerciseInfo } from '@/api/exercises'
 
   const exerciseStore = useExerciseStore()
-  const loading = ref(false);
-  const exerciseCreated = ref(false);
+  const router = useRouter()
+  const loading = ref(false)
+  const exerciseCreated = ref(false)
 
   const formFields= ref([ { name: '' }, { detail: '' }, { image: null }, { label: null }, { label: null }, { label: null }, { label: null } ])
 
@@ -89,10 +91,10 @@
 
   async function onSubmit() {
     const details = { image: formFields.value[2].image, difficulty: formFields.value[3].label, muscleGroups: formFields.value[4].label, elements: formFields.value[5].label, space: formFields.value[6].label, creator: 'user' }
-    const exerciseData = new exerciseInfo(formFields.value[0].name, formFields.value[1].detail, 'exercise', details);
-    await exerciseStore.addExercise(exerciseData);
-    exerciseCreated.value = true;
-        //$router.push('/createdbyyou');
+    const exerciseData = new exerciseInfo(formFields.value[0].name, formFields.value[1].detail, 'exercise', details)
+    await exerciseStore.addExercise(exerciseData)
+    exerciseCreated.value = true
+    router.go(-1)
   }
 
   const required = (v) => {
