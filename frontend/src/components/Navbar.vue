@@ -35,13 +35,17 @@
   
 <script setup>
   import { RouterLink, useRoute } from 'vue-router'
-  import { ref } from 'vue'
+  import { ref, onBeforeMount } from 'vue'
   import { useSecurityStore } from '@/store/SecurityStore'
   import { useRegisterStore } from '@/store/RegisterStore'
 
   const securityStore = useSecurityStore()
   const registerStore = useRegisterStore()
   const route = useRoute()
+
+  onBeforeMount (async () => {
+    await registerStore.fetchCurrentUser()
+  })
 
   const menuItems = ref([
         { title: 'Explore', path: '/explore'},
