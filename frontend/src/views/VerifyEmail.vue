@@ -42,7 +42,9 @@ import { useRouter } from 'vue-router'
 import { EmailVerificationInfo } from '@/api/user'
 import { UserApi } from '@/api/user'
 import { useSecurityStore } from '@/store/SecurityStore'
+import { useRegisterStore } from '@/store/RegisterStore'
 
+const registerStore = useRegisterStore()
 const router = useRouter()
 const securityStore = useSecurityStore()
 const submit = ref(false)
@@ -65,7 +67,7 @@ const required = (v) => {
 
 async function verifyEmail(code){
     try{
-        const emailVerificationInfo = new EmailVerificationInfo('funciona@gmail.com', code)
+        const emailVerificationInfo = new EmailVerificationInfo(registerStore.userInfo.email, code)
         await UserApi.verifyEmail(emailVerificationInfo, true);
     } catch(error){
         console.log(error)
