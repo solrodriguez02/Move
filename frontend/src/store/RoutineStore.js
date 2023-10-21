@@ -89,6 +89,12 @@ export const useRoutineStore = defineStore('routine', () => {
       console.log('jsjs'+ routineData.value.id);
       return routineData.value;
     }
-    return { routineList, routineData, fetchRoutines, fetchRoutine, getDataCategory, searchRutine, getRoutineData, filters, secOptions, repOptions, cycleRepOptions, deleteRoutine, addRoutine }
+
+    function getApiRoutineId(id){
+      return routines.routineApi.getRoutineId(id,true)
+    }
+  
+
+    return { getApiRoutineId, routineList, routineData, fetchRoutines, fetchRoutine, getDataCategory, searchRutine, getRoutineData, filters, secOptions, repOptions, cycleRepOptions, deleteRoutine, addRoutine }
 
 })

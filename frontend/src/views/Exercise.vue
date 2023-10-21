@@ -8,10 +8,10 @@
 
 <div class='exercise'>
   <div class='grey-section'>
-    <h1>Lunge</h1>
+    <h1>{{ data!=undefined? data.name:'' }}</h1>
     <section class='workout-section'>
       <div class='workout-image'>
-        <img src='@/assets/temporary/leftlunge.png' alt='Workout image' class='image'/>
+        <img :src='data.img' alt='Workout image' class='image'/>
       </div>
 
       <div class='workout-description'>
@@ -49,13 +49,13 @@
   import { ref,onBeforeMount } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
   import { useNavigationStore } from '@/store/NavigationStore'
-  //import { useExerciseStore } from '@/store/ExerciseStore';
+  import { useExerciseStore } from '@/store/ExerciseStore';
   
   const router = useRouter()
   const route = useRoute()
   const navigationStore= useNavigationStore()
   const loading = ref(false)
- // const excerciseStore = useExerciseStore()
+  const excerciseStore = useExerciseStore()
 
   onBeforeMount (async () => {
     console.log(route.params.exerciseId)
@@ -65,6 +65,37 @@
     loadData()
     
   }) 
+
+  const data = ref(null)
+  function loadData(){
+    console.log('hsh'+data.value)
+    data.value = excerciseStore.exerciseList.find((e) => e.id == route.params.exerciseId )
+    
+    if ( data.value==null ){
+      // todo eje no E
+      // todo fetch a ese id para q se cargue si routine no se toco antes
+      console.log('error, ejercicio no valido')
+      return
+    }
+/*
+  const filter = excerciseStore.filters[0].options[data.value.highlights[0]]
+    const space = excerciseStore.filters[2].options[data.value.highlights[3]]
+        { name:'Difficulty', detail: filter + " difficulty" , icon:'$flash', color:'turquoise'},
+      { name:'Muscle groups', detail:data.value.highlights[1].join(", "), icon:'$person', color:'lightblue' },
+      { name:'Elements required', detail:data.value.highlights[2].join(", "), icon:'$dumbbell', color:'blue' },
+      { name:'Space', detail:space, icon:'$space', color:'violet' },
+
+*/
+  
+highlightsItems.value = [
+    { name:'Difficulty', detail:'Medium difficulty', icon:'$flash', color:'turquoise'},
+    { name:'Muscle groups', detail:'Glutes, quads, hamstrings and calves', icon:'$person', color:'lightblue' },
+    { name:'Elements required', detail:'Optional, not required', icon:'$dumbbell', color:'blue' },
+    { name:'Space', detail:'Ideal for reduced spaces', icon:'$space', color:'violet' },
+  ];
+    
+
+  }
 
   function getTab() {
     return router.options.history.state.back

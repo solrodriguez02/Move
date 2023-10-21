@@ -75,7 +75,7 @@ const routinesData = ref(
     highlights: [
       0, ["glutes", "quads"], ["none"], 0
     ], 
-    username: {
+    user: {
       name: 'Riquelme',
       img: 'https://storage.googleapis.com/sworkit-assets/images/exercises/standard/middle-frame/step-touch.jpg'
     },
@@ -125,8 +125,70 @@ function getRoutine(id, okCallback) {
     }, 3000);
 
   }
-  
-  
+
+  class routineApi {
+    static getUrl(slug) {
+        return `${Api.baseUrl}/routines${ slug ? `/${slug}` : ""}`;
+    }
+
+    static async getAllRoutines(controller){
+        var ans = await Api.get(routineApi.getUrl(), true, controller) ;
+        ans = ans.content                             
+        return new routinePrevInfo( ans.id, ans.name, ans.detail, ans.user, ans.score, ans.metadata )
+    }
+
+    static async createRoutine(routineInfo, controller){
+        return await Api.post(routineApi.getUrl(), true, routineInfo, controller);
+    }
+
+    static async getRoutineId(idRoutine, controller){
+        return await Api.get(routineApi.getUrl(idRoutine), true, controller);
+    }
+    
+    static async modifyRoutine(idRoutine, routineInfo, controller){
+        return await Api.put(routineApi.getUrl(idRoutine), true, routineInfo, controller);
+    }
+
+    static async deleteRoutine(idRoutine, controller){
+        return await Api.delete(routineApi.getUrl(idRoutine), true, controller);
+    }   
+}
+
+class routinePrevInfoGet {
+  constructor(name, detail, user, score, metadata){
+      // detail tienen solo los filtros 
+      // > detail = [ ]
+      // metadata = src
+      this.id = id; 
+      this.name = name;
+      this.fav = 
+      this.favs = score;
+      this.src = metadata; 
+  }
+}
 
 
-export default { getRoutines, getRoutine, routines }
+class routinePrevInfoPost {
+  constructor(name, detail, user, categories, metadata){
+      // detail tienen solo los filtros 
+      // > detail = [ ]
+      // metadata = src
+      this.name = name;
+      this.src = detail; 
+      this.fav = metadata[0]
+      this.favs = metadata[1]; 
+      this.filter = categories
+  }
+}
+
+
+class routineInfo {
+    constructor(id, name, detail, user, metadata){
+        this.name = name;
+        this.detail = detail;
+        this.user = user;
+        this.metadata = metadata;
+    }
+}
+
+export default { routineApi, routineInfo, routinePrevInfoPost, getRoutines, getRoutine, routines }

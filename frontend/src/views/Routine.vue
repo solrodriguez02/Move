@@ -64,8 +64,8 @@
   <div class = 'routine-general'> 
     <div class = 'img-section'>
       <div class = 'header-info'>
-        <img :src='data.username.img' alt='profile picture' height='50' width='50' class='image-profile'/>
-        <p class='username'>By {{ data.username.name }}</p>
+        <img :src='data.user.img' alt='profile picture' height='50' width='50' class='image-profile'/>
+        <p class='username'>By {{ data.user.name }}</p>
         <div class = 'total-duration'>
           <v-icon icon= '$time' color='blue'></v-icon>
           <p class='time-text'>{{ data.time }}</p>
@@ -122,7 +122,7 @@
           <label v-show="exercise.reps!='-'" class='exercise-time'> {{ exercise.reps + ' reps'}} </label>
         <div class='next-icon'> 
           <RouterLink :to="`/exercise/${exercise.id}`" >
-              <v-icon icon='$next' color='dark_gray' @click="excercise!=undefined? console.log(excercise.id):console.log(2)" />
+              <v-icon icon='$next' color='dark_gray' />
           </RouterLink>
         </div>
       </div>
@@ -145,9 +145,11 @@
   import WarningDialog from "@/components/WarningDialog.vue"
   import { useNavigationStore } from '@/store/NavigationStore'
   import { useRoutineStore } from '@/store/RoutineStore'
+  import { useExerciseStore } from '@/store/ExerciseStore'
   import { RouterLink } from 'vue-router';
 
   const routineStore = useRoutineStore()
+  
   const router = useRouter()
   const loading = ref(true)
   const route = useRoute()
@@ -165,6 +167,7 @@
   onBeforeMount (async () => {
     console.log(route.params.routineId)
     await routineStore.fetchRoutine( route.params.routineId )
+    
     loading.value = false 
     loadData()
     
