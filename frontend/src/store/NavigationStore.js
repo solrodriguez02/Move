@@ -15,15 +15,15 @@ export const useNavigationStore = defineStore('navigation', () => {
             case'/createdbyyou':
               return 'Created by You'
             case'/saveroutine':
-              return 'save routine'
+              return 'Save Routine'
             case'/createexercise':
               return 'Create Exercise'
             case '/routine':
-              return 'routine'
+              return 'Routine'
             case'/editexercise':
-              return 'edit exercise'
+              return 'Edit Exercise'
             case '/userprofile':
-              return 'user profile'
+              return 'User Profile'
             default: 
               return 'Go Back'
           }
