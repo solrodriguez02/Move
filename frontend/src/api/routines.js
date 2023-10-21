@@ -167,7 +167,7 @@ function getRoutine(id, okCallback) {
   
 
 class routineInfo {
-  constructor(id, name, detail, user, metadata){
+  constructor(id, name, detail, user, metadata, cyclesArray){
       this.id = id; 
       this.name = name;
       this.src = detail; 
@@ -180,6 +180,7 @@ class routineInfo {
       this.filter[1] = metadata.filter.elements
       this.filter[2] = metadata.filter.requiredSpaceId
       this.filter[3] = metadata.filter.approachId
+      this.cycles = cyclesArray
   }
 }
 
