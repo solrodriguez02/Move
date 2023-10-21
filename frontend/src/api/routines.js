@@ -69,18 +69,18 @@ const routines =  ref([
   
 const routinesData = ref(
   [{
-    id:0,
+    id:0, 
     src: 'backgrounds/md2.jpg',
-    fav: true,
+    fav: true, // nop, llamo local mapa favsUser
     name: 'mar',
-    highlights: [
+    highlights: [ //todo filters
       0, ["glutes", "quads"], ["none"], 0
     ], 
     user: {
       name: 'Riquelme',
       img: 'https://storage.googleapis.com/sworkit-assets/images/exercises/standard/middle-frame/step-touch.jpg'
     },
-    time:'30 m',
+    time:'30 m', //todo se calcula 
     warm: [
       { name:'Left leg lunge', sec:30, reps: '-', id:0, image: 'https://storage.googleapis.com/sworkit-assets/images/exercises/standard/middle-frame/step-touch.jpg' },
     ],
