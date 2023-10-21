@@ -106,7 +106,7 @@
   var data  = ref([]);
   var selectedCount = 0; 
   const key= ref(0);
-
+  
   const categories = ref([
       { headline:'Recent workouts', viewAll: false},
       { headline:'Featured', viewAll: false},
@@ -117,6 +117,8 @@
     loading.value = true
     await routineStore.fetchRoutines()
     loading.value = false
+    const ans = await routineStore.getApiRoutines()
+    console.log(ans)
   })
   
   function changeView( category) {
@@ -136,6 +138,7 @@
     delete(selected[i]);
     selectedCount--;
   }
+  
   function searchRoutines(searchInApi, selected,searchWasMade){
     if(searchInApi!=='' || selectedCount>0){ 
       data = routineStore.searchRutine(searchInApi,selected);

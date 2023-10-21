@@ -90,11 +90,24 @@ export const useRoutineStore = defineStore('routine', () => {
       return routineData.value;
     }
 
-    function getApiRoutineId(id){
-      return routines.routineApi.getRoutineId(id,true)
+    async function getApiRoutines(){
+      const apiAns = await routines.RoutineApi.getAllRoutines()
+      console.log(apiAns)
+      const ans = []
+      /*
+      for (var i=0; i<apiAns.totalCount; i++ ){
+        for( var j=0; j< )
+      }
+      
+      apiAns.foreach( page => page.content.foreach( routine => {
+        ans.push( new routines.routineInfo(routine.id, routine.name, routine.detail, routine.user, routine.difficulty, routine.category, routine.metadata))
+      }))
+      console.log(ans)
+      */
+      return ans
     }
   
 
-    return { getApiRoutineId, routineList, routineData, fetchRoutines, fetchRoutine, getDataCategory, searchRutine, getRoutineData, filters, secOptions, repOptions, cycleRepOptions, deleteRoutine, addRoutine }
+    return { getApiRoutines, routineList, routineData, fetchRoutines, fetchRoutine, getDataCategory, searchRutine, getRoutineData, filters, secOptions, repOptions, cycleRepOptions, deleteRoutine, addRoutine }
 
 })

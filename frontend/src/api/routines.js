@@ -1,4 +1,5 @@
 import { ref } from 'vue' 
+import { Api } from "./api.js";
 
 const routines =  ref([         
   {
@@ -126,69 +127,84 @@ function getRoutine(id, okCallback) {
 
   }
 
-  class routineApi {
+  class RoutineApi {
     static getUrl(slug) {
         return `${Api.baseUrl}/routines${ slug ? `/${slug}` : ""}`;
     }
 
+    static async createRoutine(routinePrevInfoPost, controller){
+        return await Api.post(RoutineApi.getUrl(), true, routinePrevInfoPost, controller);
+    }
+
     static async getAllRoutines(controller){
-        var ans = await Api.get(routineApi.getUrl(), true, controller) ;
-        ans = ans.content                             
-        return new routinePrevInfo( ans.id, ans.name, ans.detail, ans.user, ans.score, ans.metadata )
+      return await Api.get(RoutineApi.getUrl(), true, controller);
+      
     }
 
-    static async createRoutine(routineInfo, controller){
-        return await Api.post(routineApi.getUrl(), true, routineInfo, controller);
-    }
-
-    static async getRoutineId(idRoutine, controller){
-        return await Api.get(routineApi.getUrl(idRoutine), true, controller);
-    }
-    
     static async modifyRoutine(idRoutine, routineInfo, controller){
-        return await Api.put(routineApi.getUrl(idRoutine), true, routineInfo, controller);
+        return await Api.put(RoutineApi.getUrl(idRoutine), true, routineInfo, controller);
     }
 
-    static async deleteRoutine(idRoutine, controller){
-        return await Api.delete(routineApi.getUrl(idRoutine), true, controller);
+    static async deleteRoutine(idRoutine, routineInfo, controller){
+        return await Api.delete(RoutineApi.getUrl(idRoutine), true, routineInfo, controller);
     }   
-}
+    
+    static async createCycle(idRoutine, cycleInfo, controller){
+        return await Api.post(RoutineApi.getUrl(idRoutine.append("/cycles")), true, cycleInfo, controller);
+    }
 
-class routinePrevInfoGet {
-  constructor(name, detail, user, score, metadata){
-      // detail tienen solo los filtros 
-      // > detail = [ ]
-      // metadata = src
+    static async getAllRoutineCycles(idRoutine, routineInfo, controller){
+        return await Api.get(RoutineApi.getUrl(idRoutine.append("/cycles")), true, routineInfo, controller);
+    }
+
+    static async modifyCycle(idRoutine, idCycle, cycleInfo, controller){
+        return await Api.put(RoutineApi.getUrl(idRoutine.append("/cycles/")).append(idCycle), true, cycleInfo, controller);
+    }
+
+    static async deleteCycle(idRoutine, idCycle, controller){
+        return await Api.delete(RoutineApi.getUrl(idRoutine.append("/cycles/")).append(idCycle), true, controller);
+    }
+}
+  
+
+class routineInfo {
+  constructor(id, name, detail, user, difficulty, categories, metadata){
       this.id = id; 
       this.name = name;
-      this.fav = 
-      this.favs = score;
-      this.src = metadata; 
+      this.src = detail; 
+      this.user = {
+        id: user.id,
+        name: user.username,
+      }
+      this.fav = metadata.fav
+      this.favs = metadata.favs
+      this.filter[0] = difficulty
+      this.filter[1] = categories.elementsRequiredId
+      this.filter[2] = categories.requiredSpaceId
+      this.filter[3] = categories.approachId
   }
 }
 
 
 class routinePrevInfoPost {
-  constructor(name, detail, user, categories, metadata){
-      // detail tienen solo los filtros 
-      // > detail = [ ]
-      // metadata = src
+  constructor(name, detail, difficultyId, elementsRequiredArray, requiredSpaceId, approachId ){
+      // elementos = [], el resto son vals
       this.name = name;
       this.src = detail; 
-      this.fav = metadata[0]
-      this.favs = metadata[1]; 
-      this.filter = categories
+      this.difficulty = "rooky"                 // campo obligatorio 
+      this.metadata = {
+        "fav": 0,
+        "favs": 0,
+        "filters": {
+          "difficulty": difficultyId,
+          "elements": elementsRequiredArray, 
+          "requiredSpaceId": requiredSpaceId, 
+          "approachId": approachId
+        }
+      };
+      this.isPublic = true;                     // campo obligatorio 
   }
 }
 
 
-class routineInfo {
-    constructor(id, name, detail, user, metadata){
-        this.name = name;
-        this.detail = detail;
-        this.user = user;
-        this.metadata = metadata;
-    }
-}
-
-export default { routineApi, routineInfo, routinePrevInfoPost, getRoutines, getRoutine, routines }
+export default { RoutineApi, routinePrevInfoPost, routineInfo, routinePrevInfoPost, getRoutines, getRoutine, routines }
