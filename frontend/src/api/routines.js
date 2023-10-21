@@ -69,18 +69,18 @@ const routines =  ref([
   
 const routinesData = ref(
   [{
-    id:0,
+    id:0, 
     src: 'backgrounds/md2.jpg',
-    fav: true,
+    fav: true, // nop, llamo local mapa favsUser
     name: 'mar',
-    highlights: [
+    highlights: [ //todo filters
       0, ["glutes", "quads"], ["none"], 0
     ], 
     user: {
       name: 'Riquelme',
       img: 'https://storage.googleapis.com/sworkit-assets/images/exercises/standard/middle-frame/step-touch.jpg'
     },
-    time:'30 m',
+    time:'30 m', //todo se calcula 
     warm: [
       { name:'Left leg lunge', sec:30, reps: '-', id:0, image: 'https://storage.googleapis.com/sworkit-assets/images/exercises/standard/middle-frame/step-touch.jpg' },
     ],
@@ -136,9 +136,8 @@ function getRoutine(id, okCallback) {
         return await Api.post(RoutineApi.getUrl(), true, routinePrevInfoPost, controller);
     }
 
-    static async getAllRoutines(controller){
-      return await Api.get(RoutineApi.getUrl(), true, controller);
-      
+    static async getAllRoutines(controller, queryGetRoutines ){
+      return await Api.get(RoutineApi.getUrl(), queryGetRoutines, false, controller);
     }
 
     static async modifyRoutine(idRoutine, routineInfo, controller){
@@ -168,7 +167,7 @@ function getRoutine(id, okCallback) {
   
 
 class routineInfo {
-  constructor(id, name, detail, user, difficulty, categories, metadata){
+  constructor(id, name, detail, user, metadata, cyclesArray){
       this.id = id; 
       this.name = name;
       this.src = detail; 
@@ -176,25 +175,25 @@ class routineInfo {
         id: user.id,
         name: user.username,
       }
-      this.fav = metadata.fav
       this.favs = metadata.favs
-      this.filter[0] = difficulty
-      this.filter[1] = categories.elementsRequiredId
-      this.filter[2] = categories.requiredSpaceId
-      this.filter[3] = categories.approachId
+      this.highlights[0] = metadata.filter.difficulty
+      this.highlights[1] = metadata.filter.elements
+      this.highlights[2] = metadata.filter.requiredSpaceId
+      this.highlights[3] = metadata.filter.approachId
+      this.cycles = cyclesArray
   }
 }
 
 
-class routinePrevInfoPost {
-  constructor(name, detail, difficultyId, elementsRequiredArray, requiredSpaceId, approachId ){
+class routinePrevInfo {
+  constructor(name, src, favs, difficultyId, elementsRequiredArray, requiredSpaceId, approachId ){
       // elementos = [], el resto son vals
       this.name = name;
-      this.src = detail; 
-      this.difficulty = "rooky"                 // campo obligatorio 
+      this.detail = src; 
+      this.isPublic = true;                     // campo obligatorio 
+      this.difficulty = "rookie"                 // campo obligatorio 
       this.metadata = {
-        "fav": 0,
-        "favs": 0,
+        "favs": favs,
         "filters": {
           "difficulty": difficultyId,
           "elements": elementsRequiredArray, 
@@ -202,9 +201,14 @@ class routinePrevInfoPost {
           "approachId": approachId
         }
       };
-      this.isPublic = true;                     // campo obligatorio 
   }
 }
 
+class queryGetRoutines {
+  constructor(page, items=1 ){
+    this.page = page
+    this.items = items 
+  }
+}
 
-export default { RoutineApi, routinePrevInfoPost, routineInfo, routinePrevInfoPost, getRoutines, getRoutine, routines }
+export { RoutineApi, routinePrevInfo, routineInfo, getRoutines, getRoutine, routines }
