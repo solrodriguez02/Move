@@ -55,23 +55,27 @@
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router';
-import { ref } from 'vue';
+import { RouterLink } from 'vue-router'
+import { ref } from 'vue'
 import { Credentials} from '@/api/user'
 import { useSecurityStore } from '@/store/SecurityStore'
-import { onBeforeMount } from 'vue';
+import { onBeforeMount } from 'vue'
+import { useRegisterStore } from '@/store/RegisterStore'	
+import router from '@/router'
 
+const registerStore = useRegisterStore()
 const securityStore = useSecurityStore()
 var hasError = ref(false);
 var error = ref(null);
 
 async function login(username, password){
     try {
-        const credentials = new Credentials(username, password);
-        await securityStore.login(credentials, true);
-    }catch(error){  
-        hasError = true;
-        this.error = error.description;
+        const credentials = new Credentials(username, password)
+        await securityStore.login(credentials, true)
+        router.push('/explore')
+    } catch(error){  
+        hasError = true
+        this.error = error.description
     }
 }
 

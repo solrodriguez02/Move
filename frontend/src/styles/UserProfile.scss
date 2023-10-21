@@ -1,48 +1,31 @@
+@use 'colors'; 
+
 .profile {
-    margin-top: 3%;
+    margin-top: 5%;
     margin-left: 5%;
     display: flex;
+}
+
+.header {
+  display: flex;
 }
 
 .avatar-profile {
     margin-right: 5%;
 }
 
-.edit-profile {
-    display: flex;
-    margin-top: 5%;
+.edit-button {
+    background-color: colors.$gray;
+    margin-left: auto;
 }
 
-.statistics{
-    margin-top: 8%;
-    margin-left: 5%;
-    display: flex;
+.link {
+  color: colors.$dark_gray;
 }
 
-.user-info{
+.user-info {
     margin-top: 2%;
-}
-
-.aligned-items {
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.stats-card {
-  height: 100%;
-  display: flex; 
-  align-items: center; 
-  padding: 0.5%;
-}
-
-.stats-display {
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
-.stats-row {
-  margin-right: 10px;
+    margin-left: 4%;
 }
 
 .single-line {
@@ -51,14 +34,17 @@
   text-overflow: ellipsis; 
 }
 
-.stats-info {
-  flex: 1;
+.user-title {
+  color: gray;
 }
 
-.center-card {
+.logout-button {
+  background-color: colors.$blue;
+  color: white;
+}
+
+.log-out-box {
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100%;
-  margin-top: 2%;
+  margin-top: 6%;
 }

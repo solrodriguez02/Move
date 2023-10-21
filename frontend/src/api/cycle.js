@@ -1,12 +1,14 @@
 import { Api } from "./api.js";
 
-class cycleApi {
+export {CycleApi, cycleInfo, exerciseSpecification}
+
+class CycleApi {
     static getUrl(slug) {
         return `${Api.baseUrl}/cycles${ slug ? `/${slug}` : ""}`;
     }
 
-    static async addExercise(idCycle, cycleInfo, controller){
-        return await Api.post(cycleApi.getUrl(idCycle.append("/exercises")), true, cycleInfo, controller);
+    static async addExercise(idCycle, exerciseInfo, controller){
+        return await Api.post(cycleApi.getUrl(idCycle.append("/exercises")), true, exerciseInfo, controller);
     }
 
     static async getExercises(idCycle, controller){
@@ -27,5 +29,13 @@ class cycleInfo{
     constructor(name, order){
         this.name = name;
         this.order = order;
+    }
+}
+
+class exerciseSpecification{
+    constructor(order, duration, repetitions){
+        this.order = order;
+        this.duration = duration;
+        this.repetitions = repetitions;
     }
 }

@@ -1,0 +1,66 @@
+@use 'colors'; 
+
+#nav a {
+color: black;
+text-decoration: none;
+}
+
+#nav a.router-link-active {
+font-weight: bold;
+}
+
+.navigation {
+margin-top: 0.5%;
+float: right;
+}
+
+.nav-links {
+display: flex;
+margin: 20px;
+align-items: center;
+}
+
+.links {
+padding-right: 40px;
+list-style: none;
+color: black;
+font-size: 16px;
+}
+
+.link {
+margin-top: 3px;
+}
+
+.link:hover{
+color: rgb(137, 137, 137);
+}
+
+.logo {
+height: 30px;
+margin: 2%;
+}
+
+.profile-avatar {
+height: 40px;
+width: 40px;
+border-radius: 50px;
+}
+
+.profile-avatar-selected {
+border: 3px solid colors.$blue;
+}
+
+.active-link {
+position: relative;
+}
+
+.active-link::before {
+content: '';
+border-radius: 3px;
+position: absolute;
+bottom: -5px;
+left: 40%;
+width: 20%; 
+height: 5px; 
+background-color: rgb(68, 9, 217); 
+}

@@ -4,8 +4,8 @@
     <div class='header'>
         <h1>My exercises</h1>
         <div class='create-new'>
-            <RouterLink to='/createexercise'>
-                <button class='new-button'>
+            <RouterLink to='/createexercise' class='link-decoration'>
+                <button class='new-button button'>
                     Create new 
                     <v-icon icon='$add'/>
                 </button>
