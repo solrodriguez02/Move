@@ -2,9 +2,12 @@
   <div class='basics'>
     <div class='header'>
       <h1>My routines</h1>
-      <div class="link">
-       <RouterLink to='/createroutine'>
-        <v-btn rounded flat id='butCreate' class='text-none'>Create new +</v-btn>
+      <div class='link'>
+       <RouterLink to='/createroutine' class='link-decoration'>
+        <button class='button new-button'>
+          Create new
+          <v-icon icon='$add'/>
+        </button>
       </RouterLink> 
       </div>
     </div>

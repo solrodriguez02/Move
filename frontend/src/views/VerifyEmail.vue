@@ -68,7 +68,8 @@ const required = (v) => {
 async function verifyEmail(code){
     try{
         const emailVerificationInfo = new EmailVerificationInfo(registerStore.userInfo.email, code)
-        await UserApi.verifyEmail(emailVerificationInfo, true);
+        await UserApi.verifyEmail(emailVerificationInfo, true)
+        router.push('/signin')
     } catch(error){
         console.log(error)
     }

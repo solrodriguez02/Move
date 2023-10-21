@@ -2,8 +2,6 @@
 
 .header {
   display: flex;
-  align-content: center;
-  align-items: center;
   padding-bottom: 4%;
 }
 
@@ -35,7 +33,6 @@
   width: 110%;
 }
 
-
 .viewAll{
   color: grey;
   text-decoration: underline;
@@ -53,4 +50,9 @@
   border-radius: 20px 8px 8px 20px;
   width: 5em;
   color: colors.$lightblue;
+}
+
+.new-button {
+  background-color: colors.$turquoise;
+  color: white;
 }
