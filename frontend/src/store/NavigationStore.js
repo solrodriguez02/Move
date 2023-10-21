@@ -19,11 +19,11 @@ export const useNavigationStore = defineStore('navigation', () => {
             case'/createexercise':
               return 'Create Exercise'
             case '/routine':
-              return 'routine'
+              return 'Routine'
             case'/editexercise':
-              return 'edit exercise'
+              return 'Edit Exercise'
             case '/userprofile':
-              return 'user profile'
+              return 'User Profile'
             default: 
               return 'Go Back'
           }
