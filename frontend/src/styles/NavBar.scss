@@ -49,3 +49,18 @@ border-radius: 50px;
 .profile-avatar-selected {
 border: 3px solid colors.$blue;
 }
+
+.active-link {
+position: relative;
+}
+
+.active-link::before {
+content: '';
+border-radius: 3px;
+position: absolute;
+bottom: -5px;
+left: 40%;
+width: 20%; 
+height: 5px; 
+background-color: rgb(68, 9, 217); 
+}

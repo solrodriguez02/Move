@@ -6,10 +6,11 @@
     <nav class='navigation'>
     <ul class='nav-links'>
       <li class='links' v-for='item in menuItems' :key='title'>
-        <RouterLink v-show='securityStore.isLoggedIn' :to="item.path"> <p class='link'>{{ item.title }}</p> </RouterLink>
+        <RouterLink v-show='securityStore.isLoggedIn' :to="item.path">
+            <p class="link" :class="{ 'active-link': $route.path === item.path }">{{ item.title }}</p>
+          </RouterLink>
       </li>
       <li v-show='!securityStore.isLoggedIn' class='links'>
-
         <RouterLink to='/signin'>
         <v-btn 
         class='text-none'
