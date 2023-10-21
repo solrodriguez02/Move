@@ -80,7 +80,6 @@ class Api {
   }
 
   static async post(url, secure, data, controller) {
-    debugger;
     return await Api.fetch(url, secure, Api.createCallInfo(data, 'POST'), controller);
   }
 

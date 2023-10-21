@@ -7,7 +7,7 @@
       
     <div class='field-text-box'> Name </div>
       <v-text-field
-      :v-model='formFields[0].input'
+      v-model='formFields[0].name'
       :readonly='loading'
       :rules='[required]'
       variant='outlined'
@@ -23,7 +23,7 @@
           <div class='field-text aligned-text' > {{ field.label }} </div>
         </div>
       <v-select
-        :v-model='formFields[index+3].input'
+        v-model='formFields[index+3].label'
         :items='field.items'
         :multiple="field.label == 'Elements required' || field.label =='Muscle groups'"
         :chips="field.label == 'Elements required' || field.label =='Muscle groups'"
@@ -35,7 +35,7 @@
   </div>
   <div class='field-text-box'> Description </div>
     <v-textarea
-      :v-model='formFields[1].input'
+      v-model='formFields[1].detail'
       auto-grow
       variant='outlined'
       rows='3'
@@ -46,7 +46,7 @@
     <div class='field-box'>
       <div class='field-text-box'> Image </div>
         <v-file-input
-          :v-model='formFields[2].input'
+          v-model='formFields[2].image'
           label='Attach a representative image for the exercise'
           variant='outlined'
           rounded/>
@@ -76,15 +76,7 @@
   const loading = ref(false);
   const exerciseCreated = ref(false);
 
-  const formFields= ref([
-    { label: 'name', input: null },
-    { label: 'detail', input: null },
-    { label: 'image', input: null },
-    { label: 'difficulty', input: null },
-    { label: 'muscleGroups', input: null },
-    { label: 'elements', input: null },
-    { label: 'space', input: null },
-])
+  const formFields= ref([ { name: '' }, { detail: '' }, { image: null }, { label: null }, { label: null }, { label: null }, { label: null } ])
 
   const form = ref(false)
 
@@ -96,7 +88,8 @@
   ])
 
   async function onSubmit() {
-    const exerciseData = new exerciseInfo('name6', 'this is the description', 'exercise', {'empty array': 'ARRAY'});
+    const details = { image: formFields.value[2].image, difficulty: formFields.value[3].label, muscleGroups: formFields.value[4].label, elements: formFields.value[5].label, space: formFields.value[6].label }
+    const exerciseData = new exerciseInfo(formFields.value[0].name, formFields.value[1].detail, 'user', details);
     await exerciseStore.addExercise(exerciseData);
     exerciseCreated.value = true;
         //$router.push('/createdbyyou');
