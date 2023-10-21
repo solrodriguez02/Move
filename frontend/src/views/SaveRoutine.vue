@@ -1,5 +1,12 @@
 <template>
+  <div class = 'appbar navigate-margin'>
+    <button @click="goBack" class="button">
+      <v-icon icon='$back'></v-icon>
+      <p>{{navigationStore.getTabText(getTab())}}</p>
+    </button>  
+  </div>
     <v-container>
+      
       <h1 style="margin-bottom: 2%;">Save Routine</h1>
       <v-form class='form'
         v-model="form"
@@ -60,7 +67,11 @@
 <script setup>
 import { ref } from 'vue'
 import { useRoutineStore } from '@/store/RoutineStore'
+import { useRouter } from 'vue-router'
+import { useNavigationStore } from '@/store/NavigationStore'
 
+const router = useRouter()
+const navigationStore= useNavigationStore()
 const routineStore = useRoutineStore()
 const loading = ref(false);
 
@@ -85,10 +96,19 @@ const onSubmit = () => {
     //$router.push('/createdbyyou');
 }
 
+function getTab() {
+  return router.options.history.state.back
+}
+
+const goBack = () => {
+  router.go(-1)
+}
+
 const required = (v) => {
     return !!v || 'Field is required';
 }
 </script>
 
 <style scoped src='@/styles/SaveRoutine.scss'></style>
+<style scoped src='@/styles/Globals.scss'></style>
 

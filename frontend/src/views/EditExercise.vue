@@ -1,4 +1,10 @@
 <template>
+<div class = 'appbar'>
+    <button @click="goBack" class="button">
+      <v-icon icon='$back'></v-icon>
+      <p>{{navigationStore.getTabText(getTab())}}</p>
+    </button>  
+</div>
 <div class='exercise'>
     <div class='grey-section'>
     <h1>Lunge</h1>
@@ -66,6 +72,11 @@
     
 <script setup>
     import { ref } from 'vue'
+    import { useRouter } from 'vue-router'
+    import { useNavigationStore } from '@/store/NavigationStore'
+
+    const router = useRouter()
+    const navigationStore= useNavigationStore()
 
     const highlightsItems = ref([
     { name:'Difficulty', detail:'Medium difficulty', icon:'$flash', color:'turquoise'},
@@ -79,6 +90,15 @@
         highlights: highlightsItems,
         description:'01. Stand tall with your feet hip-width apart and your arms by your sides, to start. <br><br> 02. Brace your core and bring your hands to your hips as you step one foot forwards. Bend both legs until they form 90-degree angles. Make sure your front knee doesn\'t extend past your toes. <br><br> 03. Keep your weight in your front leg. Your back leg should just help maintain balance, and your chest should stay tall. Press through your front foot to return to the starting position. That\'s 1 rep.' 
     })
+
+    function getTab() {
+        return router.options.history.state.back
+    }
+
+    const goBack = () => {
+        router.go(-1)
+    }
 </script>
     
 <style scoped src='@/styles/EditExercise.scss'></style>
+<style scoped src='@/styles/Globals.scss'></style>

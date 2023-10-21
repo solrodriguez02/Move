@@ -1,4 +1,10 @@
 <template>
+    <div class = 'appbar navigate-margin'>
+        <button @click="goBack" class="button">
+            <v-icon icon='$back'></v-icon>
+            <p>{{navigationStore.getTabText(getTab())}}</p>
+        </button>  
+    </div>
     <v-container>
       <h1>Edit Profile</h1>
       
@@ -57,7 +63,7 @@
         <p style="margin-top:2%; margin-left:37%">Cambios guardados con éxito.</p>
       </div>
       </v-form>
-</div>
+    </div>
 
     </v-container>
   </template>
@@ -65,6 +71,11 @@
   
     <script setup>
     import { ref } from 'vue';
+    import { useRouter } from 'vue-router'
+    import { useNavigationStore } from '@/store/NavigationStore'
+
+    const router = useRouter()
+    const navigationStore= useNavigationStore()
     
     const profileSaved = ref(false);
 
@@ -79,9 +90,18 @@
     const onSubmit = () => {
         profileSaved.value = true;
    }
+
+   function getTab() {
+        return router.options.history.state.back
+    }
+
+    const goBack = () => {
+        router.go(-1)
+    }
     
     </script>
     
     <style scoped src='@/styles/EditProfile.scss'></style>
+    <style scoped src='@/styles/Globals.scss'></style>
   
   
