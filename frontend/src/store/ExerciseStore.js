@@ -19,9 +19,14 @@ export const useExerciseStore = defineStore('exercise', () => {
         { label: 'Space requirements', items: ['Ideal for reduced spaces', 'Requires some space', 'Much space is needed'], icon: '$space',  color:'violet' }
     ]
 
+    const charge = ref(true)
+
     async function fetchExercises() {
-        const exercises = await exerciseApi.getAllExercises(true)
-        filterExercises(exercises.content, exercises.content.length)
+        if(charge.value) {
+            const exercises = await exerciseApi.getAllExercises(true)
+            filterExercises(exercises.content, exercises.content.length)
+            charge.value = false
+        }
     }
 
     function filterExercises(exercises, exerciseCount) {
@@ -52,8 +57,8 @@ export const useExerciseStore = defineStore('exercise', () => {
         pushExercise(exercise.id, exercise.name, exercise.detail, exercise.image, exercise.difficulty, exercise.muscleGroup, exercise.elements, exercise.space)
     }
 
-    function deleteExercise(id) {
-        // falta implementar
+    async function deleteExercise(id) {
+        await exerciseApi.deleteExercise(id, true)
     }
 
     return { exerciseList, filters, fetchExercises, addExercise, deleteExercise }
