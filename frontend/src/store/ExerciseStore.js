@@ -19,22 +19,28 @@ export const useExerciseStore = defineStore('exercise', () => {
         { label: 'Space requirements', items: ['Ideal for reduced spaces', 'Requires some space', 'Much space is needed'], icon: '$space',  color:'violet' }
     ]
 
+    const charge = ref(true)
+
     async function fetchExercises() {
-        const exercises = await exerciseApi.getAllExercises(true)
-        filterExercises(exercises.content, exercises.content.length)
+        if(charge.value) {
+            const exercises = await exerciseApi.getAllExercises(true)
+            filterExercises(exercises.content, exercises.content.length)
+            charge.value = false
+        }
     }
 
     function filterExercises(exercises, exerciseCount) {
         for (let i = 0; i < exerciseCount; i++) {
             const exercise = exercises[i]
-            if(exercise.image == null) {
-                exercise.image = 'https://static.vecteezy.com/system/resources/previews/006/923/598/non_2x/running-man-abstract-logo-free-vector.jpg'
+            const details = exercise.metadata
+            if(details.image == null) {
+                details.image = 'https://static.vecteezy.com/system/resources/previews/006/923/598/non_2x/running-man-abstract-logo-free-vector.jpg'
             }
-            pushExercise(exercise.id, exercise.name, exercise.detail, exercise.image, exercise.difficulty, exercise.muscleGroups, exercise.elements, exercise.space )
+            pushExercise(exercise.id, exercise.name, exercise.detail, details.image, details.difficulty, details.muscleGroups, details.elements, details.space, details.creator )
         }
     }
 
-    function pushExercise(id, name, detail, image, difficulty, muscleGroup, elements, space) {
+    function pushExercise(id, name, detail, image, difficulty, muscleGroup, elements, space, creator) {
         exerciseList.value.push({
             id: id,
             name: name,
@@ -44,16 +50,17 @@ export const useExerciseStore = defineStore('exercise', () => {
             muscleGroup: muscleGroup,
             elements: elements, 
             space: space,
+            creator: creator,
         })
     }
     
     async function addExercise(exercise) {    
         await exerciseApi.createExercise(exercise, true);
-        pushExercise(exercise.id, exercise.name, exercise.detail, exercise.image, exercise.difficulty, exercise.muscleGroup, exercise.elements, exercise.space)
+        pushExercise(exercise.id, exercise.name, exercise.detail, exercise.image, exercise.difficulty, exercise.muscleGroup, exercise.elements, exercise.space, exercise.creator)
     }
 
-    function deleteExercise(id) {
-        // falta implementar
+    async function deleteExercise(id) {
+        await exerciseApi.deleteExercise(id, true)
     }
 
     return { exerciseList, filters, fetchExercises, addExercise, deleteExercise }

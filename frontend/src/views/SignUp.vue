@@ -56,26 +56,29 @@
 </template>
 
 <script setup>
-import { RouterLink, useRouter} from 'vue-router';
-import { ref } from 'vue';
+import { RouterLink, useRouter} from 'vue-router'
+import { ref } from 'vue'
 import { UserApi, PersonalInfo } from '@/api/user.js'
+import { useRegisterStore } from '@/store/RegisterStore'
 
 
-var hasError = ref(false);
-var error = ref(null);
-var router = useRouter();
+var hasError = ref(false)
+var error = ref(null)
+var router = useRouter()
+const registerStore = useRegisterStore()
 
 async function registerUser(username, password, firstName, lastName, email){
     try{
         const user = new PersonalInfo(username, password, firstName, lastName, email)
-        await UserApi.register(user);
-        router.push("/");
+        const result = await UserApi.register(user)
+        registerStore.setUserInfo(email, result.id) 
+        router.push("/verifyemail")
     }catch(error){  
-        hasError = true;
+        hasError = true
         if (error.description.includes("constraint"))
-                this.error = "Username or email already exists";
+                this.error = "Username or email already exists"
         else if (error.description.includes("Invalid"))
-                this.error = "Email format is not valid";
+                this.error = "Email format is not valid"
         else
                 this.error = error.description;
     }
