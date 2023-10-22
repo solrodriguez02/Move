@@ -110,6 +110,9 @@
   ])
 
   async function onSubmit() {
+    if(formFields.value[2].image == null) {
+      formFields.value[2].image = 'https://static.vecteezy.com/system/resources/previews/006/923/598/non_2x/running-man-abstract-logo-free-vector.jpg'
+    }
     const details = { image: formFields.value[2].image, difficulty: formFields.value[3].difficulty, muscleGroups: formFields.value[4].muscleGroups, elements: formFields.value[5].elements, space: formFields.value[6].space, creator: 'user' }
     const exerciseData = new exerciseInfo(formFields.value[0].name, formFields.value[1].detail, 'exercise', details)
     await exerciseStore.addExercise(exerciseData)
