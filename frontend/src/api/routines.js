@@ -87,8 +87,8 @@ function getRoutine(id, okCallback) {
         return await Api.put(RoutineApi.getUrl(idRoutine), true, routineInfo, controller);
     }
 
-    static async deleteRoutine(idRoutine, routineInfo, controller){
-        return await Api.delete(RoutineApi.getUrl(idRoutine), true, routineInfo, controller);
+    static async deleteRoutine(idRoutine, controller){
+        return await Api.delete(RoutineApi.getUrl(idRoutine), true, controller);
     }   
     
     static async createCycle(idRoutine, cycleInfo, controller){
