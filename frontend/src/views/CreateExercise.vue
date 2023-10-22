@@ -19,12 +19,12 @@
 
 <div class='basics-max'>
 
-  <h1>Create Exercise</h1>
+  <h1>{{exerciseIsNew? 'Create Exercise':'Edit Exercise'}}</h1>
   <v-form class='form'
     v-model='form'
     @submit.prevent='onSubmit'>
       
-    <div class='field-text-box'> Name </div>
+    <div class='field-text-box'>Name</div>
       <v-text-field
       v-model='formFields[0].name'
       :readonly='loading'
@@ -32,7 +32,7 @@
       variant='outlined'
       clearable
       rounded
-      placeholder='Enter the exercise name'/>
+      :placeholder='formFields[0].placeholder'/>
     <div class='all-fields'>
       <div v-for='(field,index) in exerciseStore.filters' :key='field.label' :class="index === 0 || index === 2 ? 'field-left' : 'field-right'"> 
         <div class='field-header'>
@@ -47,9 +47,10 @@
         :multiple="field.label == 'Elements required' || field.label =='Muscle groups'"
         :chips="field.label == 'Elements required' || field.label =='Muscle groups'"
         :rules="[required]"
+        clearable
         variant='outlined'
         rounded
-        :placeholder='placeholders[index]'/>
+        :placeholder='formFields[index+3]["placeholder"]'/>
     </div>
   </div>
   <div class='field-text-box'> Description </div>
@@ -66,8 +67,9 @@
       <div class='field-text-box'> Image </div>
         <v-text-field
           v-model='formFields[2].image'
-          placeholder='Enter a representative image for the exercise by its URL'
+          :placeholder='formFields[2].placeholder'
           variant='outlined'
+          clearable
           rounded/>
     </div>
 
@@ -85,7 +87,7 @@
 </template>
   
 <script setup>
-  import { ref } from 'vue'
+  import { ref, onBeforeMount } from 'vue'
   import { useRouter } from 'vue-router'
   import { useExerciseStore } from '@/store/ExerciseStore'
   import { exerciseInfo } from '@/api/exercises'
@@ -97,25 +99,50 @@
   const router = useRouter()
   const loading = ref(false)
   const goBackDialog = ref(false)
-
-  const formFields= ref([ { name: '' }, { detail: '' }, { image: null }, { difficulty: null }, { muscleGroups: null }, { elements: null }, { space: null } ])
-
+  const exerciseIsNew = ref(false)
   const form = ref(false)
+  const exerciseData = ref({})
 
-  const placeholders = ref([
-    'Enter the exercise difficulty',
-    'Which muscle group will be exercised?',
-    'Does the exercise require any element?',
-    'How much space is it necesary',
-  ])
+  const formFields= ref([ 
+    { name: '', placeholder: 'Enter the exercise name' }, 
+    { detail:'', placeholder: 'What are the steps to follow the exercise? How would you describe it?' }, 
+    { image: '', placeholder: 'Enter a representative image for the exercise by its URL'}, 
+    { difficulty: '', placeholder: 'Enter the exercise difficulty' }, 
+    { muscleGroups: [], placeholder: 'Which muscle group will be exercised?' }, 
+    { elements: [], placeholder: 'Does the exercise require any element?' }, 
+    { space: '', placeholder: 'How much space is it necesary?' } ])
+
+    onBeforeMount (async () => {
+    loading.value = true
+    exerciseIsNew.value = isNew()
+    if(true) {
+      exerciseData.value = await exerciseStore.fetchExerciseById(getId())
+      setCurrentValues(exerciseData.value)
+    }
+    loading.value = false
+  })
+
+  function setCurrentValues(exerciseData) {
+    formFields.value[0].name = exerciseData.name
+    formFields.value[1].detail = exerciseData.detail
+    formFields.value[2].image = exerciseData.metadata.image
+    formFields.value[3].difficulty = exerciseData.metadata.difficulty
+    formFields.value[4].muscleGroups = exerciseData.metadata.muscleGroups
+    formFields.value[5].elements = exerciseData.metadata.elements
+    formFields.value[6].space = exerciseData.metadata.space
+  }
 
   async function onSubmit() {
-    if(formFields.value[2].image == null) {
-      formFields.value[2].image = 'https://static.vecteezy.com/system/resources/previews/006/923/598/non_2x/running-man-abstract-logo-free-vector.jpg'
-    }
     const details = { image: formFields.value[2].image, difficulty: formFields.value[3].difficulty, muscleGroups: formFields.value[4].muscleGroups, elements: formFields.value[5].elements, space: formFields.value[6].space, creator: 'user' }
-    const exerciseData = new exerciseInfo(formFields.value[0].name, formFields.value[1].detail, 'exercise', details)
-    await exerciseStore.addExercise(exerciseData)
+    const exerciseInformation = new exerciseInfo(formFields.value[0].name, formFields.value[1].detail, 'exercise', details)
+    if(exerciseIsNew.value) {
+      if(formFields.value[2].image == null) {
+        formFields.value[2].image = 'https://static.vecteezy.com/system/resources/previews/006/923/598/non_2x/running-man-abstract-logo-free-vector.jpg'
+      }
+      await exerciseStore.addExercise(exerciseData)
+    } else {
+      await exerciseStore.modifyExercise(getId(), exerciseInformation)
+    }
     router.go(-1)
   }
 
@@ -134,6 +161,15 @@
   const required = (v) => {
     return !!v || 'Field is required'
   }
+
+  function isNew() {
+    return router.currentRoute.value.path == '/createExercise'
+  }
+
+  function getId() {
+    return router.currentRoute.value.params.exerciseId
+  }
+
 </script> 
   
 <style scoped src='@/styles/CreateExercise.scss'></style>

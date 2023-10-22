@@ -1,7 +1,7 @@
 <template>
   <div class='basics'>
     <div class='appbar'>
-        <button @click='goBack' class='button'>
+        <button @click='goBack' class='back-button'>
             <v-icon icon='$back'></v-icon>
             <p>{{navigationStore.getTabText(getTab())}}</p>
         </button>  
