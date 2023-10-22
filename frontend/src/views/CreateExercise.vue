@@ -104,18 +104,18 @@
   const exerciseData = ref({})
 
   const formFields= ref([ 
-    { name: '', placeholder: 'Enter the exercise name' }, 
-    { detail:'', placeholder: 'What are the steps to follow the exercise? How would you describe it?' }, 
-    { image: '', placeholder: 'Enter a representative image for the exercise by its URL'}, 
-    { difficulty: '', placeholder: 'Enter the exercise difficulty' }, 
+    { name: null, placeholder: 'Enter the exercise name' }, 
+    { detail: null, placeholder: 'What are the steps to follow the exercise? How would you describe it?' }, 
+    { image: null, placeholder: 'Enter a representative image for the exercise by its URL'}, 
+    { difficulty: null, placeholder: 'Enter the exercise difficulty' }, 
     { muscleGroups: [], placeholder: 'Which muscle group will be exercised?' }, 
     { elements: [], placeholder: 'Does the exercise require any element?' }, 
-    { space: '', placeholder: 'How much space is it necesary?' } ])
+    { space: null, placeholder: 'How much space is it necesary?' } ])
 
     onBeforeMount (async () => {
     loading.value = true
     exerciseIsNew.value = isNew()
-    if(true) {
+    if(!exerciseIsNew.value) {
       exerciseData.value = await exerciseStore.fetchExerciseById(getId())
       setCurrentValues(exerciseData.value)
     }
@@ -137,9 +137,9 @@
     const exerciseInformation = new exerciseInfo(formFields.value[0].name, formFields.value[1].detail, 'exercise', details)
     if(exerciseIsNew.value) {
       if(formFields.value[2].image == null) {
-        formFields.value[2].image = 'https://static.vecteezy.com/system/resources/previews/006/923/598/non_2x/running-man-abstract-logo-free-vector.jpg'
+        exerciseInformation.metadata.image = 'https://static.vecteezy.com/system/resources/previews/006/923/598/non_2x/running-man-abstract-logo-free-vector.jpg'
       }
-      await exerciseStore.addExercise(exerciseData)
+      await exerciseStore.addExercise(exerciseInformation)
     } else {
       await exerciseStore.modifyExercise(getId(), exerciseInformation)
     }
@@ -163,7 +163,7 @@
   }
 
   function isNew() {
-    return router.currentRoute.value.path == '/createExercise'
+    return router.currentRoute.value.path == '/createexercise'
   }
 
   function getId() {
