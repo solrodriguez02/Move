@@ -19,7 +19,7 @@
     class='loading'>
     </v-progress-circular>
     <div v-else v-for='exercise in exerciseStore.exerciseList' :key='exercise.id'>
-        <HorizontalBox v-show="exercise.creator == 'user'" :items='{name: exercise.name, link: "/exercise", img: exercise.image, deleteFunction: () => showDeleteDialog(exercise.id), editFunction: () => editExercise(exercise.name)}'/>
+        <HorizontalBox v-show="exercise.creator == 'user'" :items='{name: exercise.name, link: getLink(exercise.id), img: exercise.image, deleteFunction: () => showDeleteDialog(exercise.id), editFunction: () => editExercise(exercise.name)}'/>
     </div>
 
     <warning-dialog
@@ -71,6 +71,10 @@
     function editExercise(id) {
         //router.push({ name: 'EditExercise', params: { id: id } })
         router.push('/createexercise')
+    }
+
+    function getLink(id) {
+        return '/exercise/' + id
     }
 
 </script>

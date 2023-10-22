@@ -14,7 +14,7 @@ import { getRoutine, getRoutines, routines, RoutineApi, queryGetRoutines, routin
 
 export const useRoutineStore = defineStore('routine', () => {
     const routineList = ref([])
-    const routineData = ref(null)
+    var routineData
     const favorites = ref([])
 
     const filters = ref([
@@ -153,28 +153,35 @@ export const useRoutineStore = defineStore('routine', () => {
       return 0          // fue exitosa la busqueda
     }
     
-    async function setRoutineApiData(idRoutine) {
-      routineData.value = RoutineApi.getRoutineById( idRoutine, new queryGetRoutines( null,null,null,idRoutine), controller )
+    async function fetchRoutineApiData(idRoutine) { 
+      const r = await RoutineApi.getRoutineById( idRoutine, true )
+      return new routineInfo( r.id, r.name, r.detail, favorites.value.includes(r.id), r.metadata, r.user, [] )
     }
 
     async function getRoutineApiData(id){
-    console.log(routineList.value)
-      if ( routineList.value == {} || routineList.value[0] )
-        setRoutineApiData(id)
+  
+      if ( routineList.value == undefined || routineList.value.length==0 )
+        routine = await fetchRoutineApiData(id)
       else {
         var routine = routineList.value[0].find((routine) => routine.id == id);
         if ( !routine && routineList.value.length > 1 )
           routine = routineList.value[1].find((routine) => routine.id == id);
         else 
-          setRoutineApiData(id)
+          routine = await fetchRoutineApiData(id)
       }
-        
-      // llamar a cycles y meterlo en routineInfo
-      routineData = routine
 
+      if ( !routine )
+        return 1
       
+      routineData = routine
+      
+      // llamar a cycles y meterlo en routineInfo
+      
+      
+      return routine
+
     }
 
-    return { getApiRoutinesByCategories, getRoutineApiData,getApiRoutinesWithFilters, routineList, routineData, fetchRoutines, fetchRoutine, getDataCategory, searchRutine, getRoutineData, filters, secOptions, repOptions, cycleRepOptions, deleteRoutine, addRoutine }
+    return { getApiRoutinesByCategories, getRoutineApiData ,getApiRoutinesWithFilters, routineList, routineData, fetchRoutines, fetchRoutine, getDataCategory, searchRutine, getRoutineData, filters, secOptions, repOptions, cycleRepOptions, deleteRoutine, addRoutine }
 
 })

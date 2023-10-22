@@ -68,11 +68,11 @@
         <p class='username'>By {{ data.user.name }}</p>
         <div class = 'total-duration'>
           <v-icon icon= '$time' color='blue'></v-icon>
-          <p class='time-text'>{{ data.time }}</p>
+          <p class='time-text'>{{ getTime() }}</p>
         </div>
       </div>
       <div class='routine-img'>
-        <v-img :src='`https://cdn.vuetifyjs.com/images/${data.src}`' alt='Routine image' cover aspect-ratio="16/9" height='295px' width='600px' class='image'/>
+        <v-img :src='data.src' alt='Routine image' cover aspect-ratio="16/9" height='295px' width='600px' class='image'/>
       </div>
     </div>
 
@@ -161,16 +161,24 @@
 
   const navigationStore= useNavigationStore()
 
-  const data = ref(null)
+  const data = ref([])
   const isFavorite = ref(null)
+  const notFound = ref(false)
 
   onBeforeMount (async () => {
     console.log(route.params.routineId)
     //await routineStore.fetchRoutine( route.params.routineId )
-    loading.value = true 
-    await routineStore.getRoutineApiData(route.params.routineId)
-    loading.value = false 
-    loadData()
+    try {
+      loading.value = true 
+      data.value = await routineStore.getRoutineApiData(route.params.routineId)
+      loading.value = false 
+    } catch ( errorObj ){
+      notFound.value = true
+    }
+    
+  
+    if ( data.value)
+      loadData()
     
   }) 
 
@@ -178,16 +186,15 @@
 
   function loadData(){
    
-    data.value = routineStore.routineData.value
+     
+    console.log( 'Rutina'+ data.value.filters.difficulty)
     isFavorite.value = data.value.fav
 
-    const filter = routineStore.filters[0].options[data.value.highlights[0]]
-    const space = routineStore.filters[2].options[data.value.highlights[3]]
     highlightsItems.value = [
-      { name:'Difficulty', detail: filter + " difficulty" , icon:'$flash', color:'turquoise'},
-      { name:'Approach', detail:data.value.highlights[1].join(", "), icon:'$person', color:'lightblue' },
-      { name:'Elements required', detail:data.value.highlights[2].join(", "), icon:'$dumbbell', color:'blue' },
-      { name:'Space', detail:space, icon:'$space', color:'violet' },
+      { name:'Difficulty', detail: data.value.filters.difficulty + " difficulty" , icon:'$flash', color:'turquoise'},
+      { name:'Space', detail: data.value.filters.requiredSpace, icon:'$space', color:'violet' },
+      { name:'Approach', detail: data.value.filters.approach, icon:'$person', color:'lightblue' },
+      { name:'Elements required', detail:data.value.filters.elements.join(", "), icon:'$dumbbell', color:'blue' },
   ];
 
 
@@ -282,6 +289,13 @@
   ])
 
   const lastCycleOptionIndex = cyclesOptions.value.length - 1
+
+  function getTime(){
+    // itera x cda ejercicio y estima tiempo
+    const tReps = 5
+
+    return cycles.value.length + ' m'
+  }
 
   </script>
 

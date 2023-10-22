@@ -135,10 +135,10 @@
     selectedCount--;
   }
   
-  function searchRoutines(searchInApi, selected,searchWasMade){
+  async function searchRoutines(searchInApi, selected,searchWasMade){
     if(searchInApi!=='' || selectedCount>0){ 
       
-      routineStore.getApiRoutinesWithFilters()
+      await routineStore.getApiRoutinesWithFilters()
       data = routineStore.routineList[0]
       
       searchWasMade[0] = true; 

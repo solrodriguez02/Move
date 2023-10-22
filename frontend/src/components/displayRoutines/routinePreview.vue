@@ -6,7 +6,7 @@
             color='grey-lighten-1'> 
             <div class='text-right image-container'>
               <v-img 
-                    :src="`https://cdn.vuetifyjs.com/images/${r.src}`" 
+                    :src="r.src" 
                     :alt="r.name" class="imgRoutine"
                     @click="toggle" cover>
                     <v-btn v-if="r.fav" icon='$favfull' class="me-2 mt-2" size="small" color="white"/>
@@ -19,9 +19,9 @@
                     </v-row>
                     <v-row class="d-flex align-center">
                         <v-icon icon='$flash' size='14'  color='black'/>
-                        <v-icon icon='$flash' size='14'  :color="r.filters.difficulty>0? 'black':'grey-lighten-1'" class="ml-0"/>
-                        <v-icon icon='$flash' size='14'  :color="r.filters.difficulty>1? 'black':'grey-lighten-1'" />
-                        <p  class='overlay-text ml-1'>{{ difficulty[r.filters.difficulty] + ' difficulty' }}</p>
+                        <v-icon icon='$flash' size='14'  :color="r.filters.difficulty!=='Easy'? 'black':'grey-lighten-1'" class="ml-0"/>
+                        <v-icon icon='$flash' size='14'  :color="r.filters.difficulty=='Hard'? 'black':'grey-lighten-1'" />
+                        <p  class='overlay-text ml-1'>{{ r.filters.difficulty + ' difficulty' }}</p>
                     </v-row>  
         </v-container>
             </div>

@@ -75,15 +75,12 @@ function getRoutine(id, okCallback) {
 
 
     static async getAllRoutines( queryGetRoutines, controller ){
-      const ans= await Api.getWithParam(RoutineApi.getUrl(), true, queryGetRoutines, controller);
-      console.log(ans)
-      return ans;     
+      return await Api.getWithParam(RoutineApi.getUrl(), true, queryGetRoutines, controller);
+      
     }
 
-    static async getRoutineById( idRoutine, queryGetRoutines, controller ){
-      const ans= await Api.getWithParam(RoutineApi.getUrl(idRoutine), true, queryGetRoutines, controller);
-      console.log(ans)
-      return ans;     
+    static async getRoutineById( idRoutine, controller ){
+      return await Api.get(RoutineApi.getUrl(idRoutine), true, controller);
     }
 
     static async modifyRoutine(idRoutine, routineInfo, controller){
@@ -123,11 +120,12 @@ class routineInfo {
       this.user = {
         id: user.id,
         name: user.username,
+        img: user.avatarUrl
       }
       this.cycles = cyclesArray
   }
 }
-// todo POSTTTT
+
 class routinePrevInfo {
   constructor( name, src,favsNum, difficultyId, elementsRequiredArray, requiredSpaceId, approachId ){
       // elementos = [], el resto son vals
