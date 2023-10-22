@@ -69,19 +69,19 @@
   <div v-else>
   <v-sheet v-if="!searchWasMade[0]" >
       <v-row>
-        <v-sheet class="routines-box" max-width="1140">
+        <v-sheet class="routines-box" width="1140">
         <v-container class='title' >   
           <v-row no-gutters class="pa-0 ma-0 mb-3 align-center">
             <v-col >
               <h3>Newly added</h3>
             </v-col>
             <v-col  cols="1">
-              <v-btn flat class='viewAll' @click='changeView(category)' >{{ `View ${category.viewAll? 'less':'all'}` }}</v-btn>
+              <v-btn :v-show="category.hasRoutines" flat class='viewAll' @click='changeView(category)' >{{ `View ${category.viewAll? 'less':'all'}` }}</v-btn>
             </v-col>
           </v-row>
-        </v-container>
-        <displaySomeRoutines :items="routineStore.routineList[0]" class='display' v-if="!category.viewAll"/>
-        <displayAllRoutines :items="routineStore.routineList[0]" class='display' v-else />
+        </v-container>        
+          <displaySomeRoutines :items="routineStore.routineList[0]" class='display' v-if="!category.viewAll"/>
+          <displayAllRoutines :items="routineStore.routineList[0]" class='display' v-else />
       </v-sheet>
       </v-row>
   </v-sheet> 
@@ -108,13 +108,12 @@
   const key= ref(0);
   
   const category = ref([
-      { viewAll: false}    
+      { viewAll: false, hasRoutines: true}    
   ])
 
   onBeforeMount (async () => {
     loading.value = true
-    const ans = await routineStore.getApiRoutinesWithFilters('new')
-    console.log(ans)
+    await routineStore.getApiRoutinesByCategories(['new'])
     loading.value = false
   })
   
@@ -138,11 +137,16 @@
   
   function searchRoutines(searchInApi, selected,searchWasMade){
     if(searchInApi!=='' || selectedCount>0){ 
-      //data = routineStore.searchRutine(searchInApi,selected);
-      routineStore.getApiRoutinesWithFilters(selected)
+      
+      routineStore.getApiRoutinesWithFilters()
       data = routineStore.routineList[0]
-      console.log(data)
+      
       searchWasMade[0] = true; 
+
+      if ( ans == -1 )
+        category.value.hasRoutines = false
+      else
+      category.value.hasRoutines = true
       return 1;
     }
     return 0;
@@ -151,3 +155,4 @@
 
 <style scoped src='@/styles/MyRoutines.scss'/>
 <style scoped src='@/styles/Globals.scss'/>
+<style scoped src='@/styles/previewRoutine/display.css'/>

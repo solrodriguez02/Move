@@ -20,7 +20,7 @@
 
     <div v-else>
       <v-row v-for='category in categories'>
-        <v-sheet class='routines-box'>
+        <v-sheet class='routines-box' width="1140">
           <v-container class='title'>   
             <v-row no-gutters class="pa-0 ma-0 mb-3 align-center">
               <v-col>

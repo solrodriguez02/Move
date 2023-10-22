@@ -148,12 +148,14 @@ class routinePrevInfo {
 }
 
 class queryGetRoutines {
-  constructor(page, size, order,id ){
+  constructor(page, size, order,direction, id ){
     this.page = page
     if ( size!=null)
       this.size = size 
     if ( order!=null)
       this.orderBy = order
+    if ( direction!=null)
+      this.direction = direction
     if ( id!=null)
       this.routineId
   }

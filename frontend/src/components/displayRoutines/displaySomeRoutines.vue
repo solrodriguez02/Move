@@ -4,9 +4,9 @@
     <v-slide-group
       show-arrow
     >
-      <h4 v-if="props.items===null" class="mx-auto notFound">
-          No results found
-      </h4>
+    <h4 v-if="props.items==undefined" class="mx-auto notFound">
+          No routines found
+        </h4>
       <v-slide-group-item v-for="r in props.items" v-else>
       <routine-preview :r="r" class="ma-3" />          
       </v-slide-group-item>

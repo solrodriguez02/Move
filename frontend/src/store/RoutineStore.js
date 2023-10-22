@@ -92,11 +92,45 @@ export const useRoutineStore = defineStore('routine', () => {
     }
 
     async function getApiRoutinesByCategories(categories){
-      if ( categories==null)
-        console.log('error, categories were not established')
+      
       // carga las 2 routineList
-      // si fav y createdR
+      if ( categories==null)
+        return -1
+
+        var query 
+      for ( var i; i<categories.length; i++)
+        switch( categories[i] ){
+          case 'new': // ORDER BY 
+            query = new queryGetRoutines(0,15, "id","asc")
+            break
+          case 'favs':
+            // llamado a api
+            break
+          case 'created':
+            // filtro itero x user
+            break
+        }
+
+     
+      const apiAns = await RoutineApi.getAllRoutines( query, false)
+      
+      
+      const ans = []
+      var r
+      const size = apiAns.size < apiAns.totalCount? apiAns.size : apiAns.totalCount
+      console.log('Api'+ apiAns)
+      for ( var i=0; i<size; i++){
+        r = apiAns.content[i]
+        ans.push( new routineInfo( r.id, r.name, r.detail, favorites.value.includes(r.id), r.metadata, r.user, [] ))
+      } 
+      routineList.value[0] = ans
+      
+      if ( ans == [] )
+        return -1
+      return 0          // fue exitosa la busqueda
     }
+      
+    
 
     async function getApiRoutinesWithFilters(filters){
       
@@ -110,16 +144,19 @@ export const useRoutineStore = defineStore('routine', () => {
       console.log('Api'+ apiAns)
       for ( var i=0; i<size; i++){
         r = apiAns.content[i]
-        //ans.push( new routinePrevInfo(routine.id, routine.name, routine.detail, routine.user, routine.metadata.favs, routine.metadata.filters.difficulty , routine.metadata.filters.elements, routine.metadata.filters.requiredSpaceId, routine.metadata.filters.approachId ))
         ans.push( new routineInfo( r.id, r.name, r.detail, favorites.value.includes(r.id), r.metadata, r.user, [] ))
       } 
       routineList.value[0] = ans
       routineList.value[1] = ans
-      return
+      if ( ans == [] )
+        return -1
+      return 0          // fue exitosa la busqueda
     }
+    
     async function setRoutineApiData(idRoutine) {
       routineData.value = RoutineApi.getRoutineById( idRoutine, new queryGetRoutines( null,null,null,idRoutine), controller )
     }
+
     async function getRoutineApiData(id){
     console.log(routineList.value)
       if ( routineList.value == {} || routineList.value[0] )
@@ -138,6 +175,6 @@ export const useRoutineStore = defineStore('routine', () => {
       
     }
 
-    return { getRoutineApiData,getApiRoutinesWithFilters, routineList, routineData, fetchRoutines, fetchRoutine, getDataCategory, searchRutine, getRoutineData, filters, secOptions, repOptions, cycleRepOptions, deleteRoutine, addRoutine }
+    return { getApiRoutinesByCategories, getRoutineApiData,getApiRoutinesWithFilters, routineList, routineData, fetchRoutines, fetchRoutine, getDataCategory, searchRutine, getRoutineData, filters, secOptions, repOptions, cycleRepOptions, deleteRoutine, addRoutine }
 
 })
