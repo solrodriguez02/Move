@@ -35,7 +35,7 @@ const router = createRouter({
     },
     {
       path: '/editroutine/:routineId',
-      name: 'edit routine',
+      name: 'editroutine/:routineId',
       component: () => import('@/views/CreateRoutine.vue')
     },
     {

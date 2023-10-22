@@ -19,7 +19,7 @@
     </div>
   
     <div class='rutines' v-for='r in routines'>
-        <HorizontalBox :items='{name: r.name, link:`routine/${r.id}` , img: r.src, deleteFunction: deleteRoutine, editFunction: editRoutine}'/>
+        <HorizontalBox :items='{name: r.name, id:r.id , img: r.src, deleteFunction: deleteRoutine, editFunction: editRoutine}'/>
     </div>
   
   </div>
@@ -63,7 +63,7 @@
   
       function editRoutine(id) {
           //router.push({ name: 'EditExercise', params: { id: id } })
-          router.push('/createroutine')
+          router.push('/createroutine/'+id)
       }
   
   </script>
