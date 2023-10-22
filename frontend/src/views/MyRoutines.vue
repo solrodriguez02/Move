@@ -19,7 +19,7 @@
     </v-progress-circular>
 
     <div v-else>
-      <v-row v-for='category in categories'>
+      <v-row v-for='(category,index) in categories'>
         <v-sheet class='routines-box' width="1140">
           <v-container class='title'>   
             <v-row no-gutters class="pa-0 ma-0 mb-3 align-center">
@@ -34,8 +34,8 @@
               </v-col>
           </v-row>
           </v-container>
-          <displaySomeRoutines :items="routineStore.getDataCategory(category.headline, routineStore.routineList.value)" class='display' v-if="!category.viewAll"/>
-          <displayAllRoutines :items="routineStore.getDataCategory(category.headline, routineStore.routineList.value)" class='display' v-else />
+          <displaySomeRoutines :items="routineStore.routineList[index]" class='display' v-if="!category.viewAll"/>
+          <displayAllRoutines :items="routineStore.routineList[index]" class='display' v-else />
         </v-sheet>
       </v-row>
     </div>
@@ -54,14 +54,13 @@
 
   onBeforeMount (async () => {
     loading.value = true
-    await routineStore.fetchRoutines()
+    await routineStore.getApiRoutinesByCategories(['created','favs'])
     loading.value = false
   })
 
   const categories= ref([
       { headline:'Created by you', viewAll: false, canEdit: true },
-      { headline:'Favourites', viewAll: false, canEdit: true  },
-      { headline:'For you', viewAll: false, canEdit: false }    
+      { headline:'Favourites', viewAll: false, canEdit: true  }, 
   ])
 
   function changeView( category) {

@@ -104,6 +104,8 @@ export const useRoutineStore = defineStore('routine', () => {
             query = new queryGetRoutines(0,15, "id","asc")
             break
           case 'favs':
+            query = new queryGetRoutines(0,15, "id","asc")
+            
             // llamado a api
             break
           case 'created':
