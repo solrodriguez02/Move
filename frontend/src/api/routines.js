@@ -1,7 +1,7 @@
 import { ref } from 'vue' 
 import { Api } from "./api.js";
 
-const routines =  ref([         
+const routines =  ref([          
   {
   id: 0,
   src: 'backgrounds/bg.jpg',
@@ -171,7 +171,7 @@ function getRoutine(id, okCallback) {
   
 
 class routineInfo {
-  constructor(id, name, detail, user, metadata, cyclesArray){
+  constructor( routinePrevInfo, cyclesArray){
       this.id = id; 
       this.name = name;
       this.src = detail; 
@@ -190,12 +190,17 @@ class routineInfo {
 
 
 class routinePrevInfo {
-  constructor(name, src, favs, difficultyId, elementsRequiredArray, requiredSpaceId, approachId ){
+  constructor(id,name, src, user,favs, difficultyId, elementsRequiredArray, requiredSpaceId, approachId ){
       // elementos = [], el resto son vals
+      this.id = id
       this.name = name;
       this.detail = src; 
       this.isPublic = true;                     // campo obligatorio 
       this.difficulty = "rookie"                 // campo obligatorio 
+      this.user = {
+        id: user.id,
+        name: user.username,
+      }
       this.metadata = {
         "favs": favs,
         "filters": {

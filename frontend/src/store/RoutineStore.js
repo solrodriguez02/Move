@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { getRoutine, getRoutines, routines, RoutineApi, queryGetRoutines } from '@/api/routines'
+import { getRoutine, getRoutines, routines, RoutineApi, queryGetRoutines, routinePrevInfo } from '@/api/routines'
 
 /* 
   Campos que creo q deberian ir en routine: 
@@ -91,20 +91,21 @@ export const useRoutineStore = defineStore('routine', () => {
     }
 
     async function getApiRoutines(){
+      
       const query = new queryGetRoutines(0,7,null)
       const apiAns = await RoutineApi.getAllRoutines( query, true)
-      console.log('Api' + apiAns)
-      const ans = []
-      /*
-      for (var i=0; i<apiAns.totalCount; i++ ){
-        for( var j=0; j< )
-      }
       
-      apiAns.foreach( page => page.content.foreach( routine => {
-        ans.push( new routines.routineInfo(routine.id, routine.name, routine.detail, routine.user, routine.difficulty, routine.category, routine.metadata))
-      }))
+      
+      const ans = []
+      var routine
+      
+      for ( var i=0; i<apiAns.size; i++){
+        routine = apiAns.content[i]
+        ans.push( new routinePrevInfo(routine.id, routine.name, routine.detail, routine.user, routine.metadata.favs, routine.metadata.filters.difficulty , routine.metadata.filters.elements, routine.metadata.filters.requiredSpaceId, routine.metadata.filters.approachId ))
+      } 
+      
       console.log(ans)
-      */
+      
       return ans
     }
   
