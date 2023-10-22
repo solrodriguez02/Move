@@ -18,10 +18,9 @@
       </div>
     </div>
   
-    <div class='rutines' v-for='r in routines'>
-        <HorizontalBox :items='{name: r.name, id:r.id , img: r.src, deleteFunction: deleteRoutine, editFunction: editRoutine}'/>
+    <div class='rutines' v-for='routine in routines'>
+      <HorizontalBox :items='{name: routine.name, link: "/routine/"+routine.id, img: routine.src, deleteFunction: deleteRoutine, editFunction: editRoutine}'/>
     </div>
-  
   </div>
   </template>
     
@@ -45,6 +44,7 @@
       loading.value = true
       await routineStore.getApiRoutinesByCategories(['created'])
       routines.value = routineStore.routineList[0]
+
       loading.value = false
     })
     
@@ -62,9 +62,12 @@
   
       function editRoutine(id) {
           //router.push({ name: 'EditExercise', params: { id: id } })
-          router.push('/createroutine/'+id)
+          router.push('/editroutine/'+id)
       }
   
+      function getLink( id){
+        router.push('/routine/'+id)
+      }
   </script>
   
   <style scoped src='@/styles/CreatedByYou.scss'/>
