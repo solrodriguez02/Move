@@ -45,7 +45,6 @@
       loading.value = true
       await routineStore.getApiRoutinesByCategories(['created'])
       routines.value = routineStore.routineList[0]
-      console.log( routines)
       loading.value = false
     })
     

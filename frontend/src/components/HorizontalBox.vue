@@ -2,7 +2,7 @@
     <div class='box'>
       <RouterLink :to='`routine/${items.id}`' class='link'>
         <div class='image-box'>
-          <img :src='items.img' :alt='items.name' class='image'/>
+          <img :src='items.img' alt='' class='image' />
         </div>
         <p class='name'>{{ items.name }}</p>
       </RouterLink>

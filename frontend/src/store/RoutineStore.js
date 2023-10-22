@@ -16,6 +16,7 @@ export const useRoutineStore = defineStore('routine', () => {
     const routineList = ref([])
     var routineData
     const favorites = ref([])
+    var morePagesAvailable = false
 
     const filters = ref([
       { label: 'Difficulty', options: ['Easy', 'Medium', 'Difficult'], selected: ref([]), color: 'turquoise', icon: '$flash', tag:'difficulty' },
@@ -134,9 +135,12 @@ export const useRoutineStore = defineStore('routine', () => {
       
     
 
-    async function getApiRoutinesWithFilters(filters){
+    async function getApiRoutinesWithFilters(searchedByUser, page=0){
       
-      const query = new queryGetRoutines(0,14,null)
+      if ( searchedByUser.length > 200 )
+        return 1
+      
+      const query = new queryGetRoutines(page,14,null,null,null)
       const apiAns = await RoutineApi.getAllRoutines( query, true)
       // todo Fav get (meter en array favorites )
       
@@ -146,10 +150,17 @@ export const useRoutineStore = defineStore('routine', () => {
       console.log('Api'+ apiAns)
       for ( var i=0; i<size; i++){
         r = apiAns.content[i]
-        ans.push( new routineInfo( r.id, r.name, r.detail, favorites.value.includes(r.id), r.metadata, r.user, [] ))
+        if ( r.name.startsWith(searchedByUser))
+          ans.push( new routineInfo( r.id, r.name, r.detail, favorites.value.includes(r.id), r.metadata, r.user, [] ))
       } 
+
       routineList.value[0] = ans
-      routineList.value[1] = ans
+
+      if ( apiAns.isLastPage )
+        morePagesAvailable = false
+      else 
+        return getApiRoutinesWithFilters(searchedByUser, page++)
+
       if ( ans == [] )
         return -1
       return 0          // fue exitosa la busqueda

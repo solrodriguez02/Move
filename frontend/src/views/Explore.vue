@@ -138,7 +138,7 @@
   async function searchRoutines(searchInApi, selected,searchWasMade){
     if(searchInApi!=='' || selectedCount>0){ 
       
-      await routineStore.getApiRoutinesWithFilters()
+      const ans = await routineStore.getApiRoutinesWithFilters(searchInApi)
       data = routineStore.routineList[0]
       
       searchWasMade[0] = true; 
@@ -146,7 +146,7 @@
       if ( ans == -1 )
         category.value.hasRoutines = false
       else
-      category.value.hasRoutines = true
+        category.value.hasRoutines = true
       return 1;
     }
     return 0;
