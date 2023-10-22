@@ -29,9 +29,6 @@ export const useExerciseStore = defineStore('exercise', () => {
         for (let i = 0; i < exerciseCount; i++) {
             const exercise = exercises[i]
             const details = exercise.metadata
-            if(details.image == null) {
-                details.image = 'https://static.vecteezy.com/system/resources/previews/006/923/598/non_2x/running-man-abstract-logo-free-vector.jpg'
-            }
             pushExercise(exercise.id, exercise.name, exercise.detail, details.image, details.difficulty, details.muscleGroups, details.elements, details.space, details.creator )
         }
     }
@@ -50,7 +47,7 @@ export const useExerciseStore = defineStore('exercise', () => {
         })
     }
     
-    async function addExercise(exercise) {    
+    async function addExercise(exercise) {   
         await exerciseApi.createExercise(exercise, true);
     }
 
@@ -58,5 +55,8 @@ export const useExerciseStore = defineStore('exercise', () => {
         await exerciseApi.deleteExercise(id, true)
     }
 
-    return { exerciseList, filters, fetchExercises, addExercise, deleteExercise }
+    async function fetchExerciseById(id) {
+        return await exerciseApi.getExercise(id, true)
+    }
+    return { exerciseList, filters, fetchExercises, addExercise, deleteExercise, fetchExerciseById }
 })
