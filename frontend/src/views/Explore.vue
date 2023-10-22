@@ -68,20 +68,20 @@
 
   <div v-else>
   <v-sheet v-if="!searchWasMade[0]" >
-      <v-row v-for='category in categories'>
+      <v-row>
         <v-sheet class="routines-box" max-width="1140">
         <v-container class='title' >   
           <v-row no-gutters class="pa-0 ma-0 mb-3 align-center">
             <v-col >
-              <h3>{{ category.headline }}</h3>
+              <h3>Newly added</h3>
             </v-col>
             <v-col  cols="1">
               <v-btn flat class='viewAll' @click='changeView(category)' >{{ `View ${category.viewAll? 'less':'all'}` }}</v-btn>
             </v-col>
           </v-row>
         </v-container>
-        <displaySomeRoutines :items="routineStore.getDataCategory(category.headline,routineStore.routineList.value)" class='display' v-if="!category.viewAll"/>
-        <displayAllRoutines :items="routineStore.getDataCategory(category.headline,routineStore.routineList.value)" class='display' v-else />
+        <displaySomeRoutines :items="routineStore.routineList[0]" class='display' v-if="!category.viewAll"/>
+        <displayAllRoutines :items="routineStore.routineList[0]" class='display' v-else />
       </v-sheet>
       </v-row>
   </v-sheet> 
@@ -107,18 +107,15 @@
   var selectedCount = 0; 
   const key= ref(0);
   
-  const categories = ref([
-      { headline:'Recent workouts', viewAll: false},
-      { headline:'Featured', viewAll: false},
-      { headline:'Newly added', viewAll: false}    
+  const category = ref([
+      { viewAll: false}    
   ])
 
   onBeforeMount (async () => {
     loading.value = true
-    await routineStore.fetchRoutines()
-    loading.value = false
-    const ans = await routineStore.getApiRoutines()
+    const ans = await routineStore.getApiRoutinesWithFilters('new')
     console.log(ans)
+    loading.value = false
   })
   
   function changeView( category) {
@@ -141,7 +138,10 @@
   
   function searchRoutines(searchInApi, selected,searchWasMade){
     if(searchInApi!=='' || selectedCount>0){ 
-      data = routineStore.searchRutine(searchInApi,selected);
+      //data = routineStore.searchRutine(searchInApi,selected);
+      routineStore.getApiRoutinesWithFilters(selected)
+      data = routineStore.routineList[0]
+      console.log(data)
       searchWasMade[0] = true; 
       return 1;
     }

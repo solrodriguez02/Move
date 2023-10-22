@@ -83,6 +83,7 @@
     { title:'Last Name', tag: 'lastName' },
     { title:'Email', tag: 'email' },
     { title:'Gender', tag: 'gender' },
+    { title:'Phone', tag: 'phone' },
   ])
 </script>
 

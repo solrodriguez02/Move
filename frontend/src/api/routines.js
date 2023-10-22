@@ -1,72 +1,8 @@
 import { ref } from 'vue' 
 import { Api } from "./api.js";
 
-const routines =  ref([          
-  {
-  id: 0,
-  src: 'backgrounds/bg.jpg',
-  fav: true,
-  name: 'mar',
-  favs: 10,
-  dif: 0,
-  space: 0,
-},
-{
-  id: 1,
-  src: 'backgrounds/md.jpg',
-  fav: false,
-  name: 'Senta senta',
-  favs: 10,
-  dif: 0,
-  space: 1,
-},
-{
-  id: 2,
-  src: 'backgrounds/bg-2.jpg',
-  fav: true,
-  name: 'cielo',
-  favs: 100,
-  dif: 1,
-  space: 2,
-},
-{
-  id: 3,
-  src: 'backgrounds/md2.jpg',
-  fav: true,
-  name: 'desierto',
-  favs: 10,
-  dif: 0,
-  space: 0,
-},
-{
-  id: 4,
-  src: 'backgrounds/md.jpg',
-  fav: false,
-  name: 'Senta senta',
-  favs: 10,
-  dif: 2,
-  space: 2,
-},
-{
-  id: 5,
-  src: 'backgrounds/bg-2.jpg',
-  fav: false,
-  name: 'cielo',
-  favs: 10,
-  dif: 0,
-  space: 0,
-},
-{
-  id: 6,
-  src: 'backgrounds/md2.jpg',
-  fav: false,
-  name: 'desierto',
-  favs: 0,
-  dif: 0,
-  space: 0,
-},
-])
   
+const routines = ref([])
 const routinesData = ref(
   [{
     id:0, 
@@ -144,6 +80,12 @@ function getRoutine(id, okCallback) {
       return ans;     
     }
 
+    static async getRoutineById( idRoutine, queryGetRoutines, controller ){
+      const ans= await Api.getWithParam(RoutineApi.getUrl(idRoutine), true, queryGetRoutines, controller);
+      console.log(ans)
+      return ans;     
+    }
+
     static async modifyRoutine(idRoutine, routineInfo, controller){
         return await Api.put(RoutineApi.getUrl(idRoutine), true, routineInfo, controller);
     }
@@ -185,7 +127,7 @@ class routineInfo {
       this.cycles = cyclesArray
   }
 }
-
+// todo POSTTTT
 class routinePrevInfo {
   constructor( name, src,favsNum, difficultyId, elementsRequiredArray, requiredSpaceId, approachId ){
       // elementos = [], el resto son vals
@@ -206,12 +148,14 @@ class routinePrevInfo {
 }
 
 class queryGetRoutines {
-  constructor(page, size, order ){
+  constructor(page, size, order,id ){
     this.page = page
     if ( size!=null)
       this.size = size 
     if ( order!=null)
       this.orderBy = order
+    if ( id!=null)
+      this.routineId
   }
 }
 

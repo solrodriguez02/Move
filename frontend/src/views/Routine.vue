@@ -166,8 +166,9 @@
 
   onBeforeMount (async () => {
     console.log(route.params.routineId)
-    await routineStore.fetchRoutine( route.params.routineId )
-    
+    //await routineStore.fetchRoutine( route.params.routineId )
+    loading.value = true 
+    await routineStore.getRoutineApiData(route.params.routineId)
     loading.value = false 
     loadData()
     
@@ -177,7 +178,7 @@
 
   function loadData(){
    
-    data.value = routineStore.getRoutineData()
+    data.value = routineStore.routineData.value
     isFavorite.value = data.value.fav
 
     const filter = routineStore.filters[0].options[data.value.highlights[0]]
