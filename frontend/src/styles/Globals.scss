@@ -1,7 +1,12 @@
 @use 'colors'; 
 
 .basics {
-  margin: 2% 10%;
+  margin: 1% 10% 5% 10%;
+  height: 100vh;
+}
+
+.basics-max {
+  margin: 0 15% 5% 15%;
   height: 100vh;
 }
 
@@ -14,6 +19,10 @@
 
 .appbar-margin {
   margin-left: 30px;
+}
+
+.back-button {
+  display: flex;
 }
 
 .navigate-margin{
