@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import NotFound from '@/views/NotFound.vue'
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
@@ -50,6 +49,11 @@ const router = createRouter({
       component: () => import('@/views/CreateExercise.vue')
     },
     {
+      path: '/editexercise/:exerciseId',
+      name: 'edit exercise',
+      component: () => import('@/views/CreateExercise.vue')
+    },
+    {
       path: '/signin',
       name: 'sign in',
       component: () => import('@/views/SignIn.vue')
@@ -65,8 +69,8 @@ const router = createRouter({
       component: () => import('@/views/Routine.vue')
     },
     {
-      path: '/editexercise',
-      name: 'edit exercise',
+      path: '/exercisetimeedit',
+      name: 'exercise time edit',
       component: () => import('@/views/EditExercise.vue')
     },
     {

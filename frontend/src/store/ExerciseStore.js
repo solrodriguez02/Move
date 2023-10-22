@@ -48,7 +48,7 @@ export const useExerciseStore = defineStore('exercise', () => {
     }
     
     async function addExercise(exercise) {   
-        await exerciseApi.createExercise(exercise, true);
+        await exerciseApi.createExercise(exercise, true)
     }
 
     async function deleteExercise(id) {
@@ -58,5 +58,9 @@ export const useExerciseStore = defineStore('exercise', () => {
     async function fetchExerciseById(id) {
         return await exerciseApi.getExercise(id, true)
     }
-    return { exerciseList, filters, fetchExercises, addExercise, deleteExercise, fetchExerciseById }
+
+    async function modifyExercise(id, exercise) {
+        await exerciseApi.modifyExercise(id, exercise, true)
+    }
+    return { exerciseList, filters, fetchExercises, addExercise, deleteExercise, fetchExerciseById, modifyExercise }
 })

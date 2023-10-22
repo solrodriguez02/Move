@@ -53,8 +53,8 @@
   import { ref,onBeforeMount } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
   import { useNavigationStore } from '@/store/NavigationStore'
-  import { useExerciseStore } from '@/store/ExerciseStore';
-  
+  import { useExerciseStore } from '@/store/ExerciseStore'
+
   const router = useRouter()
   const route = useRoute()
   const navigationStore= useNavigationStore()
@@ -68,10 +68,6 @@
     exerciseInfo.value = await excerciseStore.fetchExerciseById(id)
     loading.value = false 
   }) 
-
-  
-
-    
 
   function getTab() {
     return router.options.history.state.back

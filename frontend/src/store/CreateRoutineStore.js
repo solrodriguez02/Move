@@ -65,6 +65,7 @@ export const useCreateRoutineStore = defineStore('createRoutine', () => {
 
     function addExercise(cycleIndex, exercise, secs, reps) {    
         cycleList.value[cycleIndex].exercises.push( {
+            id: exercise.id,
             name: exercise.name,
             sec: secs,
             reps: reps,
@@ -78,14 +79,15 @@ export const useCreateRoutineStore = defineStore('createRoutine', () => {
 
     async function sendNewRoutine(routineInfo){
         const routineResult = await RoutineApi.createRoutine(routineInfo, true)
-        for(const cycle = 0; cycle < getCycleLenght(); cycle++){
-            const currentCycle = cycleList[cycle]
-            const currentCycleInfo = new cycleInfo(currentCycle.name, cycle, "", "", reps, { src: icon})
-            const currentCycleResult = await RoutineApi.createCycle(routineResult.id, currentCycleInfo, true)
-            for (const exercise = 0; exercise < currentCycle.exercises.lenght; exercise++){
-                const currentExercise = currentCycle.exercises[exercise]
-                const exerciseInfo = new exerciseSpecification(exercise, exercise.sec, exercise.reps)
-                await CycleApi.addExercise(currentCycleResult.id, exerciseInfo, true)
+        console.log(cycleList)
+        for(var cycle = 0; cycle < getCycleLenght(); cycle++){
+            var currentCycle = cycleList.value[cycle]
+            var currentCycleInfo = new cycleInfo(currentCycle.name, cycle+1, "", "exercise", currentCycle.reps, { src: currentCycle.icon})
+            var currentCycleResult = await RoutineApi.createCycle(routineResult.id, currentCycleInfo, true)
+            for (var exercise = 0; exercise < currentCycle.exercises.length; exercise++){
+                var currentExercise = currentCycle.exercises[exercise]
+                var exerciseInfo = new exerciseSpecification(exercise+1, currentExercise.sec === '-' ? 0: currentExercise.sec, currentExercise.reps === '-' ? 0: currentExercise.reps)
+                await CycleApi.addExercise(currentCycleResult.id, currentExercise.id, exerciseInfo, true)
             }
         }
     }
