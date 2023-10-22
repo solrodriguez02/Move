@@ -193,7 +193,7 @@
     highlightsItems.value = [
       { name:'Difficulty', detail: data.value.filters.difficulty + " difficulty" , icon:'$flash', color:'turquoise'},
       { name:'Space', detail: data.value.filters.requiredSpace, icon:'$space', color:'violet' },
-      { name:'Approach', detail: data.value.filters.approach, icon:'$person', color:'lightblue' },
+      { name:'Approach', detail: data.value.filters.approach.join(", "), icon:'$person', color:'lightblue' },
       { name:'Elements required', detail:data.value.filters.elements.join(", "), icon:'$dumbbell', color:'blue' },
   ];
 
