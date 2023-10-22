@@ -66,7 +66,7 @@ function getRoutine(id, okCallback) {
 
   class RoutineApi {
     static getUrl(slug) {
-        return `${Api.baseUrl}/routines${ slug ? `/${slug}` : ""}`;
+        return `${Api.baseUrl}/routines${ slug ? `/${slug}` : ""}`.toString();
     }
 
     static async createRoutine(routinePrevInfoPost, controller){
@@ -95,19 +95,19 @@ function getRoutine(id, okCallback) {
     }   
     
     static async createCycle(idRoutine, cycleInfo, controller){
-        return await Api.post(RoutineApi.getUrl(idRoutine.append("/cycles")), true, cycleInfo, controller);
+        return await Api.post(RoutineApi.getUrl(idRoutine).concat("/cycles"), true, cycleInfo, controller);
     }
 
     static async getAllRoutineCycles(idRoutine, routineInfo, controller){
-        return await Api.get(RoutineApi.getUrl(idRoutine.append("/cycles")), true, routineInfo, controller);
+        return await Api.get(RoutineApi.getUrl(idRoutine).concat("/cycles"), true, routineInfo, controller);
     }
 
     static async modifyCycle(idRoutine, idCycle, cycleInfo, controller){
-        return await Api.put(RoutineApi.getUrl(idRoutine.append("/cycles/")).append(idCycle), true, cycleInfo, controller);
+        return await Api.put(RoutineApi.getUrl(idRoutine).concat("/cycles/").concat(idCycle.toString()), true, cycleInfo, controller);
     }
 
     static async deleteCycle(idRoutine, idCycle, controller){
-        return await Api.delete(RoutineApi.getUrl(idRoutine.append("/cycles/")).append(idCycle), true, controller);
+        return await Api.delete(RoutineApi.getUrl(idRoutine).concat("/cycles/").concat(idCycle.toString()), true, controller);
     }
 }
   
