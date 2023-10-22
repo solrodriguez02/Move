@@ -1,11 +1,21 @@
 <template>
   <div class='basics'>
     <div class='appbar'>
-        <button @click='goBack' class='back-button'>
+        <button @click='goBackDialog = true' class='back-button'>
             <v-icon icon='$back'></v-icon>
             <p>{{navigationStore.getTabText(getTab())}}</p>
         </button>  
     </div>
+
+    <warning-dialog
+    v-model='goBackDialog'
+    title='Are you sure you want to quit this page?'
+    message='If you do so, your changes will be deleted. Press Cancel to continue editing and then go to "save" to save your changes.'
+    custom-button-text="Quit"
+    :on-custom-action="() => quitEditProfile(getTab())"
+    :on-close='closeGoBackDialog'
+    type='alert'/>
+
     <h1>Edit Profile</h1>
     
       <v-form class='form' @submit.prevent='onSubmit'>
@@ -26,7 +36,7 @@
 
       <v-dialog v-if='imageDialog' v-model='imageDialog' class='dialog-box'>
       <v-card  class='dialog-content'>
-        <button class='close-button' @click='handleClose'>
+        <button class='close-button' @click='closeImageDialog()'>
           <v-icon icon='$close' size='25'/>
         </button>
         <v-card-title> Enter the new image URL </v-card-title>
@@ -38,7 +48,7 @@
           rounded
           />
         <v-card-actions class='buttons-box'>
-          <v-btn @click='closeImageDialog()' variant='outlined' rounded class='button'>Save</v-btn>
+          <button @click='saveImage()' variant='outlined' rounded class='dialog-button'>Save</button>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -91,12 +101,14 @@
   import { useRouter } from 'vue-router'
   import { useNavigationStore } from '@/store/NavigationStore'
   import { useRegisterStore } from '@/store/RegisterStore'
+  import WarningDialog from "@/components/WarningDialog.vue"
 
   const router = useRouter()
   const navigationStore= useNavigationStore()
   const registerStore = useRegisterStore()
   const profileSaved = ref(false)
   const imageDialog = ref(false)
+  const goBackDialog = ref(false)
 
   const userItems = ref([
     { title:'First Name', tag: 'firstName', selectedValue: null }, 
@@ -126,8 +138,12 @@
       router.go(-1)
   }
 
-  function closeImageDialog() {
+  function saveImage() {
     avatarUrl.value = userItems.value[4].selectedValue
+    closeImageDialog()
+  }
+
+  function closeImageDialog() {
     imageDialog.value = false
   }
     
@@ -135,9 +151,15 @@
     await registerStore.updateUser(userItems.value[0].selectedValue, userItems.value[1].selectedValue, userItems.value[2].selectedValue, userItems.value[3].selectedValue, userItems.value[4].selectedValue)
     router.push('/userprofile')
   }
+
+  const closeGoBackDialog = () => {
+    goBackDialog.value = false;
+  }
+
+  const quitEditProfile = (path) => {
+    router.push(path)
+  }
 </script>
     
 <style scoped src='@/styles/EditProfile.scss'/>
 <style scoped src='@/styles/Globals.scss'/>
-  
-  

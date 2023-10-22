@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { getRoutine, getRoutines, routines, RoutineApi, queryGetRoutines, routinePrevInfo, routineInfo } from '@/api/routines'
+import { getRoutine, getRoutines, routines, RoutineApi, queryGetRoutines, routineInfo } from '@/api/routines'
 
 /* 
   Campos que creo q deberian ir en routine: 
@@ -16,7 +16,6 @@ export const useRoutineStore = defineStore('routine', () => {
     const routineList = ref([])
     var routineData
     const favorites = ref([])
-    var morePagesAvailable = false
 
     const filters = ref([
       { label: 'Difficulty', options: ['Easy', 'Medium', 'Difficult'], selected: ref([]), color: 'turquoise', icon: '$flash', tag:'difficulty' },
@@ -59,14 +58,14 @@ export const useRoutineStore = defineStore('routine', () => {
       // ToDo
     }
 
-    function deleteRoutine() {
-      // ToDo
+    async function deleteRoutine(id) {
+      await RoutineApi.deleteRoutine(id, true)
     }
 
     function getDataCategory(headline,data){
         // pido a api
         return data;
-      }
+    }
 
     function searchRutine(searchInApi, selected){  
         // mando a api el input 

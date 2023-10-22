@@ -63,8 +63,9 @@
     width: 100%;
   }
 
-  .field-width{
-    width: 265px;
+  .field-width {
+    width: 100%;
+    margin-top: 20px;
   }
 
   .save-button {
@@ -81,3 +82,31 @@
     display: flex;
     justify-content: center;
   }
+
+
+  .dialog-box {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+}
+
+.dialog-content {
+    padding: 8% 20%;
+    text-align: center;
+}
+
+.close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 5%;
+}
+
+.dialog-button {
+  background-color: colors.$lightblue;
+  color:white;
+  border-radius: 24px;
+  padding: 10px 50px;
+  font-weight: bold;
+  margin: 0 30%;
+}
