@@ -16,7 +16,8 @@ export const useRoutineStore = defineStore('routine', () => {
     const routineList = ref([])
     var routineData
     const favorites = ref([])
-
+    var morePagesAvailable = false
+    
     const filters = ref([
       { label: 'Difficulty', options: ['Easy', 'Medium', 'Difficult'], selected: ref([]), color: 'turquoise', icon: '$flash', tag:'difficulty' },
       { label: 'Elements required', options:  ['None', 'Dumbell', 'Jump rope', 'Mat', 'Resistance band', 'Step', 'Kettlebell', 'Foam roller', 'Ankle Weights' ], selected: ref([]), color:'lightblue', icon: '$dumbbell', tag: 'elements'},
