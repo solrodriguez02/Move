@@ -148,7 +148,7 @@ class routinePrevInfo {
 class queryGetRoutines {
   constructor(userId, page=0, size, order,direction ){
     if ( userId!=null)
-      this.userId = this.userId
+      this.userId = userId
     this.page = page; 
     if ( size!=null)
     this.size = size; 
@@ -164,8 +164,6 @@ function appendParams(query) {
     return ''
   var ans = "?" + new URLSearchParams(query)
   
-  //'?' + new URLSearchParams({size: 15})
-  //url = "http://localhost:8080/api/routines?page=0&size=10&orderBy=id&direction=desc"
   return ans
 }
 
