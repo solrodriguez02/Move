@@ -23,7 +23,7 @@
           <div class='field-text aligned-text' > {{ field.label }} </div>
         </div>
       <v-select
-        v-model='formFields[index+3].label'
+        v-model='formFields[index+3][field.tag]'
         :items='field.items'
         :multiple="field.label == 'Elements required' || field.label =='Muscle groups'"
         :chips="field.label == 'Elements required' || field.label =='Muscle groups'"
@@ -78,7 +78,7 @@
   const loading = ref(false)
   const exerciseCreated = ref(false)
 
-  const formFields= ref([ { name: '' }, { detail: '' }, { image: null }, { label: null }, { label: null }, { label: null }, { label: null } ])
+  const formFields= ref([ { name: '' }, { detail: '' }, { image: null }, { difficulty: null }, { muscleGroups: null }, { elements: null }, { space: null } ])
 
   const form = ref(false)
 
@@ -90,7 +90,7 @@
   ])
 
   async function onSubmit() {
-    const details = { image: formFields.value[2].image, difficulty: formFields.value[3].label, muscleGroups: formFields.value[4].label, elements: formFields.value[5].label, space: formFields.value[6].label, creator: 'user' }
+    const details = { image: formFields.value[2].image, difficulty: formFields.value[3].difficulty, muscleGroups: formFields.value[4].muscleGroups, elements: formFields.value[5].elements, space: formFields.value[6].space, creator: 'user' }
     const exerciseData = new exerciseInfo(formFields.value[0].name, formFields.value[1].detail, 'exercise', details)
     await exerciseStore.addExercise(exerciseData)
     exerciseCreated.value = true
