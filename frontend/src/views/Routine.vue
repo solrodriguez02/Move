@@ -184,7 +184,7 @@
     const space = routineStore.filters[2].options[data.value.highlights[3]]
     highlightsItems.value = [
       { name:'Difficulty', detail: filter + " difficulty" , icon:'$flash', color:'turquoise'},
-      { name:'Muscle groups', detail:data.value.highlights[1].join(", "), icon:'$person', color:'lightblue' },
+      { name:'Approach', detail:data.value.highlights[1].join(", "), icon:'$person', color:'lightblue' },
       { name:'Elements required', detail:data.value.highlights[2].join(", "), icon:'$dumbbell', color:'blue' },
       { name:'Space', detail:space, icon:'$space', color:'violet' },
   ];

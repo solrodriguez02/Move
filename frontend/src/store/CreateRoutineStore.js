@@ -1,9 +1,13 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import { RoutineApi } from '@/api/routines'
+import { CycleApi, cycleInfo } from '@/api/cycle'
+import { useRoutineStore } from '@/store/RoutineStore'
 
 export const useCreateRoutineStore = defineStore('createRoutine', () => {
     
-      const cycleList = ref([])
+    const routineStore = new useRoutineStore()
+    const cycleList = ref([])
 
     /* Pense en implementar algo asi (para poder identificar los casos en los que se esta creando una rutina de cero
      de los casos donde se esta editando una existente): apenas se entra a la pagina se pregunta si existe una rutina 
@@ -71,6 +75,28 @@ export const useCreateRoutineStore = defineStore('createRoutine', () => {
     function deleteExercise(cycleIndex, exerciseIndex) {
         cycleList.value[cycleIndex].exercises.splice(exerciseIndex, 1)
     }
+
+    async function sendNewRoutine(routineInfo){
+        const routineResult = await RoutineApi.createRoutine(routineInfo, true)
+        for(const cycle = 0; cycle < getCycleLenght(); cycle++){
+            const currentCycle = cycleList[cycle]
+            const currentCycleInfo = new cycleInfo(currentCycle.name, cycle, "", "", reps, { src: icon})
+            const currentCycleResult = await RoutineApi.createCycle(routineResult.id, currentCycleInfo, true)
+            for (const exercise = 0; exercise < currentCycle.exercises.lenght; exercise++){
+                await CycleApi.addExercise(currentCycleResult.id, currentCycle.exercises[exercise], true)
+            }
+        }
+    }
+
+    async function sendEditRoutine(routineInfo){
+        const routineResult = await RoutineApi.modifyRoutine(routineInfo.id, routineInfo, true)
+        for (const cycle = 0; cycle < getCycle; cycle++){
+            const currentCycle = cycleList[cycle]
+            const currentCycleResult = await RoutineApi.modifyCycle(routineResult.id, currentCycle, true)
+
+        }
+    }
+
     
-    return { cycleList, init, getCycleLenght, addCycle, deleteCycle, addExercise, deleteExercise }
+    return { cycleList, init, getCycleLenght, addCycle, deleteCycle, addExercise, deleteExercise, sendNewRoutine }
 })

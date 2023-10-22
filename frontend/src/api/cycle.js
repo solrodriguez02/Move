@@ -26,9 +26,13 @@ class CycleApi {
 }
 
 class cycleInfo{
-    constructor(name, order){
+    constructor(name, order, detail, type, repetitions, metadata){
         this.name = name;
         this.order = order;
+        this.detail = detail;
+        this.type = type;
+        this.repetitions = repetitions;
+        this.metadata = metadata;
     }
 }
 

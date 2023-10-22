@@ -1,4 +1,10 @@
 <template>
+  <div class = 'appbar navigate-margin'>
+        <button @click="goBack" class="button">
+            <v-icon icon='$back'></v-icon>
+            <p>{{navigationStore.getTabText(getTab())}}</p>
+        </button>  
+    </div>
 <v-container>
   <h1 style="margin-bottom: 2%;">Create Exercise</h1>
   <v-form class='form'
@@ -72,7 +78,9 @@
   import { useRouter } from 'vue-router'
   import { useExerciseStore } from '@/store/ExerciseStore'
   import { exerciseInfo } from '@/api/exercises'
+  import { useNavigationStore } from '@/store/NavigationStore'
 
+  const navigationStore= useNavigationStore()
   const exerciseStore = useExerciseStore()
   const router = useRouter()
   const loading = ref(false)
@@ -97,9 +105,18 @@
     router.go(-1)
   }
 
+  function getTab() {
+        return router.options.history.state.back
+    }
+
+    const goBack = () => {
+        router.go(-1)
+    }
+
   const required = (v) => {
     return !!v || 'Field is required'
   }
 </script> 
   
 <style scoped src='@/styles/CreateExercise.scss'></style>
+<style scoped src='@/styles/Globals.scss'></style>

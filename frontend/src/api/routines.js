@@ -1,7 +1,7 @@
 import { ref } from 'vue' 
 import { Api } from "./api.js";
 
-const routines =  ref([         
+const routines =  ref([          
   {
   id: 0,
   src: 'backgrounds/bg.jpg',
@@ -81,6 +81,7 @@ const routinesData = ref(
       img: 'https://storage.googleapis.com/sworkit-assets/images/exercises/standard/middle-frame/step-touch.jpg'
     },
     time:'30 m', //todo se calcula 
+    updated: false,
     warm: [
       { name:'Left leg lunge', sec:30, reps: '-', id:0, image: 'https://storage.googleapis.com/sworkit-assets/images/exercises/standard/middle-frame/step-touch.jpg' },
     ],
@@ -136,8 +137,11 @@ function getRoutine(id, okCallback) {
         return await Api.post(RoutineApi.getUrl(), true, routinePrevInfoPost, controller);
     }
 
-    static async getAllRoutines(controller, queryGetRoutines ){
-      return await Api.get(RoutineApi.getUrl(), false,  queryGetRoutines, controller);
+
+    static async getAllRoutines( queryGetRoutines, controller ){
+      const ans= await Api.getWithParam(RoutineApi.getUrl(), true, queryGetRoutines, controller);
+      console.log(ans)
+      return ans;     
     }
 
     static async modifyRoutine(idRoutine, routineInfo, controller){
@@ -167,26 +171,23 @@ function getRoutine(id, okCallback) {
   
 
 class routineInfo {
-  constructor(id, name, detail, user, metadata, cyclesArray){
+  constructor( id, name, detail, fav=false, metadata, user, cyclesArray=[] ){
       this.id = id; 
       this.name = name;
       this.src = detail; 
+      this.fav = fav 
+      this.favs = metadata.favs
+      this.filters = metadata.filters
       this.user = {
         id: user.id,
         name: user.username,
       }
-      this.favs = metadata.favs
-      this.highlights[0] = metadata.filter.difficulty
-      this.highlights[1] = metadata.filter.elements
-      this.highlights[2] = metadata.filter.requiredSpaceId
-      this.highlights[3] = metadata.filter.approachId
       this.cycles = cyclesArray
   }
 }
 
-
 class routinePrevInfo {
-  constructor(name, src, favs, difficultyId, elementsRequiredArray, requiredSpaceId, approachId ){
+  constructor( name, src,favs, difficultyId, elementsRequiredArray, requiredSpaceId, approachId ){
       // elementos = [], el resto son vals
       this.name = name;
       this.detail = src; 
@@ -197,18 +198,22 @@ class routinePrevInfo {
         "filters": {
           "difficulty": difficultyId,
           "elements": elementsRequiredArray, 
-          "requiredSpaceId": requiredSpaceId, 
-          "approachId": approachId
+          "requiredSpace": requiredSpaceId, 
+          "approach": approachId
         }
       };
   }
 }
 
 class queryGetRoutines {
-  constructor(page, items=1 ){
+  constructor(page, size, order ){
     this.page = page
-    this.items = items 
+    if ( size!=null)
+      this.size = size 
+    if ( order!=null)
+      this.orderBy = order
   }
 }
 
-export { RoutineApi, routinePrevInfo, routineInfo, getRoutines, getRoutine, routines }
+
+export { RoutineApi, routinePrevInfo, routineInfo, getRoutines, getRoutine, routines, queryGetRoutines }

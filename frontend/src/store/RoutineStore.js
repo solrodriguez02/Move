@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { getRoutine, getRoutines, routines, RoutineApi} from '@/api/routines'
+import { getRoutine, getRoutines, routines, RoutineApi, queryGetRoutines, routinePrevInfo, routineInfo } from '@/api/routines'
 
 /* 
   Campos que creo q deberian ir en routine: 
@@ -15,6 +15,7 @@ import { getRoutine, getRoutines, routines, RoutineApi} from '@/api/routines'
 export const useRoutineStore = defineStore('routine', () => {
     const routineList = ref([])
     const routineData = ref(null)
+    const favorites = ref([])
 
     const filters = ref([
       { label: 'Difficulty', options: ['Easy', 'Medium', 'Difficult'], selected: ref([]), color: 'turquoise', icon: '$flash' },
@@ -91,19 +92,20 @@ export const useRoutineStore = defineStore('routine', () => {
     }
 
     async function getApiRoutines(){
-      const apiAns = await RoutineApi.getAllRoutines()
-      console.log(apiAns)
-      const ans = []
-      /*
-      for (var i=0; i<apiAns.totalCount; i++ ){
-        for( var j=0; j< )
-      }
       
-      apiAns.foreach( page => page.content.foreach( routine => {
-        ans.push( new routines.routineInfo(routine.id, routine.name, routine.detail, routine.user, routine.difficulty, routine.category, routine.metadata))
-      }))
-      console.log(ans)
-      */
+      const query = new queryGetRoutines(0,7,null)
+      const apiAns = await RoutineApi.getAllRoutines( query, true)
+      // todo Fav get (meter en array favorites )
+      
+      const ans = []
+      var r
+      console.log('Api'+ apiAns)
+      for ( var i=0; i<apiAns.size; i++){
+        r = apiAns.content[i]
+        //ans.push( new routinePrevInfo(routine.id, routine.name, routine.detail, routine.user, routine.metadata.favs, routine.metadata.filters.difficulty , routine.metadata.filters.elements, routine.metadata.filters.requiredSpaceId, routine.metadata.filters.approachId ))
+        ans.push( new routineInfo( r.id, r.name, r.detail, favorites.value.includes(r.id), r.metadata, r.user, [] ))
+      } 
+      
       return ans
     }
   
