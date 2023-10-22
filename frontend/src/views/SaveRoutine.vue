@@ -14,7 +14,7 @@
           
         <div class='field-text-box'> Name </div>
           <v-text-field
-          :v-model='form.name'
+          v-model='formFields[0].name'
           :readonly='loading'
           :rules='[required]'
           variant='outlined'
@@ -30,7 +30,7 @@
               <div class='field-text aligned-text' > {{ field.label }} </div>
             </div>
           <v-select
-            :v-model='form[field.formID]'
+            v-model='formFields[index+2][field.tag]'
             :items='field.options'
             :multiple="field.label == 'Elements required' || field.label == 'Approach'"
             :chips="field.label == 'Elements required' || field.label == 'Approach'"
@@ -42,8 +42,8 @@
       </div>
         <div class='field-box'>
           <div class='field-text-box'> Image </div>
-            <v-file-input
-              :v-model='form.image'
+            <v-text-field
+              :v-model='formFields[1].image'
               label='Attach a representative image for the routine'
               variant='outlined'
               rounded/>
@@ -69,20 +69,25 @@ import { ref } from 'vue'
 import { useRoutineStore } from '@/store/RoutineStore'
 import { useRouter } from 'vue-router'
 import { useNavigationStore } from '@/store/NavigationStore'
+import { useCreateRoutineStore } from '@/store/CreateRoutineStore';
+import { routineInfo, routinePrevInfo } from '@/api/routines';
 
 const router = useRouter()
 const navigationStore= useNavigationStore()
 const routineStore = useRoutineStore()
+const createRoutineStore = useCreateRoutineStore();
 const loading = ref(false);
 
-const form = ref({
-    name: '',
-    difficulty: '',
-    approach: '',
-    elements: '', 
-    space: '',
-    image: '',
-})
+const form = ref(false)
+
+const formFields = ref([
+    {name: ''},
+    {image: ''},
+    {difficulty: null},
+    {elements: null}, 
+    {space: null},
+    {approach: null},
+  ])
 
 const placeholders = ref([
     'Enter the routine difficulty',
@@ -91,9 +96,12 @@ const placeholders = ref([
     'Which approach does your routine represent the most?'
 ])
 
-const onSubmit = () => {
+async function onSubmit() {
     // faltan hacer las funciones en RoutineStore
     //$router.push('/createdbyyou');
+    console.log(formFields.value[0].elements)
+    const routineInfo = new routinePrevInfo(formFields.value[0].name, formFields.value[1].image, 0, formFields.value[2].difficulty, formFields.value[3].elements, formFields.value[4].space, formFields.value[5].approach)
+    await createRoutineStore.sendNewRoutine(routineInfo)
 }
 
 function getTab() {

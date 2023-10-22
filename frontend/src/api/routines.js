@@ -187,19 +187,19 @@ class routineInfo {
 }
 
 class routinePrevInfo {
-  constructor( name, src,favs, difficultyId, elementsRequiredArray, requiredSpaceId, approachId ){
+  constructor( name, src,favsNum, difficultyId, elementsRequiredArray, requiredSpaceId, approachId ){
       // elementos = [], el resto son vals
       this.name = name;
       this.detail = src; 
       this.isPublic = true;                     // campo obligatorio 
       this.difficulty = "rookie"                 // campo obligatorio 
       this.metadata = {
-        "favs": favs,
-        "filters": {
-          "difficulty": difficultyId,
-          "elements": elementsRequiredArray, 
-          "requiredSpace": requiredSpaceId, 
-          "approach": approachId
+        favs: favsNum,
+        filters: {
+          difficulty: difficultyId,
+          elements: elementsRequiredArray, 
+          requiredSpace: requiredSpaceId, 
+          approach: approachId
         }
       };
   }

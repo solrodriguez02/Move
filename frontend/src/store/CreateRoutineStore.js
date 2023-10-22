@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { RoutineApi } from '@/api/routines'
-import { CycleApi, cycleInfo } from '@/api/cycle'
+import { CycleApi, cycleInfo, exerciseSpecification } from '@/api/cycle'
 import { useRoutineStore } from '@/store/RoutineStore'
 
 export const useCreateRoutineStore = defineStore('createRoutine', () => {
@@ -77,13 +77,16 @@ export const useCreateRoutineStore = defineStore('createRoutine', () => {
     }
 
     async function sendNewRoutine(routineInfo){
+        debugger
         const routineResult = await RoutineApi.createRoutine(routineInfo, true)
         for(const cycle = 0; cycle < getCycleLenght(); cycle++){
             const currentCycle = cycleList[cycle]
             const currentCycleInfo = new cycleInfo(currentCycle.name, cycle, "", "", reps, { src: icon})
             const currentCycleResult = await RoutineApi.createCycle(routineResult.id, currentCycleInfo, true)
             for (const exercise = 0; exercise < currentCycle.exercises.lenght; exercise++){
-                await CycleApi.addExercise(currentCycleResult.id, currentCycle.exercises[exercise], true)
+                const currentExercise = currentCycle.exercises[exercise]
+                const exerciseInfo = new exerciseSpecification(exercise, exercise.sec, exercise.reps)
+                await CycleApi.addExercise(currentCycleResult.id, exerciseInfo, true)
             }
         }
     }
