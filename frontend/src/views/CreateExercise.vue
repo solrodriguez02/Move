@@ -1,15 +1,28 @@
 <template>
-  <div class = 'appbar navigate-margin'>
-        <button @click="goBack" class="button">
-            <v-icon icon='$back'></v-icon>
-            <p>{{navigationStore.getTabText(getTab())}}</p>
-        </button>  
-    </div>
-<v-container>
-  <h1 style="margin-bottom: 2%;">Create Exercise</h1>
+
+<div class = 'appbar appbar-margin'>
+  <button @click='goBackDialog = true' class='back-button'>
+      <v-icon icon='$back'></v-icon>
+      <p>{{navigationStore.getTabText(getTab())}}</p>
+  </button>  
+</div>
+
+<warning-dialog
+    v-model='goBackDialog'
+    title='Are you sure you want to quit this page?'
+    message='If you do so, your exercise will be deleted. Press Cancel to continue editing and then go to "save" to save your changes.'
+    custom-button-text="Quit"
+    :on-custom-action="() => quitCreateExercise(getTab())"
+    :on-close='closeGoBackDialog'
+    type='alert'
+  />
+
+<div class='basics-max'>
+
+  <h1>Create Exercise</h1>
   <v-form class='form'
-    v-model="form"
-    @submit.prevent="onSubmit">
+    v-model='form'
+    @submit.prevent='onSubmit'>
       
     <div class='field-text-box'> Name </div>
       <v-text-field
@@ -67,10 +80,8 @@
       size='large'
       type='submit'
       variant='elevated'> Save </v-btn>
-
-    <div v-show="exerciseCreated">Ejercicio creado con éxito.</div>
   </v-form>
-</v-container>
+</div>
 </template>
   
 <script setup>
@@ -79,12 +90,13 @@
   import { useExerciseStore } from '@/store/ExerciseStore'
   import { exerciseInfo } from '@/api/exercises'
   import { useNavigationStore } from '@/store/NavigationStore'
+  import WarningDialog from "@/components/WarningDialog.vue"
 
   const navigationStore= useNavigationStore()
   const exerciseStore = useExerciseStore()
   const router = useRouter()
   const loading = ref(false)
-  const exerciseCreated = ref(false)
+  const goBackDialog = ref(false)
 
   const formFields= ref([ { name: '' }, { detail: '' }, { image: null }, { difficulty: null }, { muscleGroups: null }, { elements: null }, { space: null } ])
 
@@ -101,7 +113,6 @@
     const details = { image: formFields.value[2].image, difficulty: formFields.value[3].difficulty, muscleGroups: formFields.value[4].muscleGroups, elements: formFields.value[5].elements, space: formFields.value[6].space, creator: 'user' }
     const exerciseData = new exerciseInfo(formFields.value[0].name, formFields.value[1].detail, 'exercise', details)
     await exerciseStore.addExercise(exerciseData)
-    exerciseCreated.value = true
     router.go(-1)
   }
 
@@ -109,9 +120,13 @@
         return router.options.history.state.back
     }
 
-    const goBack = () => {
-        router.go(-1)
-    }
+  const closeGoBackDialog = () => {
+    goBackDialog.value = false;
+  }
+
+  const quitCreateExercise = (path) => {
+    router.push(path)
+  }
 
   const required = (v) => {
     return !!v || 'Field is required'

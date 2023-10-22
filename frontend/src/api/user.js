@@ -1,6 +1,6 @@
 import { Api } from "./api.js";
 
-export { UserApi, Credentials, PersonalInfo, EmailVerificationInfo}
+export { UserApi, Credentials, PersonalInfo, EmailVerificationInfo, EditedPersonalInfo}
 
 class UserApi {
     static getUrl(slug) {
@@ -44,15 +44,15 @@ class Credentials {
 }
 
 class PersonalInfo {
-    constructor(username, password, firstName, lastName, email){
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
+    constructor(username, password, firstName, lastName, email) {
+        this.username = username,
+        this.password = password,
+        this.firstName = firstName,
+        this.lastName = lastName,
+        this.email = email,
         this.gender = 'male',
-        this.birthdate = 284007600000,
-        this.phone = '98295822',
+        this.birthdate = 0,
+        this.phone = '-',
         this.avatarUrl= 'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg',
         this.metadata = null
     }
@@ -63,4 +63,16 @@ class EmailVerificationInfo {
         this.email = email;
         this.code = code;
     }
+}
+
+class EditedPersonalInfo {
+     constructor(firstName, lastName, gender, phone, avatarUrl ) {
+        this.firstName = firstName, 
+        this.lastName = lastName,
+        this.gender = gender,
+        this.birthdate = 0,
+        this.phone = phone,
+        this.avatarUrl = avatarUrl
+        this.metadata = null
+     }
 }
