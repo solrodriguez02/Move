@@ -92,31 +92,32 @@ export const useRoutineStore = defineStore('routine', () => {
       return routineData.value;
     }
 
-    async function getApiRoutinesByCategories(categories){
+    async function getApiRoutinesByCategory(category,position,searchAllPages=true, page = 0){
       
-      // carga las 2 routineList
-      if ( categories==null)
-        return -1
-
+      // carga en la routineList q indique position 
+      
         var query 
-      for ( var i; i<categories.length; i++)
-        switch( categories[i] ){
+        
+        switch( category){
           case 'new': // ORDER BY 
-            query = new queryGetRoutines(0,15, "id","asc")
+          query = new queryGetRoutines(null,page,15, "id","desc")
+            
             break
           case 'favs':
-            query = new queryGetRoutines(0,15, "id","asc")
+            query = new queryGetRoutines(null,page,15, "id","asc")
             
             // llamado a api
             break
           case 'created':
             // filtro itero x user
+            // id user de donde lo saco? 
+            query = new queryGetRoutines(null, page,15, "id","desc")
             break
+          default:
+            return -1
         }
 
-     
       const apiAns = await RoutineApi.getAllRoutines( query, false)
-      
       
       const ans = []
       var r
@@ -126,11 +127,22 @@ export const useRoutineStore = defineStore('routine', () => {
         r = apiAns.content[i]
         ans.push( new routineInfo( r.id, r.name, r.detail, favorites.value.includes(r.id), r.metadata, r.user, [] ))
       } 
-      routineList.value[0] = ans
+      routineList.value[position] = ans
       
-      if ( ans == [] )
-        return -1
+      morePagesAvailable = false
+
+      if ( ans == [] ){
+        if ( apiAns.isLastPage || !searchAllPages){
+          morePagesAvailable = false
+          return -1
+        }
+        console.log('recursive era el prob') 
+        morePagesAvailable = true
+        return await getApiRoutinesWithFilters(searchedByUser,page++)
+      }
+        
       return 0          // fue exitosa la busqueda
+
     }
       
     
@@ -140,14 +152,15 @@ export const useRoutineStore = defineStore('routine', () => {
       if ( searchedByUser.length > 200 )
         return 1
       
-      const query = new queryGetRoutines(page,14,null,null,null)
+      const query = new queryGetRoutines(null,page,15,'id','desc')
+       
       const apiAns = await RoutineApi.getAllRoutines( query, true)
       // todo Fav get (meter en array favorites )
       
       const ans = []
       var r
       const size = apiAns.size < apiAns.totalCount? apiAns.size : apiAns.totalCount
-      console.log('Api'+ apiAns)
+      console.log('Api'+ apiAns.isLastPage)
       for ( var i=0; i<size; i++){
         r = apiAns.content[i]
         if ( r.name.startsWith(searchedByUser))
@@ -156,13 +169,21 @@ export const useRoutineStore = defineStore('routine', () => {
 
       routineList.value[0] = ans
 
-      if ( apiAns.isLastPage )
-        morePagesAvailable = false
-      else 
-        return getApiRoutinesWithFilters(searchedByUser, page++)
+      if ( ans == [] ) {
+        if ( apiAns.isLastPage ){
+          morePagesAvailable = false
+          return -1
+        }
+        else {
+          console.log('recursive era el prob') 
+          morePagesAvailable = true
+          return await getApiRoutinesWithFilters(searchedByUser,1)
+        }    
 
-      if ( ans == [] )
-        return -1
+      }
+      
+      morePagesAvailable = false
+      
       return 0          // fue exitosa la busqueda
     }
     
@@ -195,6 +216,6 @@ export const useRoutineStore = defineStore('routine', () => {
 
     }
 
-    return { getApiRoutinesByCategories, getRoutineApiData ,getApiRoutinesWithFilters, routineList, routineData, fetchRoutines, fetchRoutine, getDataCategory, searchRutine, getRoutineData, filters, secOptions, repOptions, cycleRepOptions, deleteRoutine, addRoutine }
+    return { getApiRoutinesByCategory, getRoutineApiData ,getApiRoutinesWithFilters, routineList, routineData, fetchRoutines, fetchRoutine, getDataCategory, searchRutine, getRoutineData, filters, secOptions, repOptions, cycleRepOptions, deleteRoutine, addRoutine }
 
 })

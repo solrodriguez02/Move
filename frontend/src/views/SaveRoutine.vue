@@ -43,7 +43,7 @@
         <div class='field-box'>
           <div class='field-text-box'> Image </div>
             <v-text-field
-              :v-model='formFields[1].image'
+              :v-model="formFields[1].image"
               label='Attach a representative image for the routine'
               variant='outlined'
               rounded/>
@@ -82,7 +82,7 @@ const form = ref(false)
 
 const formFields = ref([
     {name: ''},
-    {image: ''},
+    {image: ' '},
     {difficulty: null},
     {elements: null}, 
     {space: null},
@@ -100,6 +100,7 @@ async function onSubmit() {
     // faltan hacer las funciones en RoutineStore
     //$router.push('/createdbyyou');
     console.log(formFields.value[0].elements)
+    console.log('imagen'+ formFields.value[1].image)
     const routineInfo = new routinePrevInfo(formFields.value[0].name, formFields.value[1].image, 0, formFields.value[2].difficulty, formFields.value[3].elements, formFields.value[4].space, formFields.value[5].approach)
     await createRoutineStore.sendNewRoutine(routineInfo)
 }

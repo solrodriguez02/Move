@@ -54,7 +54,9 @@
 
   onBeforeMount (async () => {
     loading.value = true
-    await routineStore.getApiRoutinesByCategories(['created','favs'])
+    await routineStore.getApiRoutinesByCategory('created',0)
+    //await routineStore.getApiRoutinesByCategory('favs')
+
     loading.value = false
   })
 
