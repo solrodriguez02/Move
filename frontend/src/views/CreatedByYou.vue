@@ -18,38 +18,41 @@
       </div>
     </div>
   
-    <div class='rutines' v-for='routine in routines'>
-      <HorizontalBox :items='{name: routine.name, link: routine.link, img: routine.img, deleteFunction: deleteRoutine, editFunction: editRoutine}'/>
+    <div class='rutines' v-for='r in routines'>
+        <HorizontalBox :items='{name: r.name, link:`routine/${r.id}` , img: r.src, deleteFunction: deleteRoutine, editFunction: editRoutine}'/>
     </div>
   
   </div>
   </template>
     
   <script setup>
-      import { ref } from 'vue'
+      import { ref, onBeforeMount } from 'vue'
       import { RouterLink } from 'vue-router'
       import { useRouter } from 'vue-router'
       import { useRoutineStore } from '@/store/RoutineStore'
       import { useNavigationStore } from '@/store/NavigationStore'
       import HorizontalBox from '@/components/HorizontalBox.vue'
       
-  
-      import image1 from '@/assets/temporary/chillout.png'
-      import image2 from '@/assets/temporary/keepmoving.png'
-  
       const router = useRouter()
-      const routineStore = useRoutineStore()
       const navigationStore= useNavigationStore()
   
+      const routineStore = useRoutineStore()
+      const loading = ref(false)
+      const routines = ref([])
+
+
+    onBeforeMount (async () => {
+      loading.value = true
+      await routineStore.getApiRoutinesByCategories(['created'])
+      routines.value = routineStore.routineList[0]
+      console.log( routines)
+      loading.value = false
+    })
+    
       const goBack = () => {
         router.go(-1)
       }
-  
-      const routines = ref([
-        { name:'Chill out', img: image1, link:'/routine' },
-        { name:'Keep moving', img: image2, link:'/routine' },
-      ])
-  
+    
       function getTab() {
         return router.options.history.state.back
       }
