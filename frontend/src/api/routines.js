@@ -171,19 +171,17 @@ function getRoutine(id, okCallback) {
   
 
 class routineInfo {
-  constructor( id, name, detail,  metadata, ){
+  constructor( id, name, detail, fav=false, metadata, user, cyclesArray=[] ){
       this.id = id; 
       this.name = name;
       this.src = detail; 
+      this.fav = fav 
+      this.favs = metadata.favs
+      this.filters = metadata.filters
       this.user = {
         id: user.id,
         name: user.username,
       }
-      this.favs = metadata.favs
-      this.highlights[0] = metadata.filter.difficulty
-      this.highlights[1] = metadata.filter.elements
-      this.highlights[2] = metadata.filter.requiredSpaceId
-      this.highlights[3] = metadata.filter.approachId
       this.cycles = cyclesArray
   }
 }
@@ -200,8 +198,8 @@ class routinePrevInfo {
         "filters": {
           "difficulty": difficultyId,
           "elements": elementsRequiredArray, 
-          "requiredSpaceId": requiredSpaceId, 
-          "approachId": approachId
+          "requiredSpace": requiredSpaceId, 
+          "approach": approachId
         }
       };
   }
