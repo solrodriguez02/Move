@@ -96,12 +96,15 @@ const placeholders = ref([
     'Which approach does your routine represent the most?'
 ])
 
+//se tiene que usar una variable para saber que estoy en edit o create (no existente) (porque si se quiere hacer cambiar en la API)
+
 async function onSubmit() {
     // faltan hacer las funciones en RoutineStore
     //$router.push('/createdbyyou');
     console.log(formFields.value[0].elements)
     const routineInfo = new routinePrevInfo(formFields.value[0].name, formFields.value[1].image, 0, formFields.value[2].difficulty, formFields.value[3].elements, formFields.value[4].space, formFields.value[5].approach)
     await createRoutineStore.sendNewRoutine(routineInfo)
+    router.push('/myroutines')
 }
 
 function getTab() {
