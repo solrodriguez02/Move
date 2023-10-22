@@ -104,8 +104,6 @@ export const useRoutineStore = defineStore('routine', () => {
         ans.push( new routinePrevInfo(routine.id, routine.name, routine.detail, routine.user, routine.metadata.favs, routine.metadata.filters.difficulty , routine.metadata.filters.elements, routine.metadata.filters.requiredSpaceId, routine.metadata.filters.approachId ))
       } 
       
-      console.log(ans)
-      
       return ans
     }
   

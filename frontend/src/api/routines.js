@@ -171,7 +171,7 @@ function getRoutine(id, okCallback) {
   
 
 class routineInfo {
-  constructor( routinePrevInfo, cyclesArray){
+  constructor( id, name, detail,  metadata, ){
       this.id = id; 
       this.name = name;
       this.src = detail; 
@@ -188,19 +188,13 @@ class routineInfo {
   }
 }
 
-
 class routinePrevInfo {
-  constructor(id,name, src, user,favs, difficultyId, elementsRequiredArray, requiredSpaceId, approachId ){
+  constructor( name, src,favs, difficultyId, elementsRequiredArray, requiredSpaceId, approachId ){
       // elementos = [], el resto son vals
-      this.id = id
       this.name = name;
       this.detail = src; 
       this.isPublic = true;                     // campo obligatorio 
       this.difficulty = "rookie"                 // campo obligatorio 
-      this.user = {
-        id: user.id,
-        name: user.username,
-      }
       this.metadata = {
         "favs": favs,
         "filters": {
