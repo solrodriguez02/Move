@@ -6,7 +6,7 @@
         </div>
         <p class='name'>{{ items.name }}</p>
       </RouterLink>
-      <button class='options-button'  @click="console.log('hola')">
+      <button class='options-button'>
         <RouterLink :to='`editroutine/${items.id}`' class='link'>
         <v-icon icon='$edit' color='dark_gray' size='25'/>
         </RouterLink>
