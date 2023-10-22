@@ -77,7 +77,6 @@ export const useCreateRoutineStore = defineStore('createRoutine', () => {
     }
 
     async function sendNewRoutine(routineInfo){
-        debugger
         const routineResult = await RoutineApi.createRoutine(routineInfo, true)
         for(const cycle = 0; cycle < getCycleLenght(); cycle++){
             const currentCycle = cycleList[cycle]
