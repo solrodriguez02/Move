@@ -91,25 +91,53 @@ export const useRoutineStore = defineStore('routine', () => {
       return routineData.value;
     }
 
-    async function getApiRoutines(){
+    async function getApiRoutinesByCategories(categories){
+      if ( categories==null)
+        console.log('error, categories were not established')
+      // carga las 2 routineList
+      // si fav y createdR
+    }
+
+    async function getApiRoutinesWithFilters(filters){
       
-      const query = new queryGetRoutines(0,7,null)
+      const query = new queryGetRoutines(0,14,null)
       const apiAns = await RoutineApi.getAllRoutines( query, true)
       // todo Fav get (meter en array favorites )
       
       const ans = []
       var r
+      const size = apiAns.size < apiAns.totalCount? apiAns.size : apiAns.totalCount
       console.log('Api'+ apiAns)
-      for ( var i=0; i<apiAns.size; i++){
+      for ( var i=0; i<size; i++){
         r = apiAns.content[i]
         //ans.push( new routinePrevInfo(routine.id, routine.name, routine.detail, routine.user, routine.metadata.favs, routine.metadata.filters.difficulty , routine.metadata.filters.elements, routine.metadata.filters.requiredSpaceId, routine.metadata.filters.approachId ))
         ans.push( new routineInfo( r.id, r.name, r.detail, favorites.value.includes(r.id), r.metadata, r.user, [] ))
       } 
-      
-      return ans
+      routineList.value[0] = ans
+      routineList.value[1] = ans
+      return
     }
-  
+    async function setRoutineApiData(idRoutine) {
+      routineData.value = RoutineApi.getRoutineById( idRoutine, new queryGetRoutines( null,null,null,idRoutine), controller )
+    }
+    async function getRoutineApiData(id){
+    console.log(routineList.value)
+      if ( routineList.value == {} || routineList.value[0] )
+        setRoutineApiData(id)
+      else {
+        var routine = routineList.value[0].find((routine) => routine.id == id);
+        if ( !routine && routineList.value.length > 1 )
+          routine = routineList.value[1].find((routine) => routine.id == id);
+        else 
+          setRoutineApiData(id)
+      }
+        
+      // llamar a cycles y meterlo en routineInfo
+      routineData = routine
 
-    return { getApiRoutines, routineList, routineData, fetchRoutines, fetchRoutine, getDataCategory, searchRutine, getRoutineData, filters, secOptions, repOptions, cycleRepOptions, deleteRoutine, addRoutine }
+      
+    }
+
+    return { getRoutineApiData,getApiRoutinesWithFilters, routineList, routineData, fetchRoutines, fetchRoutine, getDataCategory, searchRutine, getRoutineData, filters, secOptions, repOptions, cycleRepOptions, deleteRoutine, addRoutine }
 
 })
