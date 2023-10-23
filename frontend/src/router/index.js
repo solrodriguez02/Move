@@ -44,6 +44,11 @@ const router = createRouter({
       component: () => import('@/views/SaveRoutine.vue')
     },
     {
+      path: '/saveexistingroutine/:routineId',
+      name: 'save existing routine',
+      component: () => import('@/views/SaveRoutine.vue')
+    },
+    {
       path: '/createexercise',
       name: 'create exercise',
       component: () => import('@/views/CreateExercise.vue')

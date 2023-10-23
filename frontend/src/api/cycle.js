@@ -4,7 +4,7 @@ export {CycleApi, cycleInfo, exerciseSpecification}
 
 class CycleApi {
     static getUrl(slug) {
-        return `${Api.baseUrl}/cycles${ slug ? `/${slug}` : ""}`.toString();
+        return `${Api.baseUrl}/cycles${ slug ? `/${slug}` : ""}`
     }
 
     static async addExercise(idCycle, idExercise, exerciseInfo, controller){
@@ -12,15 +12,15 @@ class CycleApi {
     }
 
     static async getExercises(idCycle, controller){
-        return await Api.get(CycleApi.getUrl(idCycle), true, controller);
+        return await Api.get(CycleApi.getUrl(idCycle).concat("/exercises/"), true, controller);
     }
     
     static async modifyCycleExercise(idCycle, idExercise, exerciseInfo, controller){
-        return await Api.put(CycleApi.getUrl(idCycle).concat("/execises/").concat(idExercise.toString()), true, exerciseInfo, controller);
+        return await Api.put(CycleApi.getUrl(idCycle).concat("/exercises/").concat(idExercise.toString()), true, exerciseInfo, controller);
     }
 
     static async deleteCycleExercise(idCycle, idExercise, controller){
-        return await Api.delete(CycleApi.getUrl(idCycle).concat("/execises/").concat(idExercise.toString()), true, controller);
+        return await Api.delete(CycleApi.getUrl(idCycle).concat("/exercises/").concat(idExercise.toString()), true, controller);
     }   
 
 }
