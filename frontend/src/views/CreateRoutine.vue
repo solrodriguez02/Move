@@ -184,14 +184,7 @@
     </div>
   </div>
 
-  <div class='exercise-search'>
-    <div class='rest' @click=''>
-      <v-icon icon='$add'/>
-      <v-icon icon='$rest' class='rest-item'/>
-      <p class='rest-item'>Rest</p>
-    </div>
-
-    
+  <div class='exercise-search'>   
     <v-progress-circular v-if="loading"
       indeterminate
       color='blue'
@@ -199,7 +192,12 @@
     </v-progress-circular>
 
     <div v-else class='exercises' v-for='exercise in exerciseStore.exerciseList' :key='exercise.name'>
-      <div class='exercise'>
+      <div class='rest' @click='addExercise(cycleIndex, exercise)' v-if='exercise.name == "rest"'>
+        <v-icon icon='$add'/>
+        <v-icon icon='$rest' class='rest-item'/>
+        <p class='rest-item'>Rest</p>
+      </div>
+      <div v-else class='exercise'>
         <div class='add' @click='addExercise(cycleIndex, exercise)'>
           <v-icon icon='$add'/>
           <div class='exercise-image-box'>

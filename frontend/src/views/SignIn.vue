@@ -60,6 +60,7 @@ import { ref } from 'vue'
 import { Credentials} from '@/api/user'
 import { useSecurityStore } from '@/store/SecurityStore'
 import { onBeforeMount } from 'vue'
+import { exerciseInfo, exerciseApi } from '@/api/exercises'
 
 const router = useRouter()
 const securityStore = useSecurityStore()
@@ -70,6 +71,9 @@ async function login(username, password){
     try {
         const credentials = new Credentials(username, password)
         await securityStore.login(credentials, true)
+        const metadata = {image: 'https://images-ext-2.discordapp.net/external/RiQFJqcs3EZELF6HTafrSPecQisVKZ2ADdf0HwXk9OY/%3Fver%3D6/https/us.123rf.com/450wm/lililia/lililia1711/lililia171100655/90695497-icono-plano-vector-de-luna-sobre-fondo-negro.jpg'}         
+        const rest = new exerciseInfo("rest", "rest", "exercise", metadata)         
+        await exerciseApi.createExercise(rest, true)
         router.push('/explore')
     } catch(error){  
         hasError = true
