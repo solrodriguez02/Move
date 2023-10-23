@@ -19,13 +19,6 @@ export const useRoutineStore = defineStore('routine', () => {
     const favorites = ref([])
     var morePagesAvailable = false
 
-    const filters = ref([
-      { label: 'Difficulty', options: ['Easy', 'Medium', 'Difficult'], selected: ref([]), color: 'turquoise', icon: '$flash', tag:'difficulty' },
-      { label: 'Elements required', options:  ['None', 'Dumbell', 'Jump rope', 'Mat', 'Resistance band', 'Step', 'Kettlebell', 'Foam roller', 'Ankle Weights' ], selected: ref([]), color:'lightblue', icon: '$dumbbell', tag: 'elements'},
-      { label: 'Space required', options: ['Ideal for reduced spaces', 'Requires some space', 'Much space is needed'], selected: ref([]), color:'blue', icon: '$space', tag: 'space' },
-      { label: 'Approach', options: ['Cardio', 'Strength', 'HIIT', 'Flexibility', 'Bodyweight', 'Resistance', 'CrossFit', 'Yoga', 'Pilates', 'Functional', 'Calisthenics', 'Aerobic ', 'Streching'], selected: ref([]), color:'violet', icon:'$person', tag: 'approach' }
-    ])
-
     const secOptions = ['-', 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
     const repOptions = ['-', 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
     const cycleRepOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -33,37 +26,6 @@ export const useRoutineStore = defineStore('routine', () => {
     
     async function deleteRoutine(id) {
       await RoutineApi.deleteRoutine(id, true)
-    }
-
-    function getDataCategory(headline,data){
-        // pido a api
-        return data;
-    }
-
-    function searchRutine(searchInApi, selected){  
-        // mando a api el input 
-        // searchInApi tiene input/busqueda
-        // selected contiene array con filtros, (hay espacios undefined => no tenerlos en cuenta)
-        for ( var i=0; i<filters.selected.length; i++){
-          
-          // search 
-          if ( selected[i] !== undefined ){
-            // mando a api
-          }
-        } 
-        const ans = routines;
-        //fetchRoutines()
-        
-        if ( searchInApi=='notFound' )      
-          return null;
-        
-        return ans;    
-    }
-
-
-    function getRoutineData(){
-      console.log('jsjs'+ routineData.value.id);
-      return routineData.value;
     }
 
     async function getApiRoutinesByCategory(category,position,searchAllPages=true, page = 0){
@@ -119,7 +81,7 @@ export const useRoutineStore = defineStore('routine', () => {
         }
         console.log('recursive era el prob') 
         morePagesAvailable = true
-        return await getApiRoutinesWithFilters(searchedByUser,page++)
+        return await getApiRoutinesByName(searchedByUser,page++)
       }
         
       return 0          // fue exitosa la busqueda
@@ -128,7 +90,7 @@ export const useRoutineStore = defineStore('routine', () => {
       
     
 
-    async function getApiRoutinesWithFilters(searchedByUser, page=0){
+    async function getApiRoutinesByName(searchedByUser, page=0){
       
       if ( searchedByUser.length > 200 )
         return 1
@@ -159,7 +121,7 @@ export const useRoutineStore = defineStore('routine', () => {
         else {
           console.log('recursive era el prob') 
           morePagesAvailable = true
-          return await getApiRoutinesWithFilters(searchedByUser,1)
+          return await getApiRoutinesByName(searchedByUser,1)
         }    
 
       }
@@ -191,13 +153,10 @@ export const useRoutineStore = defineStore('routine', () => {
       
       routineData = routine
       
-      // llamar a cycles y meterlo en routineInfo
-      
-      
       return routine
 
     }
 
-    return { getApiRoutinesByCategory, getRoutineApiData ,getApiRoutinesWithFilters, routineList, routineData, getDataCategory, searchRutine, getRoutineData, filters, secOptions, repOptions, cycleRepOptions, deleteRoutine }
+    return { getApiRoutinesByCategory, getRoutineApiData ,getApiRoutinesByName, routineList, routineData, secOptions, repOptions, cycleRepOptions, deleteRoutine }
 
 })

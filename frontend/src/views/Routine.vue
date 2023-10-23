@@ -101,6 +101,7 @@
   import { useRoutineStore } from '@/store/RoutineStore'
   import { useExerciseStore } from '@/store/ExerciseStore'
   import { RouterLink } from 'vue-router';
+import NotFound from './NotFound.vue'
 
   const routineStore = useRoutineStore()
   
@@ -119,8 +120,7 @@
   const notFound = ref(false)
 
   onBeforeMount (async () => {
-    console.log(route.params.routineId)
-    //await routineStore.fetchRoutine( route.params.routineId )
+    
     try {
       loading.value = true 
       data.value = await routineStore.getRoutineApiData(route.params.routineId)
@@ -135,12 +135,8 @@
     
   }) 
 
-  const cycles = ref([])
 
   function loadData(){
-   
-     
-    console.log( 'Rutina'+ data.value.filters.difficulty)
 
     highlightsItems.value = [
       { name:'Difficulty', detail: data.value.filters.difficulty + " difficulty" , icon:'$flash', color:'turquoise'},
@@ -157,21 +153,6 @@
 
   const goBack = () => {
     router.go(-1)
-  }
-
-  const selectCycleOptionIndex = (index) => {
-    cycleOptionIndex.value = index
-  }
-
-  const showCycle = (index) => {
-    switch(index) {
-      case 0: 
-        return cycleOptionIndex.value == 0
-      case data.value.cycles.length+1: 
-        return cycleOptionIndex.value == lastCycleOptionIndex
-      default: 
-        return cycleOptionIndex.value == 1
-    }
   }
 
   const showDeleteDialog = () => {
@@ -213,15 +194,6 @@
 
    
   const highlightsItems = ref([])
-
-
-  const cyclesOptions = ref([
-    { name:'Warm up', icon:'$warm' },
-    { name:'Exercise', icon:'$fire' },
-    { name:'Cooling', icon:'$cool' }
-  ])
-
-  const lastCycleOptionIndex = cyclesOptions.value.length - 1
 
 
   </script>

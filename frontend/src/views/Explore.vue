@@ -17,48 +17,7 @@
         </v-text-field>  
       </v-sheet>
     </v-sheet>
-    <v-sheet class="d-flex me-4">
-      <v-sheet width="700">
-      <v-row class="ms-4 text-disabled">Filter by</v-row>
-        <v-container class="ms-0 ps-0">
-          <v-row>
-              <v-col class="d-flex align-center"     
-                cols="12" min-width="80">
-                <v-col v-for='filter in routineStore.filters' >
-                  <v-autocomplete
-                    :label='filter.label'
-                    :items='filter.options'
-                    variant="solo"
-                    bg-color="lightblue"      
-                    v-model='filter.selected'
-                    menu-icon='$arrow'
-                    rounded
-                    @update:model-value="addFilter(selected,filter.selected)"
-                />
-                </v-col>  
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-sheet>
-    <v-sheet class="ms-3" width="450">
-      <v-row class="text-disabled" >Selected filters</v-row>
-      <v-row>
-        <v-chip-group>
-        <v-chip v-for="(s,index) in selected"
-      class="ma-2"
-      closable
-      color="light-grey"
-      close-icon="$close"
-      :model-value="true"
-      @click:close="removeChoice(selected,index)"
-    >
-      {{ s }}
-    </v-chip>
-  </v-chip-group>
-  </v-row>
-  </v-sheet>
-    </v-sheet>
-  </div>
+    </div>
 
   <v-progress-circular v-if="loading"
     indeterminate
@@ -121,24 +80,11 @@
       category.viewAll = !category.viewAll;
   }
 
-  function addFilter( selected,choice) {
-    if (choice==null)
-      return;
-    if ( !selected.includes(choice)){
-      selected.push(choice);
-      selectedCount++;
-    }
-  }
-
-  function removeChoice( selected,i ) {
-    delete(selected[i]);
-    selectedCount--;
-  }
   
   async function searchRoutines(searchInApi, selected,searchWasMade){
     if(searchInApi!=='' || selectedCount>0){ 
       
-      const ans = await routineStore.getApiRoutinesWithFilters(searchInApi)
+      const ans = await routineStore.getApiRoutinesByName(searchInApi)
       data = routineStore.routineList[0]
       
       searchWasMade[0] = true; 
