@@ -19,6 +19,14 @@ export const useRoutineStore = defineStore('routine', () => {
     const favorites = ref([])
     var morePagesAvailable = false
 
+    const filters = ref([
+      { label: 'Difficulty', options: ['Easy', 'Medium', 'Difficult'], selected: ref([]), color: 'turquoise', icon: '$flash', tag:'difficulty' },
+      { label: 'Elements required', options:  ['None', 'Dumbell', 'Jump rope', 'Mat', 'Resistance band', 'Step', 'Kettlebell', 'Foam roller', 'Ankle Weights' ], selected: ref([]), color:'lightblue', icon: '$dumbbell', tag: 'elements'},
+      { label: 'Space required', options: ['Ideal for reduced spaces', 'Requires some space', 'Much space is needed'], selected: ref([]), color:'blue', icon: '$space', tag: 'space' },
+      { label: 'Approach', options: ['Cardio', 'Strength', 'HIIT', 'Flexibility', 'Bodyweight', 'Resistance', 'CrossFit', 'Yoga', 'Pilates', 'Functional', 'Calisthenics', 'Aerobic ', 'Streching'], selected: ref([]), color:'violet', icon:'$person', tag: 'approach' }
+    ])
+
+    
     const secOptions = ['-', 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
     const repOptions = ['-', 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
     const cycleRepOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -156,6 +164,6 @@ export const useRoutineStore = defineStore('routine', () => {
 
     }
 
-    return { getApiRoutinesByCategory, getRoutineApiData ,getApiRoutinesByName, routineList, routineData, secOptions, repOptions, cycleRepOptions, deleteRoutine, fetchRoutineById }
+    return { filters, getApiRoutinesByCategory, getRoutineApiData ,getApiRoutinesByName, routineList, routineData, secOptions, repOptions, cycleRepOptions, deleteRoutine, fetchRoutineById }
 
 })
