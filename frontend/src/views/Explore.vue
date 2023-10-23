@@ -8,12 +8,12 @@
       <v-sheet width='900'>
         <v-text-field 
         v-model="searchInApi"
-        @keydown.enter="key += searchRoutines(searchInApi, selected, searchWasMade); "
+        @keydown.enter="searchRoutines(searchInApi); "
             density='compact'
             placeholder='Search rutine'
             rounded
             variant='outlined'>
-            <v-btn icon="$search" flat class="mr-3 ml-0 search" size="x-small" @click="key += searchRoutines(searchInApi, selected, searchWasMade)" />
+            <v-btn icon="$search" flat class="mr-3 ml-0 search" size="x-small" @click="searchRoutines(searchInApi)" />
         </v-text-field>  
       </v-sheet>
     </v-sheet>
@@ -26,7 +26,7 @@
   </v-progress-circular>
 
   <div v-else>
-  <v-sheet v-if="!searchWasMade[0]" >
+  <v-sheet v-if="!searchWasMade" >
       <v-row>
         <v-sheet class="routines-box" width="1140">
         <v-container class='title' >   
@@ -35,7 +35,7 @@
               <h3>Newly added</h3>
             </v-col>
             <v-col  cols="1">
-              <v-btn :v-show="category.hasRoutines" flat class='viewAll' @click='changeView(category)' >{{ `View ${category.viewAll? 'less':'all'}` }}</v-btn>
+              <v-btn  flat class='viewAll' @click='changeView(category)' >{{ `View ${category.viewAll? 'less':'all'}` }}</v-btn>
             </v-col>
           </v-row>
         </v-container>        
@@ -44,7 +44,7 @@
       </v-sheet>
       </v-row>
   </v-sheet> 
-    <displayAllRoutines v-else :items="data" class='display' :key="key" />
+    <displayAllRoutines v-else :items="data" class='display' :key="searchWasMade" />
 </div>
 </div>
 
@@ -59,12 +59,11 @@
   const routineStore = useRoutineStore()
   const loading = ref(false)
 
-  const searchWasMade = ref([false]);
+  const searchWasMade = ref(0);
   const searchInApi = ref('');
   const selected = ref([]);
   var data  = ref([]);
   var selectedCount = 0; 
-  const key= ref(0);
   
   const category = ref([
       { viewAll: false, hasRoutines: true}    
@@ -81,13 +80,13 @@
   }
 
   
-  async function searchRoutines(searchInApi, selected,searchWasMade){
+  async function searchRoutines(searchInApi){
     if(searchInApi!=='' || selectedCount>0){ 
       
       const ans = await routineStore.getApiRoutinesByName(searchInApi)
       data = routineStore.routineList[0]
       
-      searchWasMade[0] = true; 
+      searchWasMade.value++; 
 
       if ( ans == -1 )
         category.value.hasRoutines = false
