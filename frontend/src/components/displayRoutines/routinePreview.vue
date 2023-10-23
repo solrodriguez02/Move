@@ -7,7 +7,7 @@
             <div class='text-right image-container'>
               <v-img 
                     :src="r.src" 
-                    :alt="r.name" class="imgRoutine"
+                    alt='Routine image' class="imgRoutine"
                     @click="toggle" cover>
                     <v-btn v-if="r.fav" icon='$favfull' class="me-2 mt-2" size="small" color="white"/>
               </v-img>

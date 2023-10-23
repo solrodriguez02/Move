@@ -26,7 +26,7 @@
               <v-col>
                 <h3>{{ category.headline }}</h3>
               </v-col>
-              <RouterLink v-show="category.headline == 'Created by you'" to='/createdbyyou'>
+              <RouterLink to='/createdbyyou'>
                   <v-icon icon='$edit' color='dark_gray' class='edit-icon'/>
                 </RouterLink>
               <v-col cols='1' class='options'>

@@ -3,15 +3,6 @@ import { defineStore } from 'pinia'
 import { RoutineApi, queryGetRoutines, routineInfo } from '@/api/routines'
 import { useRegisterStore } from '@/store/RegisterStore'
 
-/* 
-  Campos que creo q deberian ir en routine: 
-  id, name, img, userMade (boolean), duration (secs), difficulty, equipment, space, approach, cycles ID  
-
-  Campos que creo q deberian ir en cycle: 
-  id, name (lo definimos nosotros, no el user), reps, exercisesList
-  
-  soy Sol :) 
-*/
 
 export const useRoutineStore = defineStore('routine', () => {
     const routineList = ref([])
@@ -41,19 +32,14 @@ export const useRoutineStore = defineStore('routine', () => {
     }
 
     async function getApiRoutinesByCategory(category,searchAllPages=true, page = 0){
-      
-      // carga en la routineList q indique position 
-      
+            
         var query 
         
         switch( category){
-          case 'new': // ORDER BY 
+          case 'new': 
           query = new queryGetRoutines(null,page, 10, "id","desc")
-            
             break
           case 'created':
-            // filtro itero x user
-            // id user de donde lo saco? 
             const registerStore = useRegisterStore()
             
             try{
@@ -72,7 +58,7 @@ export const useRoutineStore = defineStore('routine', () => {
       const ans = []
       var r
       const size = apiAns.size < apiAns.totalCount? apiAns.size : apiAns.totalCount
-      console.log('Api'+ apiAns)
+      
       for ( var i=0; i<size; i++){
         r = apiAns.content[i]
         ans.push( new routineInfo( r.id, r.name, r.detail, favorites.value.includes(r.id), r.metadata, r.user, [] ))
@@ -91,7 +77,7 @@ export const useRoutineStore = defineStore('routine', () => {
         return await getApiRoutinesByName(searchedByUser,page++)
       }
         
-      return 0          // fue exitosa la busqueda
+      return 0        
 
     }
       
@@ -105,7 +91,6 @@ export const useRoutineStore = defineStore('routine', () => {
       const query = new queryGetRoutines(null,page,null,'id','desc')
        
       const apiAns = await RoutineApi.getAllRoutines( query, true)
-      // todo Fav get (meter en array favorites )
       
       const ans = []
       var r
@@ -114,7 +99,7 @@ export const useRoutineStore = defineStore('routine', () => {
       for ( var i=0; i<size; i++){
         r = apiAns.content[i]
         if ( r.name.startsWith(searchedByUser))
-          //for ( )
+
           ans.push( new routineInfo( r.id, r.name, r.detail, favorites.value.includes(r.id), r.metadata, r.user, [] ))
       } 
 
@@ -135,7 +120,7 @@ export const useRoutineStore = defineStore('routine', () => {
       
       morePagesAvailable = false
       
-      return 0          // fue exitosa la busqueda
+      return 0 
     }
     
     async function fetchRoutineApiData(idRoutine) { 
@@ -158,8 +143,7 @@ export const useRoutineStore = defineStore('routine', () => {
       if ( !routine )
         return 1
       
-      routineData = routine
-      
+      routineData = routine    
       return routine
 
     }

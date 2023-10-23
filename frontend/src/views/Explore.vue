@@ -83,7 +83,7 @@
   async function searchRoutines(searchInApi){
     if(searchInApi!=='' || selectedCount>0){ 
       
-      const ans = await routineStore.getApiRoutinesByName(searchInApi)
+      const ans = await routineStore.getApiRoutinesByName(searchInApi,0)
       data = routineStore.routineList[0]
       
       searchWasMade.value++; 
