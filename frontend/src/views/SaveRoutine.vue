@@ -109,11 +109,16 @@ const formFields = ref([
   }
 
 async function onSubmit() {
-  const routineInfo = new routinePrevInfo(formFields.value[0].name, formFields.value[1].image, 0, formFields.value[2].difficulty, formFields.value[3].elements, formFields.value[4].space, formFields.value[5].approach)
   if(!routineIsNew.value) {
+    const routineInfo = new routinePrevInfo(formFields.value[0].name, formFields.value[1].image, 0, formFields.value[2].difficulty, formFields.value[3].elements, formFields.value[4].space, formFields.value[5].approach)
     await createRoutineStore.sendEditRoutine(getId(), routineInfo)
   }
-  else await createRoutineStore.sendNewRoutine(routineInfo)
+  else {
+    if(formFields.value[1].image == ' ' || formFields.value[1].image == null ) 
+      formFields.value[1].image = 'https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg'
+    const routineInfo = new routinePrevInfo(formFields.value[0].name, formFields.value[1].image, 0, formFields.value[2].difficulty, formFields.value[3].elements, formFields.value[4].space, formFields.value[5].approach)
+    await createRoutineStore.sendNewRoutine(routineInfo)
+  }
   router.push('/myroutines')
 }
 
