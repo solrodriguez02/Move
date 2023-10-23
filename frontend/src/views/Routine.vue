@@ -42,7 +42,7 @@
     title='Are you sure you want delete the routine?'
     message="If you do so, your routine will be deleted permanently, you won't be able to recover it."
     custom-button-text='Delete'
-    :on-custom-action='deleteRoutine'
+    :on-custom-action='() => deleteRoutine()'
     :on-close='closeDeleteDialog'
     type='alert'
   />
@@ -82,11 +82,7 @@
       </div>
     </div>
   </div>
-
-
-
   </div>
-
 </div>
 
             
@@ -99,22 +95,14 @@
   import WarningDialog from "@/components/WarningDialog.vue"
   import { useNavigationStore } from '@/store/NavigationStore'
   import { useRoutineStore } from '@/store/RoutineStore'
-  import { useExerciseStore } from '@/store/ExerciseStore'
-  import { RouterLink } from 'vue-router';
 
   const routineStore = useRoutineStore()
-  
   const router = useRouter()
   const loading = ref(true)
   const route = useRoute()
-
-  const cycleOptionIndex = ref(0)
-  
   const deleteDialog = ref(false)
   const shareDialog = ref(false)
-
   const navigationStore= useNavigationStore()
-
   const data = ref([])
   const notFound = ref(false)
 
@@ -128,20 +116,11 @@
     } catch ( errorObj ){
       notFound.value = true
     }
-    
-  
     if ( data.value)
-      loadData()
-    
+      loadData() 
   }) 
 
-  const cycles = ref([])
-
   function loadData(){
-   
-     
-    console.log( 'Rutina'+ data.value.filters.difficulty)
-
     highlightsItems.value = [
       { name:'Difficulty', detail: data.value.filters.difficulty + " difficulty" , icon:'$flash', color:'turquoise'},
       { name:'Space', detail: data.value.filters.requiredSpace, icon:'$space', color:'violet' },
@@ -157,21 +136,6 @@
 
   const goBack = () => {
     router.go(-1)
-  }
-
-  const selectCycleOptionIndex = (index) => {
-    cycleOptionIndex.value = index
-  }
-
-  const showCycle = (index) => {
-    switch(index) {
-      case 0: 
-        return cycleOptionIndex.value == 0
-      case data.value.cycles.length+1: 
-        return cycleOptionIndex.value == lastCycleOptionIndex
-      default: 
-        return cycleOptionIndex.value == 1
-    }
   }
 
   const showDeleteDialog = () => {
@@ -190,13 +154,13 @@
     shareDialog.value = false
   }
 
-  const deleteRoutine = () => {
-    // codigo para eliminar la rutina
-    router.go(-1)
+  async function deleteRoutine() {
+    await routineStore.deleteRoutine(getId())
+    router.push('/createdbyyou')
   }
 
   const editRoutine = () => {
-    router.push('/createroutine')
+    router.push('/editroutine/' + getId())
   }
 
   const shareRoutine = async () => {
@@ -210,19 +174,12 @@
     { title:'Edit', icon:'$edit', function: editRoutine },
     { title:'Delete', icon:'$delete', function: showDeleteDialog },
   ])
-
    
   const highlightsItems = ref([])
 
-
-  const cyclesOptions = ref([
-    { name:'Warm up', icon:'$warm' },
-    { name:'Exercise', icon:'$fire' },
-    { name:'Cooling', icon:'$cool' }
-  ])
-
-  const lastCycleOptionIndex = cyclesOptions.value.length - 1
-
+  function getId() {
+    return router.currentRoute.value.params.routineId
+  }
 
   </script>
 
