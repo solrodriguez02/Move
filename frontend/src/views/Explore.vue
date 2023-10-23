@@ -26,9 +26,9 @@
   </v-progress-circular>
 
   <div v-else>
-  <v-sheet v-if="!searchWasMade" >
+  <v-sheet v-if="!searchWasMade"  >
       <v-row>
-        <v-sheet class="routines-box" width="1140">
+        <v-sheet class="routines-box " width="1140">
         <v-container class='title' >   
           <v-row no-gutters class="pa-0 ma-0 mb-3 align-center">
             <v-col >
@@ -45,6 +45,7 @@
       </v-row>
   </v-sheet> 
     <displayAllRoutines v-else :items="data" class='display' :key="searchWasMade" />
+      
 </div>
 </div>
 
@@ -61,7 +62,7 @@
 
   const searchWasMade = ref(0);
   const searchInApi = ref('');
-  const selected = ref([]);
+  
   var data  = ref([]);
   var selectedCount = 0; 
   
