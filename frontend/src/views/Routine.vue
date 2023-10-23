@@ -19,10 +19,6 @@
         <h2 class = 'highlight-text'>{{ data.name }}</h2>
         <div class = 'icons-top-right'>
 
-          <button @click="toggleFavorite" class='favorite-button'>
-            <v-icon :icon="isFavorite ? '$favfull' : '$favempty'" size='30'/>
-          </button>
-            
           <v-menu>
             <template v-slot:activator='{ props }'>
               <button v-bind='props'>
@@ -66,10 +62,6 @@
       <div class = 'header-info'>
         <img :src='data.user.img' alt='profile picture' height='50' width='50' class='image-profile'/>
         <p class='username'>By {{ data.user.name }}</p>
-        <div class = 'total-duration'>
-          <v-icon icon= '$time' color='blue'></v-icon>
-          <p class='time-text'>{{ getTime() }}</p>
-        </div>
       </div>
       <div class='routine-img'>
         <v-img :src='data.src' alt='Routine image' cover aspect-ratio="16/9" height='295px' width='600px' class='image'/>
@@ -91,45 +83,7 @@
     </div>
   </div>
 
-  <div class='cycles'>
-    <div class='cycles-options'>
-      <button v-for="(cycle, index) in cyclesOptions" :key='cycle.name'  @click="selectCycleOptionIndex(index)" :class="index == cycleOptionIndex? 'cycle-option-active':'cycle-option'">
-        <label>{{ cycle.name }}</label>
-        <v-icon :icon='cycle.icon' class='cycle-icon'/>
-      </button>
-    </div>
-  </div>
 
-
-  <div class='cycle'>
-    <div v-for='(cycle, index) in cycles' v-show='showCycle(index)'>
-    <div class='cycle-header'>
-      <h2>{{ cycle.name }}</h2>
-      <div class='cycle-reps'>
-        <v-icon icon='$reps'/>
-        {{cycle.reps}}
-      </div>
-    </div> 
-    <div class='exercises' v-for='exercise in cycle.exercises' :key='exercise.name'>
-      <div class='exercise'>
-          <div class='exercise-image-box'>
-            <img :src='exercise.image' :alt='exercise.name' class='exercise-image'/>
-          </div>
-          <label class='exercise-text'> {{ exercise.name }} </label>
-          <v-icon v-show="exercise.sec!='-'" icon='$time' class='exercise-icon'/>
-          <label v-show="exercise.sec!='-'" class='exercise-time'> {{ exercise.sec + 's'}} </label>
-          <v-icon v-show="exercise.reps!='-'" icon='$reps' size='20' class='exercise-icon'/>
-          <label v-show="exercise.reps!='-'" class='exercise-time'> {{ exercise.reps + ' reps'}} </label>
-        <div class='next-icon'> 
-          <RouterLink :to="`/exercise/${exercise.id}`" >
-              <v-icon icon='$next' color='dark_gray' />
-          </RouterLink>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div>
 
   </div>
 
@@ -162,7 +116,6 @@
   const navigationStore= useNavigationStore()
 
   const data = ref([])
-  const isFavorite = ref(null)
   const notFound = ref(false)
 
   onBeforeMount (async () => {
@@ -188,7 +141,6 @@
    
      
     console.log( 'Rutina'+ data.value.filters.difficulty)
-    isFavorite.value = data.value.fav
 
     highlightsItems.value = [
       { name:'Difficulty', detail: data.value.filters.difficulty + " difficulty" , icon:'$flash', color:'turquoise'},
@@ -196,21 +148,6 @@
       { name:'Approach', detail: data.value.filters.approach.join(", "), icon:'$person', color:'lightblue' },
       { name:'Elements required', detail:data.value.filters.elements.join(", "), icon:'$dumbbell', color:'blue' },
   ];
-
-
-  cycles.value.push({ name:'Warm up', reps:1, exercises: data.value.warm})
-  
-  var aux
-  for (var c=0; c<data.value.cycles.length ; c++) {
-    aux = []
-    for (var i=0; i<data.value.cycles[c].exercises.length ; i++){
-      aux.push( data.value.cycles[c].exercises[i])
-    }
-      
-    cycles.value.push({ name:'Cycle '+c, reps:data.value.cycles[c].reps, exercises: aux})
-  }
-  
-  cycles.value.push({ name:'Cooling', reps:1, exercises: data.value.cooling})
 
   }
 
@@ -274,10 +211,6 @@
     { title:'Delete', icon:'$delete', function: showDeleteDialog },
   ])
 
-  const toggleFavorite = () => {
-    isFavorite.value = !isFavorite.value;
-    //todo post de fav
-  };
    
   const highlightsItems = ref([])
 
@@ -290,12 +223,6 @@
 
   const lastCycleOptionIndex = cyclesOptions.value.length - 1
 
-  function getTime(){
-    // itera x cda ejercicio y estima tiempo
-    const tReps = 5
-
-    return cycles.value.length + ' m'
-  }
 
   </script>
 
