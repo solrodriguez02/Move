@@ -27,13 +27,11 @@ export const useCreateRoutineStore = defineStore('createRoutine', () => {
         const cycles = cyclesResult.content
         const index = ref(0)
         for(const currentCycle of cycles){
-            //aca no nos guardamos del ejercicio cual es el type por eso queda hardcodeado como si fuera de exercise
             pushExistingCycle(currentCycle.name, '$fire', currentCycle.repetitions, 'none', currentCycle.id)
             var cycleExercisesResult = await CycleApi.getExercises(currentCycle.id, true)
             var exercisesList = cycleExercisesResult.content
             for (const currentExercise of exercisesList){
                 var exerciseInfo = await exerciseApi.getExercise(currentExercise.exercise.id, true)
-                //faltaba el parametro de image porque estaba en el capo de metadata que no se devuelve en el get de los ejercicios del ciclo
                 var toPass = {
                     id: exerciseInfo.id,
                     name: exerciseInfo.name,

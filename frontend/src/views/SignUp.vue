@@ -50,7 +50,7 @@
         </v-form>
     </v-card>
     <div>
-        <img class='signin-image' src='@/assets/signup.jpg' alt='signup model'/>
+        <img class='signup-image' src='@/assets/signup.jpg' alt='signup model'/>
     </div>
 </div>
 </template>

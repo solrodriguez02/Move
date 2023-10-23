@@ -1,13 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { exerciseInfo, exerciseApi } from '@/api/exercises'
-
-/* 
-  Campos que creo q deberian ir en exercise: 
-  id, name, img, userMade (boolean), difficulty, equipment, space, muscleGroups, description
-  
-  soy Sol :) 
-*/
+import { exerciseApi } from '@/api/exercises'
 
 export const useExerciseStore = defineStore('exercise', () => {
     const exerciseList = ref([])

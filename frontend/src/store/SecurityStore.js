@@ -10,7 +10,6 @@ export const useSecurityStore = defineStore("security", {
         user: null
     }),
     getters: {
-        //si tengo un token estoy logueado
         isLoggedIn() {
             return this.token != null
         },
@@ -25,20 +24,16 @@ export const useSecurityStore = defineStore("security", {
         setUser(user) {
             this.user = user
         },
-        //guarda el token en este store y en el de api
         setToken(token) {
             this.token = token
             Api.token = token
         },
         updateToken(token, rememberMe) {
-            //se guarda en el localStorage
             localStorage.setItem(SECURITY_TOKEN_KEY, token)
-            //se actualiza el token para que se pueda usar
             this.setToken(token)
         },
         removeToken() {
             localStorage.removeItem(SECURITY_TOKEN_KEY)
-            //se actualiza para que de false el isloggedIn
             this.setToken(null)
         },
         async login(credentials, rememberMe) {
@@ -54,7 +49,7 @@ export const useSecurityStore = defineStore("security", {
                 return this.user
 
             const result = await UserApi.get()
-            this.setUser(result);//dado que la api me devuelve el objeto
+            this.setUser(result)
         }
     },
 });
