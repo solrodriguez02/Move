@@ -18,7 +18,7 @@
         :placeholder='field.placeholder'
         :type="field.label === 'Password' ? 'password' : 'text'"
     />
-</div>
+    </div>
 
             <v-btn
             :disabled="!form"
@@ -55,15 +55,13 @@
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { Credentials} from '@/api/user'
 import { useSecurityStore } from '@/store/SecurityStore'
 import { onBeforeMount } from 'vue'
-import { useRegisterStore } from '@/store/RegisterStore'	
-import router from '@/router'
 
-const registerStore = useRegisterStore()
+const router = useRouter()
 const securityStore = useSecurityStore()
 var hasError = ref(false);
 var error = ref(null);
@@ -83,7 +81,6 @@ onBeforeMount(() => {
     const securityStore = useSecurityStore()
     securityStore.initialize()
 })
-//todavia no funciona el llamado usando el login de api js
 const form = ref(false);
 const loading = ref(false);
 const formFields= ref([
