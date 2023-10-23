@@ -53,7 +53,7 @@
 
   onBeforeMount (async () => {
     loading.value = true
-    await routineStore.getApiRoutinesByCategories(['created'])
+    await routineStore.getApiRoutinesByCategory('created')
     routines.value = routineStore.routineList[0]
     loading.value = false
   })

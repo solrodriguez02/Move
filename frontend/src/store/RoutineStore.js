@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { getRoutine, getRoutines, routines, RoutineApi, queryGetRoutines, routineInfo } from '@/api/routines'
+import { RoutineApi, queryGetRoutines, routineInfo } from '@/api/routines'
 import { useRegisterStore } from '@/store/RegisterStore'
 
 /* 
@@ -26,6 +26,7 @@ export const useRoutineStore = defineStore('routine', () => {
       { label: 'Approach', options: ['Cardio', 'Strength', 'HIIT', 'Flexibility', 'Bodyweight', 'Resistance', 'CrossFit', 'Yoga', 'Pilates', 'Functional', 'Calisthenics', 'Aerobic ', 'Streching'], selected: ref([]), color:'violet', icon:'$person', tag: 'approach' }
     ])
 
+    
     const secOptions = ['-', 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
     const repOptions = ['-', 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
     const cycleRepOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -39,38 +40,7 @@ export const useRoutineStore = defineStore('routine', () => {
       await RoutineApi.deleteRoutine(id, true)
     }
 
-    function getDataCategory(headline,data){
-        // pido a api
-        return data;
-    }
-
-    function searchRutine(searchInApi, selected){  
-        // mando a api el input 
-        // searchInApi tiene input/busqueda
-        // selected contiene array con filtros, (hay espacios undefined => no tenerlos en cuenta)
-        for ( var i=0; i<filters.selected.length; i++){
-          
-          // search 
-          if ( selected[i] !== undefined ){
-            // mando a api
-          }
-        } 
-        const ans = routines;
-        //fetchRoutines()
-        
-        if ( searchInApi=='notFound' )      
-          return null;
-        
-        return ans;    
-    }
-
-
-    function getRoutineData(){
-      console.log('jsjs'+ routineData.value.id);
-      return routineData.value;
-    }
-
-    async function getApiRoutinesByCategory(category,position,searchAllPages=true, page = 0){
+    async function getApiRoutinesByCategory(category,searchAllPages=true, page = 0){
       
       // carga en la routineList q indique position 
       
@@ -78,13 +48,8 @@ export const useRoutineStore = defineStore('routine', () => {
         
         switch( category){
           case 'new': // ORDER BY 
-          query = new queryGetRoutines(null,page,15, "id","desc")
+          query = new queryGetRoutines(null,page, 10, "id","desc")
             
-            break
-          case 'favs':
-            query = new queryGetRoutines(null,page,15, "id","asc")
-            
-            // llamado a api
             break
           case 'created':
             // filtro itero x user
@@ -96,7 +61,7 @@ export const useRoutineStore = defineStore('routine', () => {
             } catch ( error ){
               return -1
             }
-            query = new queryGetRoutines( registerStore.userInfo.id , page,15, "id","desc")
+            query = new queryGetRoutines( registerStore.userInfo.id , page,null, "id","desc")
             break
           default:
             return -1
@@ -112,7 +77,7 @@ export const useRoutineStore = defineStore('routine', () => {
         r = apiAns.content[i]
         ans.push( new routineInfo( r.id, r.name, r.detail, favorites.value.includes(r.id), r.metadata, r.user, [] ))
       } 
-      routineList.value[position] = ans
+      routineList.value[0] = ans
       
       morePagesAvailable = false
 
@@ -123,7 +88,7 @@ export const useRoutineStore = defineStore('routine', () => {
         }
         console.log('recursive era el prob') 
         morePagesAvailable = true
-        return await getApiRoutinesWithFilters(searchedByUser,page++)
+        return await getApiRoutinesByName(searchedByUser,page++)
       }
         
       return 0          // fue exitosa la busqueda
@@ -132,12 +97,12 @@ export const useRoutineStore = defineStore('routine', () => {
       
     
 
-    async function getApiRoutinesWithFilters(searchedByUser, page=0){
+    async function getApiRoutinesByName(searchedByUser, page=0){
       
       if ( searchedByUser.length > 200 )
         return 1
       
-      const query = new queryGetRoutines(null,page,15,'id','desc')
+      const query = new queryGetRoutines(null,page,null,'id','desc')
        
       const apiAns = await RoutineApi.getAllRoutines( query, true)
       // todo Fav get (meter en array favorites )
@@ -163,7 +128,7 @@ export const useRoutineStore = defineStore('routine', () => {
         else {
           console.log('recursive era el prob') 
           morePagesAvailable = true
-          return await getApiRoutinesWithFilters(searchedByUser,1)
+          return await getApiRoutinesByName(searchedByUser,1)
         }    
 
       }
@@ -195,13 +160,10 @@ export const useRoutineStore = defineStore('routine', () => {
       
       routineData = routine
       
-      // llamar a cycles y meterlo en routineInfo
-      
-      
       return routine
 
     }
 
-    return { getApiRoutinesByCategory, getRoutineApiData ,getApiRoutinesWithFilters, routineList, routineData, getDataCategory, searchRutine, getRoutineData, filters, secOptions, repOptions, cycleRepOptions, deleteRoutine, fetchRoutineById }
+    return { filters, getApiRoutinesByCategory, getRoutineApiData ,getApiRoutinesByName, routineList, routineData, secOptions, repOptions, cycleRepOptions, deleteRoutine, fetchRoutineById }
 
 })

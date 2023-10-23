@@ -107,8 +107,7 @@
   const notFound = ref(false)
 
   onBeforeMount (async () => {
-    console.log(route.params.routineId)
-    //await routineStore.fetchRoutine( route.params.routineId )
+    
     try {
       loading.value = true 
       data.value = await routineStore.getRoutineApiData(route.params.routineId)

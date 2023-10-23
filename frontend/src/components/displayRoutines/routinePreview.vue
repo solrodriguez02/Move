@@ -14,10 +14,6 @@
               <div class='overlay'>
                 <v-container class="ml-0">
                     <v-row class="d-flex align-center">
-                        <v-icon icon='$favfull' color='black' size='14' />
-                        <p class='overlay-text ml-1'>{{ r.favs }}</p>
-                    </v-row>
-                    <v-row class="d-flex align-center">
                         <v-icon icon='$flash' size='14'  color='black'/>
                         <v-icon icon='$flash' size='14'  :color="r.filters.difficulty!=='Easy'? 'black':'grey-lighten-1'" class="ml-0"/>
                         <v-icon icon='$flash' size='14'  :color="r.filters.difficulty=='Hard'? 'black':'grey-lighten-1'" />
