@@ -74,8 +74,8 @@ function getRoutine(id, okCallback) {
     }
 
 
-    static async getAllRoutines( queryGetRoutines, controller ){
-      return await Api.getWithParam(RoutineApi.getUrl(), true, queryGetRoutines, controller);
+    static async getAllRoutines( queryGet, controller ){
+      return await Api.getWithParam(RoutineApi.getUrl() + appendParams(queryGet) , false, queryGetRoutines, controller);
       
     }
 
@@ -146,18 +146,25 @@ class routinePrevInfo {
 }
 
 class queryGetRoutines {
-  constructor(page, size, order,direction, id ){
-    this.page = page
+  constructor(userId, page=0, size, order,direction ){
+    if ( userId!=null)
+      this.userId = userId
+    this.page = page; 
     if ( size!=null)
-      this.size = size 
-    if ( order!=null)
-      this.orderBy = order
-    if ( direction!=null)
-      this.direction = direction
-    if ( id!=null)
-      this.routineId
+    this.size = size; 
+    if( order!=null)
+    this.orderBy = order; 
+    if( direction!=null)
+    this.direction = direction;
   }
+  
 }
-
+function appendParams(query) {
+  if ( query==undefined)
+    return ''
+  var ans = "?" + new URLSearchParams(query)
+  
+  return ans
+}
 
 export { RoutineApi, routinePrevInfo, routineInfo, getRoutines, getRoutine, routines, queryGetRoutines }

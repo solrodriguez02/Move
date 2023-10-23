@@ -38,9 +38,7 @@ class Api {
     if (secure && Api.token) {
       //se agrega el headers si no estaba en el init (podría ser un GET o un DELETE)
       if (!init.headers){
-        init.headers = {};
-        if ( init != {})
-          url = url + '?' + new URLSearchParams(init)
+        init.headers = {};  
       }
         
       //con esto se evita pisar todo lo que ya habia en el init agregando el campo authorization
@@ -80,9 +78,8 @@ class Api {
     }
   }
 
-
   static async getWithParam(url, secure, queryInfo, controller) {
-    return await Api.fetch(url, secure, queryInfo, controller);
+    return await Api.fetch(url , secure, {}, controller);
   }
 
   static async get(url, secure, controller) {
@@ -105,4 +102,9 @@ class Api {
     this.token = token;
   }
 
+}
+
+function appendParams(init) {
+
+  
 }

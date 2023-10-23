@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { getRoutine, getRoutines, routines, RoutineApi, queryGetRoutines, routineInfo } from '@/api/routines'
+import { useRegisterStore } from '@/store/RegisterStore'
 
 /* 
   Campos que creo q deberian ir en routine: 
@@ -16,6 +17,7 @@ export const useRoutineStore = defineStore('routine', () => {
     const routineList = ref([])
     var routineData
     const favorites = ref([])
+    var morePagesAvailable = false
 
     const filters = ref([
       { label: 'Difficulty', options: ['Easy', 'Medium', 'Difficult'], selected: ref([]), color: 'turquoise', icon: '$flash', tag:'difficulty' },
@@ -28,36 +30,7 @@ export const useRoutineStore = defineStore('routine', () => {
     const repOptions = ['-', 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100]
     const cycleRepOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-    function fetchRoutines() {
-        return new Promise((resolve) => {
-            getRoutines((routines) => {
-              setRoutines(routines)
-              resolve()
-            })
-        })
-    }
-
-    function fetchRoutine( routineId ) {
-      return new Promise((resolve) => {
-          getRoutine(routineId,(routine) => {
-            setRoutine(routine)
-            resolve()
-          })
-      })
-  }
-
-    function setRoutines(routines) {
-        routineList.value = routines
-    }
-
-    function setRoutine(routineFound) {
-      routineData.value = routineFound
-    }
-     
-    function addRoutine() {
-      // ToDo
-    }
-
+    
     async function deleteRoutine(id) {
       await RoutineApi.deleteRoutine(id, true)
     }
@@ -71,7 +44,9 @@ export const useRoutineStore = defineStore('routine', () => {
         // mando a api el input 
         // searchInApi tiene input/busqueda
         // selected contiene array con filtros, (hay espacios undefined => no tenerlos en cuenta)
-        for ( var i=0; i<selected.length; i++){
+        for ( var i=0; i<filters.selected.length; i++){
+          
+          // search 
           if ( selected[i] !== undefined ){
             // mando a api
           }
@@ -91,31 +66,39 @@ export const useRoutineStore = defineStore('routine', () => {
       return routineData.value;
     }
 
-    async function getApiRoutinesByCategories(categories){
+    async function getApiRoutinesByCategory(category,position,searchAllPages=true, page = 0){
       
-      // carga las 2 routineList
-      if ( categories==null)
-        return -1
-
+      // carga en la routineList q indique position 
+      
         var query 
-      for ( var i; i<categories.length; i++)
-        switch( categories[i] ){
+        
+        switch( category){
           case 'new': // ORDER BY 
-            query = new queryGetRoutines(0,15, "id","asc")
+          query = new queryGetRoutines(null,page,15, "id","desc")
+            
             break
           case 'favs':
-            query = new queryGetRoutines(0,15, "id","asc")
+            query = new queryGetRoutines(null,page,15, "id","asc")
             
             // llamado a api
             break
           case 'created':
             // filtro itero x user
+            // id user de donde lo saco? 
+            const registerStore = useRegisterStore()
+            
+            try{
+              await registerStore.fetchCurrentUser()
+            } catch ( error ){
+              return -1
+            }
+            query = new queryGetRoutines( registerStore.userInfo.id , page,15, "id","desc")
             break
+          default:
+            return -1
         }
 
-     
       const apiAns = await RoutineApi.getAllRoutines( query, false)
-      
       
       const ans = []
       var r
@@ -125,11 +108,22 @@ export const useRoutineStore = defineStore('routine', () => {
         r = apiAns.content[i]
         ans.push( new routineInfo( r.id, r.name, r.detail, favorites.value.includes(r.id), r.metadata, r.user, [] ))
       } 
-      routineList.value[0] = ans
+      routineList.value[position] = ans
       
-      if ( ans == [] )
-        return -1
+      morePagesAvailable = false
+
+      if ( ans == [] ){
+        if ( apiAns.isLastPage || !searchAllPages){
+          morePagesAvailable = false
+          return -1
+        }
+        console.log('recursive era el prob') 
+        morePagesAvailable = true
+        return await getApiRoutinesWithFilters(searchedByUser,page++)
+      }
+        
       return 0          // fue exitosa la busqueda
+
     }
       
     
@@ -139,29 +133,39 @@ export const useRoutineStore = defineStore('routine', () => {
       if ( searchedByUser.length > 200 )
         return 1
       
-      const query = new queryGetRoutines(page,14,null,null,null)
+      const query = new queryGetRoutines(null,page,15,'id','desc')
+       
       const apiAns = await RoutineApi.getAllRoutines( query, true)
       // todo Fav get (meter en array favorites )
       
       const ans = []
       var r
       const size = apiAns.size < apiAns.totalCount? apiAns.size : apiAns.totalCount
-      console.log('Api'+ apiAns)
+      console.log('Api'+ apiAns.isLastPage)
       for ( var i=0; i<size; i++){
         r = apiAns.content[i]
         if ( r.name.startsWith(searchedByUser))
+          //for ( )
           ans.push( new routineInfo( r.id, r.name, r.detail, favorites.value.includes(r.id), r.metadata, r.user, [] ))
       } 
 
       routineList.value[0] = ans
 
-      if ( apiAns.isLastPage )
-        morePagesAvailable = false
-      else 
-        return getApiRoutinesWithFilters(searchedByUser, page++)
+      if ( ans == [] ) {
+        if ( apiAns.isLastPage ){
+          morePagesAvailable = false
+          return -1
+        }
+        else {
+          console.log('recursive era el prob') 
+          morePagesAvailable = true
+          return await getApiRoutinesWithFilters(searchedByUser,1)
+        }    
 
-      if ( ans == [] )
-        return -1
+      }
+      
+      morePagesAvailable = false
+      
       return 0          // fue exitosa la busqueda
     }
     
@@ -194,6 +198,6 @@ export const useRoutineStore = defineStore('routine', () => {
 
     }
 
-    return { getApiRoutinesByCategories, getRoutineApiData ,getApiRoutinesWithFilters, routineList, routineData, fetchRoutines, fetchRoutine, getDataCategory, searchRutine, getRoutineData, filters, secOptions, repOptions, cycleRepOptions, deleteRoutine, addRoutine }
+    return { getApiRoutinesByCategory, getRoutineApiData ,getApiRoutinesWithFilters, routineList, routineData, getDataCategory, searchRutine, getRoutineData, filters, secOptions, repOptions, cycleRepOptions, deleteRoutine }
 
 })
