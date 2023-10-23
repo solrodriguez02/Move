@@ -101,6 +101,8 @@ const formFields = ref([
 
   function setCurrentValues(routineData) {
     formFields.value[0].name = routineData.name
+    if ( routineData.detail == 'https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg')
+      routineData.detail = ''
     formFields.value[1].image = routineData.detail
     formFields.value[2].difficulty = routineData.metadata.filters.difficulty
     formFields.value[3].elements = routineData.metadata.filters.elements
@@ -109,13 +111,13 @@ const formFields = ref([
   }
 
 async function onSubmit() {
+  if( !formFields.value[1].image.startsWith('http') || formFields.value[1].image == null ) 
+      formFields.value[1].image = 'https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg'
   if(!routineIsNew.value) {
     const routineInfo = new routinePrevInfo(formFields.value[0].name, formFields.value[1].image, 0, formFields.value[2].difficulty, formFields.value[3].elements, formFields.value[4].space, formFields.value[5].approach)
     await createRoutineStore.sendEditRoutine(getId(), routineInfo)
   }
   else {
-    if( !formFields.value[1].image.startsWith('http') || formFields.value[1].image == null ) 
-      formFields.value[1].image = 'https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg'
     const routineInfo = new routinePrevInfo(formFields.value[0].name, formFields.value[1].image, 0, formFields.value[2].difficulty, formFields.value[3].elements, formFields.value[4].space, formFields.value[5].approach)
     await createRoutineStore.sendNewRoutine(routineInfo)
   }
