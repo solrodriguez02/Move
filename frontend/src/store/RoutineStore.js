@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { getRoutine, getRoutines, routines, RoutineApi, queryGetRoutines, routineInfo } from '@/api/routines'
+import { RoutineApi, queryGetRoutines, routineInfo } from '@/api/routines'
 import { useRegisterStore } from '@/store/RegisterStore'
 
 /* 
