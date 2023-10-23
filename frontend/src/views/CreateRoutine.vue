@@ -15,14 +15,13 @@
     custom-button-text="Quit"
     :on-custom-action="() => quitCreateRoutine(getTab())"
     :on-close='closeGoBackDialog'
-    type='alert'
-  />
+    type='alert'/>
 
   <div class='header'>
     <div class='title'>
       <h2>{{routineIsNew? 'Create your routine':'Edit your routine'}}</h2>
     </div>
-    <RouterLink :to='getSaveLink()'>
+
       <v-btn 
         class='text-none'
         color='violet'
@@ -30,11 +29,20 @@
         size='large'
         height='40px'
         width='100px'
-        variant='flat'>
+        variant='flat' 
+        @click="isReadyToSave()">
           Next 
           <v-icon icon='$next'/>
         </v-btn>
-    </RouterLink>
+
+        <warning-dialog
+        v-model='nextDialog'
+        title='You cant create a routine with an empty cycle.'
+        message='Please add at least one exercise to all of your cycles.'
+        custom-button-text='Continue editing'
+        :on-custom-action='() => closeNextDialog()'
+        :on-close='() => closeNextDialog()'
+        type='informative'/>
   </div>
 
   <div class='carousel'>
@@ -226,9 +234,9 @@
   const routineStore = useRoutineStore()
   const navigationStore = useNavigationStore()
   const loading = ref(false)
-  const filterDialog = ref(false)
   const deleteDialog = ref(false)
-  const goBackDialog = ref(false);
+  const nextDialog = ref(false)
+  const goBackDialog = ref(false)
   const selectedSecValue = ref(30)
   const selectedRepValue = ref('-')
   const cycleIndex = ref(0)
@@ -286,6 +294,14 @@
     router.push(path)
   }
 
+  const showNextDialog = () => {
+    nextDialog.value = true
+  }
+
+  const closeNextDialog = () => {
+    nextDialog.value = false
+  }
+
   const getExercisesLenght = (cycleIdx) => {
     return createRoutineStore.cycleList[cycleIdx].exercises.length
   }
@@ -313,9 +329,17 @@
     return router.currentRoute.value.params.routineId
   }
 
-  function getSaveLink() {
-    if(routineIsNew.value) return '/saveroutine'
-    else return '/saveexistingroutine/' + getId()
+  function saveLink() {
+    if(routineIsNew.value) router.push('/saveroutine')
+    else router.push('/saveexistingroutine/' + getId()) 
+  }
+
+  function isReadyToSave() {
+    const readyToSave = ref(true)
+    for(const cycle of createRoutineStore.cycleList) 
+      if(cycle.exercises == null || cycle.exercises.length == 0) readyToSave.value = false
+    if(readyToSave.value) saveLink()
+    else showNextDialog()
   }
 </script>
 
