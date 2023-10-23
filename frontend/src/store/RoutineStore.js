@@ -31,6 +31,10 @@ export const useRoutineStore = defineStore('routine', () => {
     const cycleRepOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
     
+    async function fetchRoutineById(id) {
+      return await RoutineApi.getRoutineById(id, true)
+    }
+
     async function deleteRoutine(id) {
       await RoutineApi.deleteRoutine(id, true)
     }
@@ -198,6 +202,6 @@ export const useRoutineStore = defineStore('routine', () => {
 
     }
 
-    return { getApiRoutinesByCategory, getRoutineApiData ,getApiRoutinesWithFilters, routineList, routineData, getDataCategory, searchRutine, getRoutineData, filters, secOptions, repOptions, cycleRepOptions, deleteRoutine }
+    return { getApiRoutinesByCategory, getRoutineApiData ,getApiRoutinesWithFilters, routineList, routineData, getDataCategory, searchRutine, getRoutineData, filters, secOptions, repOptions, cycleRepOptions, deleteRoutine, fetchRoutineById }
 
 })
