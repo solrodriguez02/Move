@@ -32,7 +32,7 @@ export const useRoutineStore = defineStore('routine', () => {
       await RoutineApi.deleteRoutine(id, true)
     }
 
-    async function getApiRoutinesByCategory(category,position,searchAllPages=true, page = 0){
+    async function getApiRoutinesByCategory(category,searchAllPages=true, page = 0){
       
       // carga en la routineList q indique position 
       
@@ -156,10 +156,6 @@ export const useRoutineStore = defineStore('routine', () => {
 
     }
 
-<<<<<<< HEAD
-    return { getApiRoutinesByCategory, getRoutineApiData ,getApiRoutinesByName, routineList, routineData, secOptions, repOptions, cycleRepOptions, deleteRoutine }
-=======
-    return { getApiRoutinesByCategory, getRoutineApiData ,getApiRoutinesWithFilters, routineList, routineData, getDataCategory, searchRutine, getRoutineData, filters, secOptions, repOptions, cycleRepOptions, deleteRoutine, fetchRoutineById }
->>>>>>> refs/remotes/origin/main
+    return { getApiRoutinesByCategory, getRoutineApiData ,getApiRoutinesByName, routineList, routineData, secOptions, repOptions, cycleRepOptions, deleteRoutine, fetchRoutineById }
 
 })
