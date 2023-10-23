@@ -55,14 +55,11 @@
   onBeforeMount (async () => {
     loading.value = true
     await routineStore.getApiRoutinesByCategory('created',0)
-    //await routineStore.getApiRoutinesByCategory('favs')
-
     loading.value = false
   })
 
   const categories= ref([
       { headline:'Created by you', viewAll: false, canEdit: true },
-      { headline:'Favourites', viewAll: false, canEdit: true  }, 
   ])
 
   function changeView( category) {

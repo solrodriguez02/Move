@@ -192,7 +192,6 @@ import NotFound from './NotFound.vue'
     { title:'Delete', icon:'$delete', function: showDeleteDialog },
   ])
 
-   
   const highlightsItems = ref([])
 
 

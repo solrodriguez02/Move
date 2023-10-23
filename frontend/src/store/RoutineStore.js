@@ -36,13 +36,8 @@ export const useRoutineStore = defineStore('routine', () => {
         
         switch( category){
           case 'new': // ORDER BY 
-          query = new queryGetRoutines(null,page,15, "id","desc")
+          query = new queryGetRoutines(null,page, 10, "id","desc")
             
-            break
-          case 'favs':
-            query = new queryGetRoutines(null,page,15, "id","asc")
-            
-            // llamado a api
             break
           case 'created':
             // filtro itero x user
@@ -54,7 +49,7 @@ export const useRoutineStore = defineStore('routine', () => {
             } catch ( error ){
               return -1
             }
-            query = new queryGetRoutines( registerStore.userInfo.id , page,15, "id","desc")
+            query = new queryGetRoutines( registerStore.userInfo.id , page,null, "id","desc")
             break
           default:
             return -1
@@ -70,7 +65,7 @@ export const useRoutineStore = defineStore('routine', () => {
         r = apiAns.content[i]
         ans.push( new routineInfo( r.id, r.name, r.detail, favorites.value.includes(r.id), r.metadata, r.user, [] ))
       } 
-      routineList.value[position] = ans
+      routineList.value[0] = ans
       
       morePagesAvailable = false
 
@@ -95,7 +90,7 @@ export const useRoutineStore = defineStore('routine', () => {
       if ( searchedByUser.length > 200 )
         return 1
       
-      const query = new queryGetRoutines(null,page,15,'id','desc')
+      const query = new queryGetRoutines(null,page,null,'id','desc')
        
       const apiAns = await RoutineApi.getAllRoutines( query, true)
       // todo Fav get (meter en array favorites )

@@ -146,7 +146,7 @@ class routinePrevInfo {
 }
 
 class queryGetRoutines {
-  constructor(userId, page=0, size, order,direction ){
+  constructor(userId, page=0, size=50, order,direction ){
     if ( userId!=null)
       this.userId = userId
     this.page = page; 
