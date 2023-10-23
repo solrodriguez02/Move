@@ -20,9 +20,9 @@
 
   <div class='header'>
     <div class='title'>
-      <h2>Create your routine</h2>
+      <h2>{{routineIsNew? 'Create your routine':'Edit your routine'}}</h2>
     </div>
-    <RouterLink to='/saveroutine'>
+    <RouterLink :to='getSaveLink()'>
       <v-btn 
         class='text-none'
         color='violet'
@@ -44,18 +44,24 @@
     <v-slide-group
       show-arrows>
       <v-slide-group-item v-for='(cycle, index) in createRoutineStore.cycleList' :key='cycle.name'>
-        <button @click='selectCycleIndex(index)'>
+        <button @click='selectCycleIndex(index)' v-show='cycle.status != "delete" && index!=2'>
           <div :class="cycleIndex === index ? 'carousel-cycle-active' : 'carousel-cycle'">
             <v-icon :icon='cycle.icon' class='cycle-icon'/>
             <p class='cycle-name'> {{ cycle.name }} </p>
           </div>
         </button>
-        <button v-show='index == createRoutineStore.getCycleLenght() - 2 && createRoutineStore.getCycleLenght() < 10' @click='addCycle'>
+        <button v-show='index == createRoutineStore.getCycleLenght() - 1 && createRoutineStore.getCycleLenght() < 10' @click='addCycle'>
           <div class='carousel-add'>
             <v-icon icon='$add'/>
           </div>
         </button>
       </v-slide-group-item>
+      <button @click='selectCycleIndex(2)'>
+          <div :class="cycleIndex === 2 ? 'carousel-cycle-active' : 'carousel-cycle'">
+            <v-icon icon='$cool' class='cycle-icon'/>
+            <p class='cycle-name'> {{createRoutineStore.cycleList[2].name }} </p>
+          </div>
+        </button>
     </v-slide-group>
   </v-sheet>  
   </div>
@@ -84,17 +90,17 @@
 
     <v-slide-group v-else show-arrows class='carousel-exercises-box'>
       <v-slide-group-item v-for="(exercise, index) in createRoutineStore.cycleList[cycleIndex].exercises" :key='exercise.name'>
-        <div class='carousel-exercise'>
+        <div class='carousel-exercise' v-show='exercise.status != "delete"'>
           <RouterLink class='carousel-link' to='/exercise'>
             <div class='image-container'>
               <img class='carousel-image' :src="exercise.image" :alt="exercise.name"/>
               <div class='overlay'>
                 <v-icon icon='$edit' color='black' size='20' class='edit-icon'/>
                 <div class='time-container'>
-                  <v-icon v-show="exercise.sec != '-'" icon='$time' color='blue' size='20' />
-                  <p v-show="exercise.sec != '-'" class='overlay-text'>{{ exercise.sec + 's' }}</p>
-                  <v-icon v-show="exercise.reps != '-'" icon='$reps' color='blue' size='15' />
-                  <p v-show="exercise.reps != '-'" class='overlay-text'>{{ exercise.reps + ' reps' }}</p>
+                  <v-icon v-show="exercise.sec != 0 && exercise.sec != '-'" icon='$time' color='blue' size='20' />
+                  <p v-show="exercise.sec != 0 && exercise.sec != '-'" class='overlay-text'>{{ exercise.sec + 's' }}</p>
+                  <v-icon v-show="exercise.reps != 0 && exercise.reps != '-'" icon='$reps' color='blue' size='15' />
+                  <p v-show="exercise.reps != 0 && exercise.reps != '-'" class='overlay-text'>{{ exercise.reps + ' reps' }}</p>
                 </div>
               </div>
             </div>
@@ -112,7 +118,7 @@
       </v-slide-group-item>
     </v-slide-group>
 
-    <button v-show='cycleIndex!=0 && cycleIndex!=1 && cycleIndex!=createRoutineStore.getCycleLenght() - 1' @click='deleteDialog = true' class='delete-cycle-button'>
+    <button v-show='cycleIndex!=0 && cycleIndex!=1 && cycleIndex!=2' @click='deleteDialog = true' class='delete-cycle-button'>
       <v-icon icon='$delete'/>
     </button>
 
@@ -138,39 +144,6 @@
           rounded
           variant='outlined'/>
       </div>
-
-      <button class='filter-button' @click='filterDialog = true'>
-        <v-icon icon='$filter' size='26'/>
-      </button>
-
-    <v-dialog v-model='filterDialog' max-width='800'>
-      <v-card>
-        <v-toolbar color='gray' class='filters-header'>
-          <v-toolbar-title>Filter results</v-toolbar-title>
-          <button @click="filterDialog = false">
-            <v-icon icon='$close'/>
-          </button>
-        </v-toolbar>
-        <v-card-text v-for='filter in routineStore.filters' :key='filter.label'>
-          <h2 class='text-h6 mb-1'>
-            {{ filter.label }}
-          </h2>
-          <v-chip-group :v-model='filter.selected' column multiple>
-            <v-chip
-              v-for='(option, index) in filter.options'
-              :key='index'
-              :value='index'
-              filter
-              variant='outlined'>
-              {{ option }}
-            </v-chip>
-          </v-chip-group>
-        </v-card-text>
-        <v-card-actions>
-          <button @click='applyFilters' class='apply-filters-button'>Apply filters</button>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
       
       <RouterLink to='/createexercise' class='new-exercise-button'>
         <button >
@@ -261,30 +234,43 @@
   const cycleIndex = ref(0)
   const maxExerciseCount = ref(15)
   const router = useRouter()
+  const routineIsNew = ref(false)
+  const init = ref(true)
 
   onBeforeMount (async () => {
     loading.value = true
-    createRoutineStore.init()
+    routineIsNew.value = isNew()
+    if(routineIsNew.value) {
+      createRoutineStore.init()
+    }
+    else {
+      if(init.value) await createRoutineStore.setRoutine(getId())
+      init.value = false
+    }
     await exerciseStore.fetchExercises()
     loading.value = false
   })
 
   function getTab() {
     return router.options.history.state.back
-  }
+  } 
 
   const selectCycleIndex = (index) => {
     cycleIndex.value = index
   }
 
-  const addCycle = () => {
-    createRoutineStore.addCycle()
-    selectCycleIndex(createRoutineStore.getCycleLenght() - 2) 
+  const addCycle = (id=null) => {
+    if(routineIsNew.value)
+      createRoutineStore.addCycle()
+    else createRoutineStore.addCycle('new', false)
+    selectCycleIndex(createRoutineStore.getCycleLenght() - 1) 
   }
 
   const deleteCycle = () => {
     deleteDialog.value = false
-    createRoutineStore.deleteCycle(cycleIndex.value)
+    if(routineIsNew.value)
+      createRoutineStore.deleteCycle(cycleIndex.value)
+    else createRoutineStore.deleteExistingCycle(cycleIndex.value)
     selectCycleIndex(cycleIndex.value - 1)
   }
 
@@ -300,22 +286,36 @@
     router.push(path)
   }
 
-  const applyFilters = () => {
-    filterDialog.value = false
-    // codigo para aplicar los filtros
-  }
-
   const getExercisesLenght = (cycleIdx) => {
     return createRoutineStore.cycleList[cycleIdx].exercises.length
   }
 
   const addExercise = (cycleIdx, exercise) => {
     if(getExercisesLenght(cycleIdx) <= maxExerciseCount.value) 
-      createRoutineStore.addExercise(cycleIdx, exercise, selectedSecValue.value, selectedRepValue.value)
+      if(routineIsNew.value)
+        createRoutineStore.addExercise(cycleIdx, exercise, selectedSecValue.value, selectedRepValue.value)
+      else createRoutineStore.addExercise(cycleIdx, exercise, selectedSecValue.value, selectedRepValue.value, 'new', false)
   }
 
   const deleteExercise = (cycleIdx, exerciseIdx) => {
-    createRoutineStore.deleteExercise(cycleIdx, exerciseIdx)
+    if(routineIsNew.value) 
+      createRoutineStore.deleteExercise(cycleIdx, exerciseIdx)
+    else {
+      createRoutineStore.deleteExistingExercise(cycleIdx, exerciseIdx)
+    }
+  }
+
+  function isNew() {
+    return router.currentRoute.value.path == '/createroutine'
+  }
+
+  function getId() {
+    return router.currentRoute.value.params.routineId
+  }
+
+  function getSaveLink() {
+    if(routineIsNew.value) return '/saveroutine'
+    else return '/saveexistingroutine/' + getId()
   }
 </script>
 

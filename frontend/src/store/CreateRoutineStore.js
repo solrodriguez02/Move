@@ -7,106 +7,97 @@ import { exerciseApi } from '@/api/exercises'
 
 export const useCreateRoutineStore = defineStore('createRoutine', () => {
     
-    const routineStore = new useRoutineStore()
     const cycleList = ref([])
-    var firstInit = ref(true)
-    var isNewRoutine = ref(true)
-
-    /* Pense en implementar algo asi (para poder identificar los casos en los que se esta creando una rutina de cero
-     de los casos donde se esta editando una existente): apenas se entra a la pagina se pregunta si existe una rutina 
-     con ese id. Si existe, hace un fetch de sus ciclos y ejercicios y lo carga en cycleList. Si no existe, se llama a 
-     funcion init que inicializa la rutina con 3 ciclos iniciales (son obligatorios creo) y sin ejercicios.
-     Para facilitar el codigo habia pensado que se haga un POST recién cuando se guarda la rutina (save)
-
-     Soy sol :)
-
-    */
-    
-
-    /*function fetchRoutine(name) {
-        return new Promise((resolve) => {
-            Routines.getRoutine(name, (routine) => {
-                if(routine) {
-                    setCycles(routine)
-                    resolve()
-                }
-                else {
-                    setCycles(initCycles)
-                }           
-            })
-        })
-    }*/
 
     function getCycleLenght() {
         return cycleList.value.length
     }
 
-    async function init() {
-        if(!routineStore.routineData && firstInit) {
-            pushCycle('Warm up', '$warm', 0)
-            pushCycle('Cycle 1', '$fire', 1)
-            pushCycle('Cooling', '$cool', 2)
-            firstInit = false
-        }
-        else{
-            isNewRoutine = false;
-            const routineResult = await RoutineApi.getRoutineById(routineStore.routineData.id, true)
-            const cyclesResult = await RoutineApi.getAllRoutineCycles(routineResult.id, {}, true);
-            const cycleList = cyclesResult.content;
-            for(var cycle = 0; cycle < cycleList.length; cycle++){
-                var currentCycle = cycleList.value[cycle]
-                //aca no nos guardamos del ejercicio cual es el type por eso queda hardcodeado como si fuera de exercise
-                pushCycle(currentCycle.name, '$fire', cycle)
-                var cycleExercisesResult = await CycleApi.getExercises(currentCycle.id, true)
-                var exercisesList = cycleExercisesResult.content
-                for (var exercise = 0; exercise < exercisesList.length; exercise++){
-                    var currentExercise = currentCycle.exercises[exercise]
-                    var exerciseInfo = exerciseApi.getExercise(currentExercise.id, true)
-                    //faltaba el parametro de image porque estaba en el capo de metadata que no se devuelve en el get de los ejercicios del ciclo
-                    var toPass = {
-                        id: exerciseInfo.id,
-                        name: exerciseInfo.name,
-                        image: exerciseInfo.image
-                    }
-                    addExercise(currentCycle.id, toPass, currentExercise.secs, currentExercise.reps)
-                }
-            }
-        }
-    }
-    
-    function addCycle() {    
-        pushCycle('Cycle ' + (getCycleLenght() - 1), '$fire', getCycleLenght() - 1)
+    function init() {
+        cycleList.value = []
+        pushCycle('Warm up', '$warm', 0)
+        pushCycle('Cycle 1', '$fire', 1)
+        pushCycle('Cooling', '$cool', 2)
     }
 
-    function pushCycle(name, icon, position) {
-        cycleList.value.splice(position, 0, {
+    async function setRoutine(id) {
+        cycleList.value = []
+        const routineResult = await RoutineApi.getRoutineById(id, true)
+        const cyclesResult = await RoutineApi.getAllRoutineCycles(routineResult.id, {}, true)
+        const cycles = cyclesResult.content
+        const index = ref(0)
+        for(const currentCycle of cycles){
+            //aca no nos guardamos del ejercicio cual es el type por eso queda hardcodeado como si fuera de exercise
+            pushExistingCycle(currentCycle.name, '$fire', currentCycle.repetitions, 'none', currentCycle.id)
+            var cycleExercisesResult = await CycleApi.getExercises(currentCycle.id, true)
+            var exercisesList = cycleExercisesResult.content
+            for (const currentExercise of exercisesList){
+                var exerciseInfo = await exerciseApi.getExercise(currentExercise.exercise.id, true)
+                //faltaba el parametro de image porque estaba en el capo de metadata que no se devuelve en el get de los ejercicios del ciclo
+                var toPass = {
+                    id: exerciseInfo.id,
+                    name: exerciseInfo.name,
+                    image: exerciseInfo.metadata.image
+                }
+                addExercise(index.value, toPass, currentExercise.duration, currentExercise.repetitions, 'none', true)
+            }
+            index.value++
+        }
+    }
+
+    function pushExistingCycle(name, icon, reps, status, id) {
+        cycleList.value.push ({
+            name: name,
+            icon: icon,
+            reps: reps,
+            exercises: ref([]),
+            status: status,
+            id: id,
+            existed: true
+        })
+    }
+    
+    function addCycle(status=null, existed=false) {    
+        pushCycle('Cycle ' + (getCycleLenght() - 1), '$fire', getCycleLenght() - 1, status, existed)
+    }
+
+    function pushCycle(name, icon, position, status=null, existed=false) {
+        cycleList.value.push({
             name: name,
             icon: icon,
             reps: 1,
-            exercises: ref([])
+            exercises: ref([]),
+            status: status,
+            existed: existed,
         });
     }
 
     function deleteCycle(index) {
-        cycleList.value.splice(index, 1);
-        if (!isNewRoutine)
-            CycleApi.deleteCycle(routineStore.routineData.id, cycleList[index].id, true)
+        cycleList.value.pop()
     }
 
-    function addExercise(cycleIndex, exercise, secs, reps) {    
+    function deleteExistingCycle(index) {
+        cycleList.value[index].status = 'delete'
+    }
+
+    function addExercise(cycleIndex, exercise, secs, reps, status=null, existed=false) {    
         cycleList.value[cycleIndex].exercises.push( {
             id: exercise.id,
             name: exercise.name,
             sec: secs,
             reps: reps,
-            image: exercise.image
+            image: exercise.image,
+            status: status,
+            existed: existed
         });
     }
 
     function deleteExercise(cycleIndex, exerciseIndex) {
         cycleList.value[cycleIndex].exercises.splice(exerciseIndex, 1)
-        if (!isNewRoutine)
-            CycleApi.deleteCycleExercise(cycleList[cycleIndex].id, cycleList[cycleIndex].exercises[exerciseIndex.id], true)
+    }
+
+    function deleteExistingExercise(cycleIdx, exerciseIdx) {
+        cycleList.value[cycleIdx].exercises[exerciseIdx].status = 'delete'
     }
 
     async function sendNewRoutine(routineInfo){
@@ -121,15 +112,37 @@ export const useCreateRoutineStore = defineStore('createRoutine', () => {
                 await CycleApi.addExercise(currentCycleResult.id, currentExercise.id, exerciseInfo, true)
             }
         }
+    }   
+
+    async function sendEditRoutine(routineId, routineInfo){
+        await RoutineApi.modifyRoutine(routineId, routineInfo, true)
+        
+        for(var cycle = 0; cycle < getCycleLenght(); cycle++){
+            var currentCycle = cycleList.value[cycle]
+            const newCycleId = ref(null)
+            if(currentCycle.status === 'delete' && currentCycle.existed === true){
+                await RoutineApi.deleteCycle(routineId, currentCycle.id, true)
+            }
+            else if(currentCycle.status === 'new' && currentCycle.existed === false){
+                var currentCycleInfo = new cycleInfo(currentCycle.name, cycle+1, "", "exercise", currentCycle.reps, { src: currentCycle.icon})
+                const newCycle = await RoutineApi.createCycle(routineId, currentCycleInfo, true)
+                newCycleId.value = newCycle.id
+            }
+            for (var exercise = 0; exercise < currentCycle.exercises.length; exercise++){
+                var currentExercise = currentCycle.exercises[exercise]
+                if(currentExercise.status === 'delete' && currentExercise.existed === true){
+                    await CycleApi.deleteCycleExercise(currentCycle.id, currentExercise.id, true)
+                }
+                else if(currentExercise.status === 'new'){
+                    console.log(newCycleId.value)
+                    if(currentCycle.existed) newCycleId.value = currentCycle.id
+                    var exerciseInfo = new exerciseSpecification(exercise+1, currentExercise.sec === '-' ? 0: currentExercise.sec, currentExercise.reps === '-' ? 0: currentExercise.reps)
+                    await CycleApi.addExercise(newCycleId.value, currentExercise.id, exerciseInfo, true)
+                }
+            }
+        }
     }
 
-    async function sendEditRoutine(routineInfo){
-        const routineResult = await RoutineApi.modifyRoutine(routineInfo.id, routineInfo, true)
-        //se llama tras apretar el boton de save en el createRoutine
-        //solo llena la data de las categorias, el nombre y una imagen
-        //para el resto se necesita modificar o crear otras funciones que reflejen en el API los cambios dentro de cada ciclo de ejercicios
-    }
-
-    
-    return { cycleList, init, getCycleLenght, addCycle, deleteCycle, addExercise, deleteExercise, sendNewRoutine, sendEditRoutine}
+    return { cycleList, init, getCycleLenght, addCycle, deleteCycle, addExercise, deleteExercise, sendNewRoutine, 
+            sendEditRoutine, setRoutine, deleteExistingExercise, deleteExistingCycle }
 })

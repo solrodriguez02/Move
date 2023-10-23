@@ -110,7 +110,8 @@
     { difficulty: null, placeholder: 'Enter the exercise difficulty' }, 
     { muscleGroups: [], placeholder: 'Which muscle group will be exercised?' }, 
     { elements: [], placeholder: 'Does the exercise require any element?' }, 
-    { space: null, placeholder: 'How much space is it necesary?' } ])
+    { space: null, placeholder: 'How much space is it necesary?' } 
+  ])
 
     onBeforeMount (async () => {
     loading.value = true
@@ -147,8 +148,8 @@
   }
 
   function getTab() {
-        return router.options.history.state.back
-    }
+    return router.options.history.state.back
+  }
 
   const closeGoBackDialog = () => {
     goBackDialog.value = false;
