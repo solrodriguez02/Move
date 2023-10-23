@@ -34,26 +34,26 @@ export default createVuetify({
     aliases: {
       ...aliases,
       check: 'check_box',
-      warm: 'brightness_5', // sol del warm up
-      fire: 'local_fire_department', // fuego del ejercitamiento
-      cool: 'ac_unit', // copo de nieve del enfriamiento
-      rest: 'bedtime', // luna para el descanso
-      time: 'alarm', // reloj para el tiempo
-      reps: 'close', // cruz
-      space: 'zoom_out_map', // espacio para el ejercicio
+      warm: 'brightness_5', 
+      fire: 'local_fire_department', 
+      cool: 'ac_unit',
+      rest: 'bedtime', 
+      time: 'alarm', 
+      reps: 'close', 
+      space: 'zoom_out_map', 
       person: 'accessibility',
-      flash: 'flash_on', // flash para la dificultad (con relleno)
-      dumbbell: 'fitness_center', // pesa
-      edit: 'edit', // lapiz de editar
-      add: 'add', // +
-      search: 'search', //lupa
-      filter: 'tune', // filtros
-      arrow: 'expand_more', // flecha mirando hacia abajo
-      next: 'navigate_next', //flecha hacia la derecha
-      back: 'arrow_back_ios', // flecha hacia la izquierda
-      options: 'more_vert', // tres puntitos verticales
-      favempty: 'favorite_border', // corazon vacio
-      favfull: 'favorite', //corazon lleno (cuando esta fav la rutina)
+      flash: 'flash_on', 
+      dumbbell: 'fitness_center',
+      edit: 'edit', 
+      add: 'add', 
+      search: 'search', 
+      filter: 'tune',
+      arrow: 'expand_more', 
+      next: 'navigate_next', 
+      back: 'arrow_back_ios', 
+      options: 'more_vert', 
+      favempty: 'favorite_border', 
+      favfull: 'favorite', 
       delete: 'delete',
       share: 'share', 
       close: 'close'

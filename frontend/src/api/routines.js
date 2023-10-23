@@ -7,16 +7,16 @@ const routinesData = ref(
   [{
     id:0, 
     src: 'backgrounds/md2.jpg',
-    fav: true, // nop, llamo local mapa favsUser
+    fav: true, 
     name: 'mar',
-    highlights: [ //todo filters
+    highlights: [ 
       0, ["glutes", "quads"], ["none"], 0
     ], 
     user: {
       name: 'Riquelme',
       img: 'https://storage.googleapis.com/sworkit-assets/images/exercises/standard/middle-frame/step-touch.jpg'
     },
-    time:'30 m', //todo se calcula 
+    time:'30 m', 
     updated: false,
     warm: [
       { name:'Left leg lunge', sec:30, reps: '-', id:0, image: 'https://storage.googleapis.com/sworkit-assets/images/exercises/standard/middle-frame/step-touch.jpg' },
@@ -50,7 +50,6 @@ function getRoutines(okCallback) {
     setTimeout(() => okCallback(routines), 3000)
 }
 
-//, errorCallback
 function getRoutine(id, okCallback) {
     setTimeout(() => {
       const routine = routinesData.value.find((routine) => routine.id == id);
@@ -58,7 +57,6 @@ function getRoutine(id, okCallback) {
         okCallback(routine);
       }
       else 
-        //errorCallback('Routine not found'); 
         console.log('Routine not found');
     }, 3000);
 
@@ -128,11 +126,10 @@ class routineInfo {
 
 class routinePrevInfo {
   constructor( name, src,favsNum, difficultyId, elementsRequiredArray, requiredSpaceId, approachId ){
-      // elementos = [], el resto son vals
       this.name = name;
       this.detail = src; 
-      this.isPublic = true;                     // campo obligatorio 
-      this.difficulty = "rookie"                 // campo obligatorio 
+      this.isPublic = true;                  
+      this.difficulty = "rookie"                 
       this.metadata = {
         favs: favsNum,
         filters: {
